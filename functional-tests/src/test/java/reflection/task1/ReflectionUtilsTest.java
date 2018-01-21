@@ -34,7 +34,7 @@ public class ReflectionUtilsTest {
         User user = (User) ReflectionUtils.converFromJson(target, User.class);
 
         assertThat(user.name, CoreMatchers.equalTo("Ivan"));
-        assertThat(user.age, CoreMatchers.equalTo("Ivan"));
+        assertThat(user.age, CoreMatchers.equalTo("26"));
 
     }
 
