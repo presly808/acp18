@@ -9,9 +9,11 @@
 
 #### The steps in order to implement a task
  
-1. Clone project aco23
+1. If you have not cloned project yet, just clone project
 	a) During the cloning choose gradle
-	b) open -> choose gradle.build -> Open as project
+	or
+	b) open in IDEA -> choose gradle.build -> Open as project
+	
 2. Create branch (<TaskName>-<ModuleName>)\
     Before the creation ensure that current branch is `master` and\
     its was updated via (git pull)
