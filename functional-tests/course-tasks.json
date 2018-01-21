@@ -1,25 +1,10 @@
 {
   "course" : "OOP",
   "tasks" : {
-    "week1" : {
+    "reflection" : {
       "title": "Basics and TestTask",
-      "baseClasses":"week1",
-      "testClasses":"week1"
-    },
-    "week2" : {
-      "title": "ManagerTask",
-      "baseClasses":"week2",
-      "testClasses":"week2"
-    },
-    "week3" : {
-      "title": "DesignPatterns",
-      "baseClasses":"week3",
-      "testClasses":"week3"
-    },
-    "company" : {
-      "title": "MVCPatternCompany",
-      "baseClasses":"company",
-      "testClasses":"company"
+      "baseClasses":"reflection",
+      "testClasses":"reflection"
     }
   }
 }
