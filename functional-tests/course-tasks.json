@@ -3,8 +3,13 @@
   "tasks" : {
     "reflection" : {
       "title": "Basics and TestTask",
-      "baseClasses":"reflection",
-      "testClasses":"reflection"
+      "baseClasses":["reflection"],
+      "testClasses":["reflection"]
+    },
+    "tempTaskDoNotCopy" : {
+      "title": "Basics and TestTask",
+      "baseClasses":["reflection/task1/MyField.java", "reflection/task1/ReflectionUtils.java"],
+      "testClasses":["reflection/task1/ReflectionUtilsTest.java"]
     }
   }
 }
