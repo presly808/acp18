@@ -56,14 +56,14 @@ public class ReflectionUtils {
             if(field.isAnnotationPresent(MyField.class)) {
 
                 for (String s  : str) {
-                    System.out.println(s);
+
                     if (s.contains(field.getName())){
 
-                        if(s.substring(s.indexOf(":")+1).matches("[0-9]+")) {
-                            field.set(obj, Integer.parseInt(s.substring(s.indexOf(":") + 1)));
+                        if(s.substring(s.indexOf(":")+1).trim().matches("[0-9]+")) {
+                            field.set(obj, Integer.parseInt(s.substring(s.indexOf(":") + 1).trim()));
                         }
                         else{
-                            field.set(obj,s.substring(s.indexOf(":")+1));
+                            field.set(obj,s.substring(s.indexOf(":")+1).trim());
                         }
                     }
                 }
