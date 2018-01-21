@@ -30,12 +30,11 @@ public class ReflectionUtilsTest {
                 "  \"name\":\"Ivan\",\n" +
                 "  \"age\":26\n" +
                 "}";
-        String res = ReflectionUtils.convertToJson(target);
 
         User user = (User) ReflectionUtils.converFromJson(target, User.class);
 
         assertThat(user.name, CoreMatchers.equalTo("Ivan"));
-        assertThat(user.age, CoreMatchers.equalTo(26));
+        assertThat(user.age, CoreMatchers.equalTo("Ivan"));
 
     }
 
