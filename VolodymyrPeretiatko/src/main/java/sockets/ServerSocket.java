@@ -25,9 +25,9 @@ public class ServerSocket {
     // if we send "os", the server must reply with either "LINUX" or "WIN"
     public void start(){
         try {
-            java.net.ServerSocket srvSocket = new java.net.ServerSocket(port);
+            java.net.ServerSocket server = new java.net.ServerSocket(port);
 
-            Socket client = establishConnection(srvSocket);
+            Socket client = establishConnection(server);
 
             while(!client.isClosed()){
 
