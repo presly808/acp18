@@ -2,7 +2,7 @@
 * Show all tasks\
 ```./gradlew showAllTasks```
 * Copy the task's files to your module\
-```git```
+```./gradlew -PmyModule=<ModuleName> -Ptask=<TaskName> copyTask```
 * Example\
 ```./gradlew -PmyModule=SerhiiBilobrov -Ptask=week1 copyTask```
 * Check your module, there must be packages of the copied task

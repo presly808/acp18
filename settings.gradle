@@ -7,11 +7,5 @@ include 'KirillParolys'
 include 'DimaStavitscky'
 include 'AntonBabunin'
 include 'VasylPekhterev'
-<<<<<<< HEAD
-
-
-=======
-include 'AntonBabunin'
 include 'ArtemShchepets'
 include 'AlexeyOrlyuk'
->>>>>>> master
