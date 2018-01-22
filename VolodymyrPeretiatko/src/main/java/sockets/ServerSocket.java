@@ -1,5 +1,11 @@
 package sockets;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 /**
  * Created by serhii on 21.01.18.
  */
@@ -18,6 +24,39 @@ public class ServerSocket {
     // if client send "shutdown-server" command,  we kill the serverSocket
     // if we send "os", the server must reply with either "LINUX" or "WIN"
     public void start(){
-        //todo
+        try {
+            java.net.ServerSocket srvSocket = new java.net.ServerSocket(port);
+
+            Socket client = establishConnection(srvSocket);
+
+            while(!client.isClosed()){
+
+                DataInputStream in = new DataInputStream(client.getInputStream());
+                String clientMsg = in.readUTF();
+
+                PrintWriter out = new PrintWriter(client.getOutputStream());
+                out.printf(clientMsg);
+                out.flush();
+
+            }
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Socket establishConnection(java.net.ServerSocket serverSocket) throws IOException {
+
+        Socket client = serverSocket.accept();
+        return client;
+
+    }
+
+    public static void main(String[] args) {
+        ServerSocket ss = new ServerSocket(8080);
+        ss.start();
     }
 }
