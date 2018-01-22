@@ -30,15 +30,12 @@ public class ReflectionUtilsTest {
                 "  \"name\":\"Ivan\",\n" +
                 "  \"age\":26\n" +
                 "}";
-        String res = ReflectionUtils.convertToJson(target);
 
         User user = (User) ReflectionUtils.converFromJson(target, User.class);
 
         assertThat(user.name, CoreMatchers.equalTo("Ivan"));
         assertThat(user.age, CoreMatchers.equalTo(26));
-
     }
-
 
     static class User {
 
@@ -46,6 +43,9 @@ public class ReflectionUtilsTest {
         public String name;
         @MyField
         public int age;
+
+        public User() {
+        }
 
         public User(String name, int age) {
             this.name = name;
