@@ -30,7 +30,6 @@ public class ReflectionUtilsTest {
                 "  \"name\":\"Ivan\",\n" +
                 "  \"age\":26\n" +
                 "}";
-        String res = ReflectionUtils.convertToJson(target);
 
         User user = (User) ReflectionUtils.converFromJson(target, User.class);
 

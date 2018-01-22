@@ -1,5 +1,6 @@
 package reflection.task1;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -34,6 +35,16 @@ public class ReflectionUtils {
 
     /*convert all public fields into json string*/
     public static String convertToJson(Object target){
+
+        Field[] filds = target.getClass().getDeclaredFields();
+
+        for(Field field : filds) {
+            if (field.isAnnotationPresent(MyField.class)) {
+                //do action
+            }
+        }
+
+
         return null;
     }
 
