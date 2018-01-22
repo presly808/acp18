@@ -45,8 +45,8 @@ public class ServerSocketTest {
 
     @Test
     public void testDate() throws IOException {
-        String response = sendReq("localhost", PORT, "date");
-        assertThat(response, containsString("2018"));
+        String response = sendReq("localhost", PORT, "help");
+        assertThat(response, containsString("cd"));
     }
 
     private static String sendReq(String host, int port, String message){
