@@ -41,10 +41,13 @@ public class ReflectionUtilsTest {
 
     static class User {
 
-        @MyField
+        @MyField(type = String.class)
         public String name;
-        @MyField
-        public int age;
+        @MyField(type = Integer.class)
+        public Integer age;
+
+        public User() {
+        }
 
         public User(String name, int age) {
             this.name = name;
