@@ -1,10 +1,20 @@
 {
-  "course" : "OOP",
+  "course" : "Proff",
   "tasks" : {
-    "reflection" : {
+    "reflectionClass" : {
+      "title": "ReflectionBasics",
+      "baseClasses":["reflection/task1"],
+      "testClasses":["reflection/task1"]
+    },
+    "tempTaskDoNotCopy" : {
       "title": "Basics and TestTask",
-      "baseClasses":"reflection",
-      "testClasses":"reflection"
+      "baseClasses":["reflection/task1/MyField.java", "reflection/task1/ReflectionUtils.java"],
+      "testClasses":["reflection/task1/ReflectionUtilsTest.java"]
+    },
+    "sockets" : {
+      "title": "sockets",
+      "baseClasses":["sockets"],
+      "testClasses":["sockets"]
     }
   }
 }
