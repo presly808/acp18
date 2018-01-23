@@ -5,8 +5,10 @@ package reflection.task1;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 ;
 
 /**
@@ -47,11 +49,20 @@ public class ReflectionUtils {
     public static Object converFromJson(String src, Class cls) throws IllegalAccessException, InstantiationException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
         Object obj = cls.newInstance();
 
+        System.out.println(Arrays.stream(cls.getField("name").getDeclaredAnnotations()).peek(annotation -> {
+            System.out.println(annotation);
+
+        }));
+
+
+
         src = src.replaceAll("\"", "").replaceAll("\\{", "").replaceAll("}", "");
 
         List<Field> fieldsClass = Arrays.asList(cls.getFields());
         String finalSrc = src;
-        fieldsClass.forEach((Field field) -> {
+
+
+        fieldsClass.stream().filter(field -> field.isAnnotationPresent(MyField.class)).forEach((Field field) -> {
 
             String value = finalSrc.split(field.getName()+":")[1];
             if (value.contains(",")) {
