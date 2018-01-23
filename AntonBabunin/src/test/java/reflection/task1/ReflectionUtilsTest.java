@@ -1,7 +1,6 @@
 package reflection.task1;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -30,7 +29,7 @@ public class ReflectionUtilsTest {
                 "  \"name\":\"Ivan\",\n" +
                 "  \"age\":26\n" +
                 "}";
-        String res = ReflectionUtils.convertToJson(target);
+        ReflectionUtils.convertToJson(target);
 
         User user = (User) ReflectionUtils.converFromJson(target, User.class);
 
