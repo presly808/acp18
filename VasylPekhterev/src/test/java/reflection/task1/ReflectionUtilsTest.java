@@ -27,8 +27,8 @@ public class ReflectionUtilsTest {
     @Test
     public void convertToJson1() throws Exception {
         String target = "{\n" +
-                "name:Ivan\n" +
-                "age:26\n" +
+                "  \"name\":\"Ivan\",\n" +
+                "  \"age\":26\n" +
                 "}";
 
         User user = (User) ReflectionUtils.converFromJson(target, User.class);
@@ -40,9 +40,9 @@ public class ReflectionUtilsTest {
     @Test
     public void convertFromJson() throws Exception {
         String target = "{\n" +
-                "name:Ivan\n" +
-                "age:26\n" +
-                "pass:pwd\n" +
+                "  \"name\":\"Ivan\",\n" +
+                "  \"age\":26,\n" +
+                "  \"pass\":\"pwd\"\n" +
                 "}";
 
         Admin admin = (Admin) ReflectionUtils.converFromJson(target, Admin.class);
