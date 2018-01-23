@@ -10,24 +10,35 @@ public class ReflectionUtils {
     // using reflection
     public static String invokeToString(Object target) {
 
-        String str = "";
+        String res = "";
 
         try {
-            str =(String) target.getClass().getMethod("toString").invoke(target);
-        } catch(Exception e) {
+            res = (String) target.getClass().getMethod("toString").invoke(target);
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
-        return str;
+        return res;
     }
 
     /*convert all public fields into json string*/
     public static String convertToJson(Object target) {
 
         Field[] fields = target.getClass().getFields();
-        String res = "";
-        for (Field f : fields){
-            f.getName()||":"||f.get
+        String res = "{\n";
+        for (Field f : fields) {
+
+            String value = "";
+
+            try {
+                value = f.get(target).toString();
+            } catch (Exception e) {
+                value = "null";
+            }
+
+            res += "\"" + f.getName() + "\"" + ":" + "\"" + value + "\"" + ",\n";
         }
+        res = res.substring(0, res.lastIndexOf(",\n")) + "\n" + "}";
+
         return res;
     }
 
