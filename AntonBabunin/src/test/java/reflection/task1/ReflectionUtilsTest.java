@@ -25,7 +25,7 @@ public class ReflectionUtilsTest {
     }
 
     @Test
-    public void convertToJson1() throws Exception {
+    public void convertFromJsonToObj() throws Exception {
         String target = "{\n" +
                 "  \"name\":\"Ivan\",\n" +
                 "  \"age\":26\n" +
@@ -50,6 +50,11 @@ public class ReflectionUtilsTest {
             this.name = name;
             this.age = age;
         }
+
+        public User(){
+
+        }
+
 
         @Override
         public String toString() {
