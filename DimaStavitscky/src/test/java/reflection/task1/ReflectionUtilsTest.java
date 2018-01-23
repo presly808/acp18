@@ -1,10 +1,9 @@
 package reflection.task1;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by serhii on 21.01.18.
@@ -45,6 +44,9 @@ public class ReflectionUtilsTest {
         public String name;
         @MyField
         public int age;
+
+        public User() {
+        }
 
         public User(String name, int age) {
             this.name = name;
