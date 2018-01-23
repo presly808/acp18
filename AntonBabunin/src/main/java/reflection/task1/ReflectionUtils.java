@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * Created by serhii on 21.01.18.
  */
@@ -50,7 +51,8 @@ public class ReflectionUtils {
 
         List<Field> fieldsClass = Arrays.asList(cls.getFields());
         String finalSrc = src;
-        fieldsClass.forEach((Field field) -> {
+
+        fieldsClass.stream().filter(field -> field.isAnnotationPresent(MyField.class)).forEach((Field field) -> {
 
             String value = finalSrc.split(field.getName()+":")[1];
             if (value.contains(",")) {

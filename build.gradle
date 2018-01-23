@@ -59,15 +59,18 @@ task copyTask {
             def baseClasses = taskDesc.baseClasses;
             def testClasses = taskDesc.testClasses;
 
-            for(def baseClass in baseClasses){
-                def intoPath = "$baseClass".endsWith(".java") ?
-                        baseClass.substring(0, baseClass.lastIndexOf("/")) : baseClass
+            if(!project.hasProperty("testOnly")){
+                for(def baseClass in baseClasses){
+                    def intoPath = "$baseClass".endsWith(".java") ?
+                            baseClass.substring(0, baseClass.lastIndexOf("/")) : baseClass
 
-                copy {
-                    from "$module_with_tests/src/main/java/$baseClass"
-                    into "$myModule/src/main/java/$intoPath"
+                    copy {
+                        from "$module_with_tests/src/main/java/$baseClass"
+                        into "$myModule/src/main/java/$intoPath"
+                    }
+
                 }
-
+                println "The Base classes of $task have been copied into $myModule"
             }
 
             for(def testClass in testClasses){
@@ -79,8 +82,9 @@ task copyTask {
                 }
 
             }
+            println "The Tests classes of $task have been copied into $myModule"
 
-            println "The Common Tests of $task have been copied into $myModule"
+
         }
     }
 

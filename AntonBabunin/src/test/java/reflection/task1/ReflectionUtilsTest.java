@@ -3,6 +3,8 @@ package reflection.task1;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
+import java.lang.annotation.RetentionPolicy;
+
 import static org.junit.Assert.*;
 
 /**
