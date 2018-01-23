@@ -47,10 +47,10 @@ public class ReflectionUtils {
     public static Object converFromJson(String src, Class cls) throws IllegalAccessException, InstantiationException {
         Object obj = cls.newInstance();
 
-        src = src.replaceAll("\"", "").replaceAll("\\{", "").replaceAll("}", "");
+        String srcc = src.replaceAll("\"", "").replaceAll("\\{", "").replaceAll("}", "");
 
         List<Field> fieldsClass = Arrays.asList(cls.getFields());
-        String finalSrc = src;
+        String finalSrc = srcc;
 
         fieldsClass.stream().filter(field -> field.isAnnotationPresent(MyField.class)).forEach((Field field) -> {
 
