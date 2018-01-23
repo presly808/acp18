@@ -24,7 +24,7 @@ public class ClientSocket {
 
             out.writeUTF(comand);
             out.flush();
-            out.close();
+            //out.close();
 
             Thread.sleep(1000);
 
