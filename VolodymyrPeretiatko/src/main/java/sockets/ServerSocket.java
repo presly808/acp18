@@ -1,9 +1,6 @@
 package sockets;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -25,33 +22,32 @@ public class ServerSocket {
     // if we send "os", the server must reply with either "LINUX" or "WIN"
     public void start(){
         try {
+
             java.net.ServerSocket srvSocket = new java.net.ServerSocket(port);
 
-            Socket client = establishConnection(srvSocket);
+            ClientConnection client = establishConnection(srvSocket);
 
+            CmdExecutor cmdExecutor = new CmdExecutor();
+
+            String cmd, result;
             while(!client.isClosed()){
-
-                DataInputStream in = new DataInputStream(client.getInputStream());
-                String clientMsg = in.readUTF();
-
-                PrintWriter out = new PrintWriter(client.getOutputStream());
-                out.printf(clientMsg);
-                out.flush();
-
+                cmd = client.read();
+                result = cmdExecutor.exec(cmd);
+                client.send(result);
             }
-
-
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private Socket establishConnection(java.net.ServerSocket serverSocket) throws IOException {
+    private ClientConnection establishConnection(java.net.ServerSocket serverSocket) throws IOException {
 
-        Socket client = serverSocket.accept();
-        return client;
+        Socket socket = serverSocket.accept();
+
+        ClientConnection clientConnection = new ClientConnection(socket);
+
+        return clientConnection;
 
     }
 
