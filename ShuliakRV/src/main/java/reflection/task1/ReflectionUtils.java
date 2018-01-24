@@ -31,7 +31,7 @@ public class ReflectionUtils {
 
         StringBuilder value = new StringBuilder();
 
-        StringBuilder ch = new StringBuilder("\"");
+        String ch = "";
 
         for (Field f : fields) {
 
@@ -41,11 +41,12 @@ public class ReflectionUtils {
                 value.append("null");
             }
 
-         //   if (f.getType()!=String.class) ch.deleteCharAt(0);
+            if (f.getType() != String.class) ch = "";
+            else ch = "\"";
 
             res.append("\"" + f.getName() + "\"" + ":" + ch + value + ch + ",\n");
 
-            value.delete(0,value.length());
+            value.delete(0, value.length());
         }
         return res.deleteCharAt(res.length() - 2).append("}").toString();
     }
