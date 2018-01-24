@@ -15,7 +15,8 @@ public class ReflectionUtils {
         String res = "";
 
         try {
-            res = (String) target.getClass().getMethod("toString").invoke(target);
+            res = (String) target.getClass().
+                    getMethod("toString").invoke(target);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -47,7 +48,8 @@ public class ReflectionUtils {
                 ch = "\"";
             }
 
-            res.append("\"" + field.getName() + "\"" + ":" + ch + value + ch + ",\n");
+            res.append("\"" + field.getName() + "\"" + ":"
+                    + ch + value + ch + ",\n");
 
             value.delete(0, value.length());
         }
@@ -63,7 +65,8 @@ public class ReflectionUtils {
 
         for (int i = 1; i < lines.length - 1; i++) {
             String[] keyValue = lines[i].split(":");
-            keyValueMap.put(keyValue[0].trim(), keyValue[1].trim().replace(",", ""));
+            keyValueMap.put(keyValue[0].trim(), keyValue[1].trim().
+                    replace(",", ""));
         }
 
         try {
@@ -73,7 +76,8 @@ public class ReflectionUtils {
             for (Field field : cls.getDeclaredFields()) {
 
                 if (field.isAnnotationPresent(MyField.class)) {
-                    String value = keyValueMap.get("\"" + field.getName() + "\"");
+                    String value = keyValueMap.
+                            get("\"" + field.getName() + "\"");
                     if (value != null) {
 
                         if (field.getType() == int.class) {
