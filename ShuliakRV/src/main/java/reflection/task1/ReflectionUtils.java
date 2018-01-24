@@ -24,22 +24,30 @@ public class ReflectionUtils {
     public static String convertToJson(Object target) {
 
         Field[] fields = target.getClass().getFields();
-        String res = "{\n";
+
+        StringBuilder res = new StringBuilder();
+
+        res.append("{\n");
+
+        StringBuilder value = new StringBuilder();
+
+        StringBuilder ch = new StringBuilder("\"");
+
         for (Field f : fields) {
 
-            String value = "";
-
             try {
-                value = f.get(target).toString();
+                value.append(f.get(target).toString());
             } catch (Exception e) {
-                value = "null";
+                value.append("null");
             }
 
-            res += "\"" + f.getName() + "\"" + ":" + "\"" + value + "\"" + ",\n";
-        }
-        res = res.substring(0, res.lastIndexOf(",\n")) + "\n" + "}";
+         //   if (f.getType()!=String.class) ch.deleteCharAt(0);
 
-        return res;
+            res.append("\"" + f.getName() + "\"" + ":" + ch + value + ch + ",\n");
+
+            value.delete(0,value.length());
+        }
+        return res.deleteCharAt(res.length() - 2).append("}").toString();
     }
 
     /*convert all fields that were annotated by SpecificAnnotation into json string*/
