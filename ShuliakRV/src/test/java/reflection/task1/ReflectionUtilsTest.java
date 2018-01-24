@@ -12,14 +12,14 @@ import static org.junit.Assert.*;
 public class ReflectionUtilsTest {
     @Test
     public void invokeToString() throws Exception {
-        String res = ReflectionUtils.invokeToString(new User("Ivan", 26));
+        String res = ReflectionUtils.invokeToString(new User("Ivan", 26, "man"));
         assertThat(res, CoreMatchers.containsString("Ivan"));
         assertThat(res, CoreMatchers.containsString("26"));
     }
 
     @Test
     public void convertToJson() throws Exception {
-        String res = ReflectionUtils.convertToJson(new User("Ivan", 26));
+        String res = ReflectionUtils.convertToJson(new User("Ivan", 26, "man"));
         assertThat(res, CoreMatchers.containsString("Ivan"));
         assertThat(res, CoreMatchers.containsString("26"));
     }
@@ -28,17 +28,16 @@ public class ReflectionUtilsTest {
     public void convertToJson1() throws Exception {
         String target = "{\n" +
                 "  \"name\":\"Ivan\",\n" +
-                "  \"age\":26\n" +
+                "  \"age\":26,\n" +
+                "  \"sex\":\"man\"\n" +
                 "}";
-        String res = ReflectionUtils.convertToJson(target);
 
         User user = (User) ReflectionUtils.converFromJson(target, User.class);
 
         assertThat(user.name, CoreMatchers.equalTo("Ivan"));
         assertThat(user.age, CoreMatchers.equalTo(26));
-
+        assertThat(user.sex, CoreMatchers.equalTo(null));
     }
-
 
     static class User {
 
@@ -47,9 +46,15 @@ public class ReflectionUtilsTest {
         @MyField
         public int age;
 
-        public User(String name, int age) {
+        public String sex;
+
+        public User() {
+        }
+
+        public User(String name, int age, String sex) {
             this.name = name;
             this.age = age;
+            this.sex = sex;
         }
 
         @Override
@@ -57,6 +62,7 @@ public class ReflectionUtilsTest {
             return "User{" +
                     "name='" + name + '\'' +
                     ", age=" + age +
+                    ", sex=" + sex +
                     '}';
         }
     }

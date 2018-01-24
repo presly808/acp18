@@ -41,8 +41,11 @@ public class ReflectionUtils {
                 value.append("null");
             }
 
-            if (f.getType() != String.class) ch = "";
-            else ch = "\"";
+            if (f.getType() != String.class) {
+                ch = "";
+            } else {
+                ch = "\"";
+            }
 
             res.append("\"" + f.getName() + "\"" + ":" + ch + value + ch + ",\n");
 
@@ -53,6 +56,8 @@ public class ReflectionUtils {
 
     /*convert all fields that were annotated by SpecificAnnotation into json string*/
     public static Object converFromJson(String src, Class cls) {
+
+
         return null;
     }
 
