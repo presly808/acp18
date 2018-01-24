@@ -1,8 +1,9 @@
 package sockets;
 
-import jdk.nashorn.internal.ir.Terminal;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -29,113 +30,49 @@ public class MyServerSocket {
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Server was ran");
 
-            while (true) {
+            while (!serverSocket.isClosed()) {
                 Socket client = serverSocket.accept();
-                System.out.printf("new connection № %d", id++);
+                System.out.printf("new connection № %d\n", ++id);
 
-                InputStream is = client.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
+                BufferedReader socketInputStream = new BufferedReader(
+                        new InputStreamReader(client.getInputStream()));
 
                 StringBuilder sb = new StringBuilder();
                 String line = null;
 
-                while ((line = br.readLine()) != null) {
-                    sb.append(line).append("\n");
-                }
+                PrintWriter pw = new PrintWriter(client.getOutputStream(), true);
 
-                PrintWriter pw = new PrintWriter(client.getOutputStream());
-                if (line.equals("os")) {
-                    pw.print("LINUX");
+                if ((line = socketInputStream.readLine()) != null) {
+                    System.out.println("Received a message: " + line);
 
-                } else if (line.equals("shutdown-server")) {
-                    System.out.println();
+                    if (line.equals("os")) {
+                        pw.println("LINUX");
 
-                } else {
-                    Process p = Runtime.getRuntime().exec(line);
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(p.getInputStream()));
-                    String lineTerm = null;
-                    System.out.println("first");
-                    pw.write(in.read());
-                    System.out.println("second");
-                    pw.write(String.valueOf(p.getInputStream()));
-                    System.out.println("the third");
-                    while ((lineTerm = in.readLine()) != null) {
-                        System.out.println(lineTerm);
-                        /*pw.print(lineTerm);*/
+                    } else if (line.equals("shutdown-server")) {
+                        pw.close();
+                        serverSocket.close();
+                        System.out.println("Server is stopped");
+
+                    } else {
+                        Process p = Runtime.getRuntime().exec(line);
+                        BufferedReader TerminalInputStream = new BufferedReader(
+                                new InputStreamReader(p.getInputStream()));
+
+                        String lineFromTerminal = null;
+
+                        while ((lineFromTerminal = TerminalInputStream.readLine()) != null) {
+                            sb.append(lineFromTerminal).append(" ");
+                        }
+                        pw.println(sb.toString());
+
+                        // clear StringBuilder
+                        sb.setLength(0);
                     }
                 }
-
-                pw.flush();
-                pw.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-/* public class Server {
-
-    private int id;
-    private List<String> list;
-
-    public Server() {
-        list = new ArrayList<>();
-    }
-
-    public void run() {
-        try {
-            MyServerSocket serverSocket = new MyServerSocket(8080);
-            System.out.println("server was run");
-
-            while (true) {
-                Socket client = serverSocket.accept(); // blocking method
-
-                String clientInfo = String.format("count id %s, address %s, port %s"
-                        , id++
-                        , client.getInetAddress()
-                        , client.getPort());
-
-                System.out.println(clientInfo);
-
-                list.add(clientInfo);
-
-                PrintWriter pw = new PrintWriter(client.getOutputStream());
-
-                pw.printf("Hello from server, Your info %s, time %s\n"
-                        , clientInfo
-                        , new Date());
-                pw.flush();
-                pw.close();
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
-
     }
 }
-public class Run {
-    public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("127.0.1.1", 8080);
-
-        InputStream is = socket.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-
-        while ((line = br.readLine()) != null){
-            sb.append(line).append("\n");
-        }
-
-        System.out.println(sb.toString());
-
-
-
-
-    }
-}
- */

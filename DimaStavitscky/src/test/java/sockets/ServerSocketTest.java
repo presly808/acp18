@@ -1,14 +1,19 @@
 package sockets;
 
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by serhii on 21.01.18.
@@ -24,30 +29,7 @@ public class ServerSocketTest {
         CompletableFuture.runAsync(serverSocket::start);
     }
 
-    @Test
-    public void testSimpleCommand() throws IOException {
-        String response = sendReq("localhost", PORT, "os");
-        assertThat(response, anyOf(equalTo("LINUX"),equalTo("WIN")));
-
-
-        String secResp = null;
-        if(Objects.equals(response, "LINUX")){
-            secResp = sendReq("localhost", PORT, "pwd");
-        } else if(Objects.equals(response, "WIN")){
-            secResp = sendReq("localhost", PORT, "cd");
-        }
-
-        assertThat(secResp, containsString("sockets"));
-
-    }
-
-    @Test
-    public void testDate() throws IOException {
-        String response = sendReq("localhost", PORT, "help");
-        assertThat(response, containsString("cd"));
-    }
-
-    private static String sendReq(String host, int port, String message){
+    private static String sendReq(String host, int port, String message) {
 
         try (Socket socket = new Socket(host, port);
              BufferedReader inputStreamReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -68,7 +50,30 @@ public class ServerSocketTest {
 
     @AfterClass
     public static void shutDownServer() throws Exception {
-        sendReq(LOCALHOST,PORT,"shutdown-server");
+        sendReq(LOCALHOST, PORT, "shutdown-server");
+    }
+
+    @Test
+    public void testSimpleCommand() throws IOException {
+        String response = sendReq("localhost", PORT, "os");
+        assertThat(response, anyOf(equalTo("LINUX"), equalTo("WIN")));
+
+
+        String secResp = null;
+        if (Objects.equals(response, "LINUX")) {
+            secResp = sendReq("localhost", PORT, "pwd");
+        } else if (Objects.equals(response, "WIN")) {
+            secResp = sendReq("localhost", PORT, "cd");
+        }
+
+        assertThat(secResp, containsString("DimaStavitscky"));
+
+    }
+
+    @Test
+    public void testDate() throws IOException {
+        String response = sendReq("localhost", PORT, "ls");
+        assertThat(response, containsString("build.gradle"));
     }
 
 
