@@ -73,7 +73,7 @@ public class ServerSocketTest {
     @Test
     public void testDate() throws IOException {
         String response = sendReq("localhost", PORT, "ls");
-        assertThat(response, containsString("build.gradle"));
+        assertThat(response, containsString("src"));
     }
 
 
