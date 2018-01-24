@@ -6,6 +6,8 @@
 * Example\
 ```./gradlew -PmyModule=SerhiiBilobrov -Ptask=week1 copyTask```
 * Check your module, there must be packages of the copied task
+* If you want update copy only tests in case when tests were updated use flag --PtestOnly=true
+```./gradlew -PmyModule=SerhiiBilobrov -Ptask=week1 -PtestOnly copyTask```
 
 #### The steps in order to implement a task
  
