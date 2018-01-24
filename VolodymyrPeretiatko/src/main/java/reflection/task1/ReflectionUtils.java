@@ -1,5 +1,10 @@
 package reflection.task1;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,27 +32,39 @@ public class ReflectionUtils {
     }
 
     /*convert all public fields into json string*/
-    public static String convertToJson(Object target){
+    public static String convertToJson(Object target) throws IllegalAccessException {
 
         List<Field> fields = getAnnotatedFields(target.getClass(), MyField.class);
 
-        for (Field f : fields){
-            System.out.println(f.getName());
-        }
+        String result = "{\n";
+        result += fields.stream()
+                        .peek(f -> f.setAccessible(true))
+                        .map(f -> {
+                            try {
+                                return f.getName() + ":" + f.get(target);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                                return "";
+                            }
+                        })
+                        .collect(Collectors.joining("\n"));
 
-        return null;
+        return result + "}";
     }
 
     public static List<Field> getAnnotatedFields(Class target, Class anotation){
 
         return (ArrayList<Field>) Arrays.stream(target.getDeclaredFields())
-                                        .filter(f -> f.isAnnotationPresent(anotation));
-                                        //.collect(Collectors.toList());
+                                        .filter(f -> f.isAnnotationPresent(anotation))
+                                        .collect(Collectors.toList());
+
     }
 
     /*convert all fields that were annotated by SpecificAnnotation into json string*/
-    public static Object converFromJson(String src, Class cls){
+    public static Object converFromJson(String src, Class cls) throws IOException {
+
         return null;
     }
+
 
 }
