@@ -1,10 +1,7 @@
 package reflection.task1;
 
 
-import com.sun.deploy.util.StringUtils;
-
 import java.io.IOException;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -84,20 +81,19 @@ public class ReflectionUtils {
         }
     }
 
-    private static Map<String, String> getMapFromString(String src, String pairSeparator, String keyValueSeparator){
+    private static Map<String, String> getMapFromString(String source, String pairSeparator, String keyValueSeparator){
 
-        Map<String,String> map = new HashMap<>();
+        source = source.substring(1, source.length()-1)                     //remove curly brackets
+                       .replaceAll("\"", "");
 
-        src = src.substring(1, src.length()-1).replaceAll("\"", ""); //remove curly brackets & ("")
+        Map<String,String> valuesMap = new HashMap<>();
 
-        String[] keyValuePairs = src.split(pairSeparator);
-
+        String[] keyValuePairs = source.split(pairSeparator);
         for(String pair : keyValuePairs) {
             String[] entry = pair.split(keyValueSeparator);
-            map.put(entry[0].trim(), entry[1].trim());
+            valuesMap.put(entry[0].trim(), entry[1].trim());
         }
-
-        return map;
+        return valuesMap;
     }
 
 
