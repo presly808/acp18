@@ -36,6 +36,7 @@ public class MyServerSocket {
                             pw.close();
                             server.close();
                             System.err.println("SERVER SHUTDOWN");
+                            break;
                         case "os":
                             BufferedReader cmdResponse = getStreamFromRuntime("pwd");
                             if (showCmdResponse(cmdResponse).contains("/home")) {
@@ -50,6 +51,7 @@ public class MyServerSocket {
                             String str = showCmdResponse(getStreamFromRuntime(command));
                             pw.print(str);
                             pw.flush();
+                            break;
                     }
                 }
             }
