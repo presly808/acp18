@@ -6,12 +6,16 @@
 * Example\
 ```./gradlew -PmyModule=SerhiiBilobrov -Ptask=week1 copyTask```
 * Check your module, there must be packages of the copied task
+* If you want update copy only tests in case when tests were updated use flag --PtestOnly=true
+```./gradlew -PmyModule=SerhiiBilobrov -Ptask=week1 -PtestOnly copyTask```
 
 #### The steps in order to implement a task
  
-1. Clone project aco23
+1. If you have not cloned project yet, just clone project
 	a) During the cloning choose gradle
-	b) open -> choose gradle.build -> Open as project
+	or
+	b) open in IDEA -> choose gradle.build -> Open as project
+	
 2. Create branch (<TaskName>-<ModuleName>)\
     Before the creation ensure that current branch is `master` and\
     its was updated via (git pull)

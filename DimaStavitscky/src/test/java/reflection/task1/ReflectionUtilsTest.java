@@ -1,10 +1,9 @@
 package reflection.task1;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by serhii on 21.01.18.
@@ -35,7 +34,9 @@ public class ReflectionUtilsTest {
 
         assertThat(user.name, CoreMatchers.equalTo("Ivan"));
         assertThat(user.age, CoreMatchers.equalTo(26));
+
     }
+
 
     static class User {
 

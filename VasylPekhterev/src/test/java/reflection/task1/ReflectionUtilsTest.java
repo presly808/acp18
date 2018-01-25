@@ -37,28 +37,19 @@ public class ReflectionUtilsTest {
         assertThat(user.age, CoreMatchers.equalTo(26));
     }
 
-    static class User {
+    @Test
+    public void convertFromJson() throws Exception {
+        String target = "{\n" +
+                "  \"name\":\"Ivan\",\n" +
+                "  \"age\":26,\n" +
+                "  \"pass\":\"pwd\"\n" +
+                "}";
 
-        @MyField
-        public String name;
-        @MyField
-        public int age;
+        Admin admin = (Admin) ReflectionUtils.converFromJson(target, Admin.class);
 
-        public User() {
-        }
-
-        public User(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-
-        @Override
-        public String toString() {
-            return "User{" +
-                    "name='" + name + '\'' +
-                    ", age=" + age +
-                    '}';
-        }
+        assertThat(admin.name, CoreMatchers.equalTo("Ivan"));
+        assertThat(admin.age, CoreMatchers.equalTo(26));
+        assertNull(admin.pass);
     }
 
 }
