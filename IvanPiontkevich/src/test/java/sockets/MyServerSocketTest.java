@@ -22,10 +22,11 @@ public class MyServerSocketTest {
     public static void startServer() throws Exception {
         MyServerSocket myServerSocket = new MyServerSocket(PORT);
         CompletableFuture.runAsync(myServerSocket::start);
+        Thread.sleep(2000);
     }
 
     @Test
-    public void testSimpleCommand() throws IOException {
+    public void testSimpleCommand() throws IOException, InterruptedException {
         String response = sendReq("localhost", PORT, "os");
         assertThat(response, anyOf(equalTo("LINUX"),equalTo("WIN")));
 
@@ -42,8 +43,9 @@ public class MyServerSocketTest {
     }
 
     @Test
-    public void testDate() throws IOException {
+    public void testDate() throws IOException, InterruptedException {
         String response = sendReq("localhost", PORT, "date");
+        System.out.println(response);
         assertNotNull(response);
     }
 
