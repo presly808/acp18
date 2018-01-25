@@ -81,18 +81,19 @@ public class ReflectionUtils {
         }
     }
 
-    private static Map<String, String> getMapFromString(String gsonTxt, String pairSeparator, String keyValueSeparator){
-
-        gsonTxt = gsonTxt.substring(1, gsonTxt.length()-1)                     //remove curly brackets
-                 .replaceAll("\"", "");
+    private static Map<String, String> getMapFromString(String src, String pairSeparator, String keyValueSeparator){
 
         Map<String,String> valuesMap = new HashMap<>();
 
-        String[] keyValuePairs = gsonTxt.split(pairSeparator);
+        String[] keyValuePairs = src.substring(1, src.length()-1)                     //remove curly brackets
+                                    .replaceAll("\"", "")
+                                    .split(pairSeparator);
+
         for(String pair : keyValuePairs) {
             String[] entry = pair.split(keyValueSeparator);
             valuesMap.put(entry[0].trim(), entry[1].trim());
         }
+
         return valuesMap;
     }
 
