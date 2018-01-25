@@ -1,16 +1,14 @@
 package reflection.task1;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 
-import java.io.BufferedReader;
+import com.sun.deploy.util.StringUtils;
+
 import java.io.IOException;
-import java.io.StringReader;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -23,13 +21,14 @@ public class ReflectionUtils {
         return (String) invoke(target, "toString");
     }
 
+    public static Object invoke(Object target, String methName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        return getMethodByName(target, methName).invoke(target);
+    }
+
     public static Method getMethodByName(Object target, String name) throws NoSuchMethodException {
         return target.getClass().getMethod(name);
     }
 
-    public static Object invoke(Object target, String methName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        return getMethodByName(target, methName).invoke(target);
-    }
 
     /*convert all public fields into json string*/
     public static String convertToJson(Object target) throws IllegalAccessException {
@@ -47,7 +46,7 @@ public class ReflectionUtils {
                                 return "";
                             }
                         })
-                        .collect(Collectors.joining("\n"));
+                        .collect(Collectors.joining(",\n"));
 
         return result + "}";
     }
@@ -57,14 +56,50 @@ public class ReflectionUtils {
         return (ArrayList<Field>) Arrays.stream(target.getDeclaredFields())
                                         .filter(f -> f.isAnnotationPresent(anotation))
                                         .collect(Collectors.toList());
-
     }
 
     /*convert all fields that were annotated by SpecificAnnotation into json string*/
-    public static Object converFromJson(String src, Class cls) throws IOException {
+    public static Object converFromJson(String src, Class cls) throws IOException, IllegalAccessException, InstantiationException {
 
-        return null;
+        Object obj = cls.newInstance();
+
+        setObjFildsByMap(obj, getAnnotatedFields(cls, MyField.class),
+                              getMapFromString(src, ",", ":"));
+
+        return obj;
     }
+
+    public static void setObjFildsByMap(Object target, List<Field> filds, Map<String, String> values){
+
+        for(Field f : filds){
+            try {
+                if (f.getType().equals(int.class)) {
+                    f.setInt(target, Integer.parseInt(values.get(f.getName())));
+                } else {
+                    f.set(target, values.get(f.getName()));
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static Map<String, String> getMapFromString(String src, String pairSeparator, String keyValueSeparator){
+
+        Map<String,String> map = new HashMap<>();
+
+        src = src.substring(1, src.length()-1).replaceAll("\"", ""); //remove curly brackets & ("")
+
+        String[] keyValuePairs = src.split(pairSeparator);
+
+        for(String pair : keyValuePairs) {
+            String[] entry = pair.split(keyValueSeparator);
+            map.put(entry[0].trim(), entry[1].trim());
+        }
+
+        return map;
+    }
+
 
 
 }

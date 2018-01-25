@@ -46,6 +46,10 @@ public class ReflectionUtilsTest {
         @MyField
         public int age;
 
+        public User(){
+
+        }
+
         public User(String name, int age) {
             this.name = name;
             this.age = age;
