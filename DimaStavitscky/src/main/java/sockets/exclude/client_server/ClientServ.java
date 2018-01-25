@@ -1,4 +1,4 @@
-package sockets.exclude.clientServer;
+package sockets.exclude.client_server;
 
 import java.io.BufferedReader;
 import java.io.IOException;

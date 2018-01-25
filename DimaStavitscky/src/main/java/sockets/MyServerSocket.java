@@ -45,10 +45,10 @@ public class MyServerSocket {
                 if ((line = socketInputStream.readLine()) != null) {
                     System.out.println("Received a message: " + line);
 
-                    if (line.equals("os")) {
+                    if ("os".equals(line)) {
                         pw.println("LINUX");
 
-                    } else if (line.equals("shutdown-server")) {
+                    } else if ("shutdown-server".equals(line)) {
                         pw.close();
                         serverSocket.close();
                         System.out.println("Server is stopped");
