@@ -40,17 +40,18 @@ public class Client {
          * Keep on reading from/to the socket till we receive the "Ok" from the
          * server, once we received that then we break.
          */
-                System.out.println("The client started. Type any text. To quit it type 'Ok'.");
-                String responseLine;
-                os.println(inputLine.readLine());
-                while ((responseLine = is.readLine()) != null) {
-                    System.out.println(responseLine);
-                    if (responseLine.indexOf("Ok") != -1) {
-                        break;
-                    }
-                    os.println(inputLine.readLine());
+        while (true) {
+            System.out.println("The client started. Type any text. To quit it type 'Ok'.");
+            String responseLine;
+            os.println(inputLine.readLine());
+            while ((responseLine = is.readLine()) != null) {
+                System.out.println(responseLine);
+                if (responseLine.indexOf("Ok") != -1) {
+                    break;
                 }
-
+                //os.println(inputLine.readLine());
+            }
+        }
         /*
          * Close the output stream, close the input stream, close the socket.
          */
