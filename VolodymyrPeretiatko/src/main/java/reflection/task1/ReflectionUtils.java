@@ -81,14 +81,14 @@ public class ReflectionUtils {
         }
     }
 
-    private static Map<String, String> getMapFromString(String gson, String pairSeparator, String keyValueSeparator){
+    private static Map<String, String> getMapFromString(String gsonTxt, String pairSeparator, String keyValueSeparator){
 
-        gson = gson.substring(1, gson.length()-1)                     //remove curly brackets
+        gsonTxt = gsonTxt.substring(1, gsonTxt.length()-1)                     //remove curly brackets
                  .replaceAll("\"", "");
 
         Map<String,String> valuesMap = new HashMap<>();
 
-        String[] keyValuePairs = gson.split(pairSeparator);
+        String[] keyValuePairs = gsonTxt.split(pairSeparator);
         for(String pair : keyValuePairs) {
             String[] entry = pair.split(keyValueSeparator);
             valuesMap.put(entry[0].trim(), entry[1].trim());
