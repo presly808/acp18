@@ -81,14 +81,14 @@ public class ReflectionUtils {
         }
     }
 
-    private static Map<String, String> getMapFromString(String source, String pairSeparator, String keyValueSeparator){
+    private static Map<String, String> getMapFromString(String str, String pairSeparator, String keyValueSeparator){
 
-        source = source.substring(1, source.length()-1)                     //remove curly brackets
-                       .replaceAll("\"", "");
+        str = str.substring(1, str.length()-1)                     //remove curly brackets
+                 .replaceAll("\"", "");
 
         Map<String,String> valuesMap = new HashMap<>();
 
-        String[] keyValuePairs = source.split(pairSeparator);
+        String[] keyValuePairs = str.split(pairSeparator);
         for(String pair : keyValuePairs) {
             String[] entry = pair.split(keyValueSeparator);
             valuesMap.put(entry[0].trim(), entry[1].trim());
