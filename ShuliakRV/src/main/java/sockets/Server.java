@@ -27,24 +27,49 @@ public class Server {
         //todo
         try {
             serverSocket = new ServerSocket(port);
-            Socket soket = serverSocket.accept();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(soket.getInputStream()));
 
-            PrintWriter writer = new PrintWriter(soket.getOutputStream(),true);
+            while (!serverSocket.isClosed()) {
 
-            String request = reader.readLine();
+                Socket soket = serverSocket.accept();
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(soket.getInputStream()));
 
-            System.out.println(request);
+                PrintWriter writer = new PrintWriter(soket.
+                        getOutputStream(), true);
 
-            if (request.equals("os")) {
-               String response = "WIN";
-               writer.println(response);
+                String request = reader.readLine();
+
+                System.out.println(request);
+
+                if (request.equals("os")) {
+                    String response = "WIN";
+                    writer.println(response);
+                } else if (request.equals("shutdown-server")) {
+                    serverSocket.close();
+                } else {
+
+                    Process process = Runtime.getRuntime().
+                            exec(String.format("cmd echo /% %s/%", request));
+
+                    BufferedReader processReader = new BufferedReader(
+                            new InputStreamReader(process.getInputStream()));
+
+                    String line = "";
+                    StringBuilder res = new StringBuilder("");
+                    while ((line = processReader.readLine())!= null) {
+                        res.append(line);
+                    }
+
+                    System.out.println(res.toString());
+
+                    writer.println(res.toString());
+
+                }
+
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }
+
