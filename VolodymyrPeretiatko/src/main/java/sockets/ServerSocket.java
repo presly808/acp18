@@ -25,7 +25,7 @@ public class ServerSocket {
         java.net.ServerSocket srvSocket = initServerSocket();
 
         String cmd = "";
-        while (!cmd.equals("shutdown-server")){
+        while (!"shutdown-server".equalsIgnoreCase(cmd)){
 
             ClientConnection client = establishConnection(srvSocket);
             CmdExecutor cmdExecutor = new CmdExecutor();

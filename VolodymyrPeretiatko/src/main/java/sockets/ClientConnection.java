@@ -40,4 +40,7 @@ public class ClientConnection {
         return this.connected;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
 }

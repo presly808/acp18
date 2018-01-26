@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class CmdExecutor {
 
-    Runtime runtime;
+    private Runtime runtime;
 
     public CmdExecutor() {
         this.runtime = Runtime.getRuntime();
@@ -23,19 +23,25 @@ public class CmdExecutor {
 
     }
 
+    public Runtime getRuntime() {
+        return runtime;
+    }
+
     private String osHandler(String cmd) {
 
-        String result, line;
-        result = "";
+        String result = "",
+                line;
 
         Process process = null;
-        BufferedReader bufReadResult, bufReadErrors;
+        BufferedReader bufReadResult,
+                       bufReadErrors;
 
         try {
             process = runtime.exec(cmd);
             bufReadResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while ((line = bufReadResult.readLine()) != null) {
                 result += line + "\n";
+
             }
         } catch (IOException e) {
             result = "Something gone wrong! - " + e.toString();

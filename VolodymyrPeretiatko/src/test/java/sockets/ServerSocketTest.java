@@ -1,11 +1,9 @@
 package sockets;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,7 +34,7 @@ public class ServerSocketTest {
         if(Objects.equals(response, "LINUX")){
             secResp = sendReq("localhost", PORT, "pwd");
         } else if(Objects.equals(response, "WIN")){
-            secResp = sendReq("localhost", PORT, "DIR");
+            secResp = sendReq("localhost", PORT, "cd");
         }
 
         assertThat(secResp, containsString("sockets"));
