@@ -41,11 +41,11 @@ public class ServerSocketTest {
 
     }
 
-    @Test
+/*    @Test
     public void testHelp() throws IOException {
         String response = sendReq("localhost", PORT, "help");
         assertThat(response, containsString("CD"));
-    }
+    }*/
 
     private static String sendReq(String host, int port, String message){
 

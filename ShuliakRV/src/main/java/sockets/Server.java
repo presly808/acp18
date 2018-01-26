@@ -43,10 +43,10 @@ public class Server {
                 String os = "";
                 if (OS.indexOf("WIN") >= 0) {
                     os = "WIN";
-                    command = "cmd /c";
+                    command = "cmd /c ";
                 } else {
                     os = "LINUX";
-                    command = "sh";
+                    command = "";
                 }
 
                 switch (request) {
@@ -61,7 +61,7 @@ public class Server {
 
                     default:
                         Process process = Runtime.getRuntime().
-                                exec(String.format("%s %s", command, request));
+                                exec(String.format("%s%s", command, request));
 
                         BufferedReader processReader = new BufferedReader(
                                 new InputStreamReader(process.
