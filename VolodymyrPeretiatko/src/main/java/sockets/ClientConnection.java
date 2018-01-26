@@ -11,24 +11,33 @@ public class ClientConnection {
     private Socket socket;
     private BufferedReader in;
     private PrintStream out;
+    private boolean connected;
 
     public ClientConnection(Socket socket) throws IOException {
         this.socket = socket;
 
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintStream(socket.getOutputStream());
+        this.connected = true;
     }
 
-    public String read() throws IOException {
-        return in.readLine();
+    public String read() {
+
+        try {
+            return in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.connected = false;
+            return "";
+        }
     }
 
     public void send(String msg){
         out.println(msg);
     }
 
-    public boolean isClosed() {
-        return this.socket.isClosed();
+    public boolean isConnected() {
+        return this.connected;
     }
 
 }

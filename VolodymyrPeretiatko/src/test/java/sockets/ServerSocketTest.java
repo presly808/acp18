@@ -36,7 +36,7 @@ public class ServerSocketTest {
         if(Objects.equals(response, "LINUX")){
             secResp = sendReq("localhost", PORT, "pwd");
         } else if(Objects.equals(response, "WIN")){
-            secResp = sendReq("localhost", PORT, "cd");
+            secResp = sendReq("localhost", PORT, "DIR");
         }
 
         assertThat(secResp, containsString("sockets"));

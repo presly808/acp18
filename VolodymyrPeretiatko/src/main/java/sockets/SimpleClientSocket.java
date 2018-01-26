@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client {
+public class SimpleClientSocket {
     public static void main(String[] args) {
 
         Socket clientSocket = null;
@@ -15,9 +15,6 @@ public class Client {
         PrintStream os = null;
         DataInputStream inputLine = null;
 
-    /*
-     * Open a socket on port 2222. Open the input and the output streams.
-     */
         try {
             clientSocket = new Socket("localhost", 8080);
             os = new PrintStream(clientSocket.getOutputStream());
@@ -29,17 +26,10 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to host");
         }
 
-    /*
-     * If everything has been initialized then we want to write some data to the
-     * socket we have opened a connection to on port 2222.
-     */
+
         if (clientSocket != null && os != null && is != null) {
             try {
 
-        /*
-         * Keep on reading from/to the socket till we receive the "Ok" from the
-         * server, once we received that then we break.
-         */
         while (true) {
             System.out.println("The client started. Type any text. To quit it type 'Ok'.");
             String responseLine;
@@ -49,15 +39,11 @@ public class Client {
                 if (responseLine.indexOf("Ok") != -1) {
                     break;
                 }
-                //os.println(inputLine.readLine());
             }
         }
-        /*
-         * Close the output stream, close the input stream, close the socket.
-         */
-                os.close();
-                is.close();
-                clientSocket.close();
+                //os.close();
+                //is.close();
+                //clientSocket.close();
             } catch (UnknownHostException e) {
                 System.err.println("Trying to connect to unknown host: " + e);
             } catch (IOException e) {

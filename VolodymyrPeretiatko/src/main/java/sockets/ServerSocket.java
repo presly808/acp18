@@ -20,32 +20,56 @@ public class ServerSocket {
     // then return the response(must be in one line with '\n' in the end) of execution
     // if client send "shutdown-server" command,  we kill the serverSocket
     // if we send "os", the server must reply with either "LINUX" or "WIN"
-    public void start(){
-        try {
+    public void start() {
 
-            java.net.ServerSocket srvSocket = new java.net.ServerSocket(port);
+        java.net.ServerSocket srvSocket = initServerSocket();
+
+        String cmd = "";
+        while (!cmd.equals("shutdown-server")){
 
             ClientConnection client = establishConnection(srvSocket);
-
             CmdExecutor cmdExecutor = new CmdExecutor();
 
-            String cmd, result;
-            while(!client.isClosed()){
+            String result;
+            while (client != null && client.isConnected()) {
                 cmd = client.read();
                 result = cmdExecutor.exec(cmd);
                 client.send(result);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        closeServerSocket(srvSocket);
 
     }
 
-    private ClientConnection establishConnection(java.net.ServerSocket serverSocket) throws IOException {
+    private java.net.ServerSocket initServerSocket(){
 
-        Socket socket = serverSocket.accept();
+        java.net.ServerSocket srvSocket = null;
+        try {
+            srvSocket = new java.net.ServerSocket(this.port);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return srvSocket;
+    }
 
-        ClientConnection clientConnection = new ClientConnection(socket);
+    private void closeServerSocket(java.net.ServerSocket srvSocket){
+        try {
+            srvSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ClientConnection establishConnection(java.net.ServerSocket serverSocket) {
+
+        ClientConnection clientConnection = null;
+        Socket socket;
+        try {
+            socket = serverSocket.accept();
+            clientConnection = new ClientConnection(socket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return clientConnection;
 
