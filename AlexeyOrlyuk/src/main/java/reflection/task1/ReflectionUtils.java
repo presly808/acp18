@@ -1,7 +1,6 @@
 package reflection.task1;
 
 import java.lang.annotation.AnnotationFormatError;
-import java.lang.annotation.AnnotationTypeMismatchException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,7 +25,7 @@ public class ReflectionUtils {
      */
     public static String invokeToString(Object target){
         if (target == null) {
-            throw new NullPointerException("target is null");
+            return null;
         }
 
         Class targetStructure = target.getClass();
@@ -83,7 +82,7 @@ public class ReflectionUtils {
      */
     public static Object converFromJson(String src, Class cls){
         if (src == null || cls == null) {
-            throw new NullPointerException("src or cls is null");
+            return null;
         }
 
         try {
@@ -124,15 +123,17 @@ public class ReflectionUtils {
      * @return formed String field value.
      */
     private static String brushFieldValue(String fieldValue) {
-        if (fieldValue.charAt(fieldValue.length() - 1) == ',') {
-            fieldValue = fieldValue.substring(0, fieldValue.length() - 1);
+        String brushedValue = fieldValue;
+
+        if (brushedValue.charAt(brushedValue.length() - 1) == ',') {
+            brushedValue = brushedValue.substring(0, brushedValue.length() - 1);
         }
 
-        if (fieldValue.charAt(0) == '\"') {
-            fieldValue = fieldValue.substring(1, fieldValue.length() - 1);
+        if (brushedValue.charAt(0) == '\"') {
+            brushedValue = brushedValue.substring(1, brushedValue.length() - 1);
         }
 
-        return fieldValue;
+        return brushedValue;
     }
 
     /**
