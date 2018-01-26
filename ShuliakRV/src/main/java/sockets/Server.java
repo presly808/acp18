@@ -46,7 +46,7 @@ public class Server {
                     command = "cmd /c";
                 } else {
                     os = "LINUX";
-                    command = "sh";
+                    command = "bash";
                 }
 
                 switch (request) {
