@@ -43,31 +43,27 @@ public class MyServer {
                 System.out.printf("Client[addr:%s; port:%s; local_port:%s]: %s\n",
                         client.getInetAddress(), client.getPort(), client.getLocalPort(), line);
 
-                switch (line.trim()) {
-                    case "shutdown-server":
-                        System.out.printf("Client closed connection. Client's info: %s\n", client);
-                        System.out.println("*** Shutting down server. ***");
-                        reader.close();
-                        writer.close();
-                        client.close();
-                        serverSocket.close();
-                        return;
+                if ("shutdown-server".equals(line.trim())) {
+                    System.out.printf("Client closed connection. Client's info: %s\n", client);
+                    System.out.println("*** Shutting down server. ***");
+                    reader.close();
+                    writer.close();
+                    client.close();
+                    serverSocket.close();
+                    return;
+                } else if ("os".equals(line.trim())) {
+                    String osName = System.getProperty("os.name").toUpperCase();
+                    writer.println("WINDOWS".equals(osName) ? osName.substring(0, 3) : osName);
+                    writer.flush();
+                } else {
+                    try {
+                        String commandExecutionResult = executeRuntimeCommand(line);
 
-                    case "os":
-                        String osName = System.getProperty("os.name").toUpperCase();
-                        writer.println(osName.equals("WINDOWS") ? osName.substring(0, 3) : osName);
+                        writer.println(commandExecutionResult);
                         writer.flush();
-                        break;
-
-                    default:
-                        try {
-                            String commandExecutionResult = executeRuntimeCommand(line);
-
-                            writer.println(commandExecutionResult);
-                            writer.flush();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
