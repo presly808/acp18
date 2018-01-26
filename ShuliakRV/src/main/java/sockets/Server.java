@@ -38,18 +38,20 @@ public class Server {
 
                 String request = reader.readLine();
 
+                String OS = System.getProperty("os.name").toUpperCase();
+                String command = "";
+                String os = "";
+                if (OS.indexOf("WIN") >= 0) {
+                    os = "WIN";
+                    command = "cmd /c";
+                } else {
+                    os = "LINUX";
+                    command = "sh";
+                }
+
                 switch (request) {
                     case "os":
-                        String OS = System.getProperty("os.name").toUpperCase();
-                        String response = "";
-                        if (OS.indexOf("WIN") >= 0) {
-                            response = "WIN";
-                        } else if (OS.indexOf("LINUX") >= 0) {
-                            response = "LINUX";
-                        } else {
-                            response = "OTHER OS";
-                        }
-                        writer.println(response);
+                        writer.println(os);
                         break;
 
                     case "shutdown-server":
@@ -59,7 +61,7 @@ public class Server {
 
                     default:
                         Process process = Runtime.getRuntime().
-                                exec(String.format("cmd /c %s", request));
+                                exec(String.format("%s %s", command, request));
 
                         BufferedReader processReader = new BufferedReader(
                                 new InputStreamReader(process.
