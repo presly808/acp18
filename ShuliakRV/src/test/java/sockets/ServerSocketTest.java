@@ -1,11 +1,9 @@
 package sockets;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -39,21 +37,23 @@ public class ServerSocketTest {
             secResp = sendReq("localhost", PORT, "cd");
         }
 
-        assertThat(secResp, containsString("sockets"));
+        assertThat(secResp, containsString("acp18"));
 
     }
 
     @Test
-    public void testDate() throws IOException {
+    public void testHelp() throws IOException {
         String response = sendReq("localhost", PORT, "help");
-        assertThat(response, containsString("cd"));
+        assertThat(response, containsString("CD"));
     }
 
     private static String sendReq(String host, int port, String message){
 
         try (Socket socket = new Socket(host, port);
-             BufferedReader inputStreamReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintWriter printWriter = new PrintWriter(socket.getOutputStream())) {
+             BufferedReader inputStreamReader = new BufferedReader(
+                     new InputStreamReader(socket.getInputStream()));
+             PrintWriter printWriter = new PrintWriter(socket.
+                     getOutputStream())) {
 
             printWriter.println(message);
 

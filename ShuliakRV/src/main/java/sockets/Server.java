@@ -39,33 +39,35 @@ public class Server {
 
                 String request = reader.readLine();
 
-                System.out.println(request);
+                switch (request) {
+                    case "os":
+                        String response = "WIN";
+                        writer.println(response);
+                        break;
 
-                if (request.equals("os")) {
-                    String response = "WIN";
-                    writer.println(response);
-                } else if (request.equals("shutdown-server")) {
-                    serverSocket.close();
-                } else {
+                    case "shutdown-server":
+                        serverSocket.close();
+                        writer.close();
+                        break;
 
-                    Process process = Runtime.getRuntime().
-                            exec(String.format("cmd echo /% %s/%", request));
+                    default:
+                        Process process = Runtime.getRuntime().
+                                exec(String.format("cmd /c %s", request));
 
-                    BufferedReader processReader = new BufferedReader(
-                            new InputStreamReader(process.getInputStream()));
+                        BufferedReader processReader = new BufferedReader(
+                                new InputStreamReader(process.
+                                        getInputStream()));
 
-                    String line = "";
-                    StringBuilder res = new StringBuilder("");
-                    while ((line = processReader.readLine())!= null) {
-                        res.append(line);
-                    }
+                        String line = "";
+                        StringBuilder res = new StringBuilder();
 
-                    System.out.println(res.toString());
+                        while ((line = processReader.readLine()) != null) {
+                            res.append(line);
+                        }
 
-                    writer.println(res.toString());
-
+                        writer.println(res.toString());
+                        break;
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
