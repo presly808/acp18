@@ -25,31 +25,51 @@ public class ReflectionUtilsTest {
     }
 
     @Test
-    public void convertToJson1() throws Exception {
+    public void convertFromJson1() throws Exception {
         String target = "{\n" +
-                "  \"name\":\"Ivan\",\n" +
-                "  \"age\":26\n" +
+                "\"name\":\"Ivan\",\n" +
+                "\"age\":26\n" +
                 "}";
+
 
         User user = (User) ReflectionUtils.converFromJson(target, User.class);
 
         assertThat(user.name, CoreMatchers.equalTo("Ivan"));
         assertThat(user.age, CoreMatchers.equalTo(26));
+
     }
 
-    @Test
-    public void convertFromJson() throws Exception {
-        String target = "{\n" +
-                "  \"name\":\"Ivan\",\n" +
-                "  \"age\":26,\n" +
-                "  \"pass\":\"pwd\"\n" +
-                "}";
 
-        Admin admin = (Admin) ReflectionUtils.converFromJson(target, Admin.class);
+    static class User {
 
-        assertThat(admin.name, CoreMatchers.equalTo("Ivan"));
-        assertThat(admin.age, CoreMatchers.equalTo(26));
-        assertNull(admin.pass);
+        @MyField
+        public String name;
+        @MyField
+        public int age;
+
+        public User(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public User() {
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        @Override
+        public String toString() {
+            return "User{" +
+                    "name='" + name + '\'' +
+                    ", age=" + age +
+                    '}';
+        }
     }
 
 }

@@ -50,7 +50,16 @@ public class ReflectionUtils {
 
         for (int i = 0; i < fieldsLines.length; i++) {
             String[] keyValue = fieldsLines[i].split(":");
-            keyValuesMap.put(keyValue[0], keyValue[1]);
+            String key = keyValue[0].substring(3,keyValue[0].length()-1);
+            if (keyValue[1].charAt(0)==(char)34){
+                keyValue[1] = keyValue[1].substring(1,keyValue[1].length()-1);
+            }
+
+            if (i != fieldsLines.length-1){
+                keyValue[1] = keyValue[1].substring(0,keyValue[1].length()-1);
+            }
+
+            keyValuesMap.put(key, keyValue[1]);
         }
 
         try {
