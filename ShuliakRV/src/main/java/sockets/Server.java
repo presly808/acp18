@@ -11,8 +11,6 @@ public class Server {
 
     private int port;
 
-    private ServerSocket serverSocket;
-
     public Server(int port) {
         this.port = port;
     }
@@ -26,6 +24,7 @@ public class Server {
     public void start() {
         //todo
         try {
+            ServerSocket serverSocket;
             serverSocket = new ServerSocket(port);
 
             while (!serverSocket.isClosed()) {
@@ -41,7 +40,15 @@ public class Server {
 
                 switch (request) {
                     case "os":
-                        String response = "WIN";
+                        String OS = System.getProperty("os.name").toUpperCase();
+                        String response = "";
+                        if (OS.indexOf("WIN") >= 0) {
+                            response = "WIN";
+                        } else if (OS.indexOf("LINUX") >= 0) {
+                            response = "LINUX";
+                        } else {
+                            response = "OTHER OS";
+                        }
                         writer.println(response);
                         break;
 
