@@ -21,7 +21,7 @@ public class ReflectionUtils {
         for (Field fild:filds) {
             result += "<" + fild.getName() + ">";
             try {
-                result += fild.get(target) + "</" + fild + ">" ;
+                result += fild.get(target) + "</" + fild.getName() + ">" ;
             } catch (IllegalAccessException e) {
             }
 
@@ -46,7 +46,7 @@ public class ReflectionUtils {
         for (Field fild:filds) {
             result += "\"" + fild.getName() + "\":";
             try {
-                result += fild.get(target) + "\"" + fild + "\"" ;
+                result += fild.get(target) + "\"" + fild.getName() + "\"" ;
             } catch (IllegalAccessException e) {
             }
 
@@ -61,6 +61,17 @@ public class ReflectionUtils {
 
     /*convert all fields that were annotated by SpecificAnnotation into json string*/
     public static Object converFromJson(String src, Class cls){
+
+        try {
+            Object tmpo = cls.newInstance();
+        }catch (IllegalAccessException e){
+        }catch (InstantiationException e){
+        }
+        Field[] filds = cls.getFields();
+        for (Field fild: filds) {
+            System.out.println(fild.isAnnotationPresent(MyField.class));
+
+        }
 
         return null;
     }
