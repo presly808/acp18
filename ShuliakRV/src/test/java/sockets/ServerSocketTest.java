@@ -22,7 +22,7 @@ public class ServerSocketTest {
     public static void startServer() throws Exception {
         Server serverSocket = new Server(PORT);
         CompletableFuture.runAsync(serverSocket::start);
-        Thread.sleep(3000);
+        Thread.sleep(2000);
     }
 
     @Test
