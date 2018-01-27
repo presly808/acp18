@@ -15,6 +15,11 @@
       "title": "sockets",
       "baseClasses":["sockets"],
       "testClasses":["sockets"]
+    },
+    "multithreading" : {
+      "title": "sockets",
+      "baseClasses":["multithreading"],
+      "testClasses":["multithreading"]
     }
   }
 }
