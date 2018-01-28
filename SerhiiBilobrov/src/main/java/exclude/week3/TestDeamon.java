@@ -1,4 +1,4 @@
-package exclude;
+package exclude.week3;
 
 /**
  * Created by serhii on 27.01.18.
