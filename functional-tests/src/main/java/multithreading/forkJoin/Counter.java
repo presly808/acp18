@@ -33,9 +33,7 @@ public class Counter {
         } else {
             int mid = (from + to) / 2;
             Counter first = new Counter(values, from, mid, filter);
-            Counter second = new Counter(values, mid, to,  filter);
-
-            return first.compute()+ second.compute();
+            return first.compute();
         }
     }
 }
