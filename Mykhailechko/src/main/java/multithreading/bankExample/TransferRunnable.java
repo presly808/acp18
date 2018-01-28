@@ -18,18 +18,17 @@ public class TransferRunnable implements Runnable {
     @Override
     public void run() {
 
-            try {
-                while (true) {
-                    int toAccount = (int) (bank.size() * Math.random());
-                    double amount = maxAmount * Math.random();
+        try {
+            while (true){
+                int toAccount = (int) (bank.size()*Math.random());
+                double amount = maxAmount*Math.random();
+                bank.transfer(fromAccount, toAccount, amount);
+                Thread.sleep((int) (DELAY*Math.random()));
 
-                        bank.transfer(fromAccount, toAccount, amount);
-
-                    Thread.sleep((int) (DELAY * Math.random()));
-
-                }
-            } catch (InterruptedException e) {
             }
+        }
+        catch (InterruptedException e){}
+
 
     }
 }
