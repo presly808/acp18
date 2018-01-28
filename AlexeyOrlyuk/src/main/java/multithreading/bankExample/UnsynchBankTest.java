@@ -9,9 +9,26 @@ public class UnsynchBankTest {
     public static final int INITIAL_BALANCE = 1000;
 
     public static void main(String[] args) {
-        Bank b = new Bank(NACCOUNTS, INITIAL_BALANCE);
-        for (int i = 0; i < NACCOUNTS; i++) {
-            TransferRunnable r = new TransferRunnable(b, i, INITIAL_BALANCE);
+
+//        runSimpleDemonstration(NACCOUNTS, INITIAL_BALANCE);
+
+        runDeadLockDemonstration(10, 1000);
+
+    }
+
+    private static void runSimpleDemonstration(int accountsNum, double initialBalance) {
+        Bank b = new Bank(accountsNum, initialBalance);
+        for (int i = 0; i < accountsNum; i++) {
+            TransferRunnable r = new TransferRunnable(b, i, initialBalance);            // !!!
+            Thread t = new Thread(r);
+            t.start();
+        }
+    }
+
+    private static void runDeadLockDemonstration(int accountsNum, double initialBalance) {
+        Bank b = new Bank(accountsNum, initialBalance);
+        for (int i = 0; i < accountsNum; i++) {
+            TransferRunnable r = new TransferRunnable(b, i, initialBalance * 2);    // !!!
             Thread t = new Thread(r);
             t.start();
         }
