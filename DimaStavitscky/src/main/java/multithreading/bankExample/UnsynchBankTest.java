@@ -14,10 +14,10 @@ public class UnsynchBankTest {
 
     public static void main(String[] args) {
         /*ExecutorService service  = Executors.newFixedThreadPool(NACCOUNTS);*/
-        Bank bank = new Bank(NACCOUNTS, INITIAL_BALANCE);
+        Bank b = new Bank(NACCOUNTS, INITIAL_BALANCE);
         for (int i = 0; i < NACCOUNTS; i++) {
             /*service.submit(new TransferRunnable(bank, i, INITIAL_BALANCE));*/
-            TransferRunnable r = new TransferRunnable(bank, i, INITIAL_BALANCE);
+            TransferRunnable r = new TransferRunnable(b, i, INITIAL_BALANCE, 10000);
             Thread t = new Thread(r);
             t.start();
         }
