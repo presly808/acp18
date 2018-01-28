@@ -1,28 +1,33 @@
 package multithreading.forkJoin;
 
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
+
 import java.util.concurrent.ForkJoinPool;
 
-/**
- * Created by Anna on 15.09.2016.
- */
+import static org.junit.Assert.*;
 
-public class ForkJoinTest {
-    public static void main(String[] args) {
+/**
+ * Created by serhii on 27.01.18.
+ */
+public class ForkJoinTestTest {
+
+    @Test
+    public void mainTest(){
         final int SIZE = 10000000;
         double[] numbers = new double[SIZE];
         for (int i = 0; i < SIZE; i++){
-            numbers[i] = Math.random();
+            numbers[i] = i;
         }
         Counter counter = new Counter(numbers, 0, numbers.length, new Filter(){
             @Override
             public boolean accept(double x) {
-                return x > 0.5;
+                return x < 5_000_000;
             }
         });
 
         ForkJoinPool pool = new ForkJoinPool();
-        System.out.println(counter.compute());
+        assertThat(counter.compute(), CoreMatchers.equalTo(5_000_000));
 
     }
-
 }
