@@ -24,6 +24,7 @@ public class ServerSocketTest {
     public static void startServer() throws Exception {
         ServerSocket serverSocket = new ServerSocket(PORT);
         CompletableFuture.runAsync(serverSocket::start);
+        Thread.sleep(2000);
     }
 
     @Test
