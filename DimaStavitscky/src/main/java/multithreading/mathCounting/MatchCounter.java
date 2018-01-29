@@ -3,11 +3,15 @@ package multithreading.mathCounting;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 /**
  * Created by Anna on 14.09.2016.
  */
-public class MatchCounter {
+public class MatchCounter implements Callable{
 
     private File directory;
     private String keyword;
@@ -19,12 +23,21 @@ public class MatchCounter {
     }
 
     public int find(){
+        int countThread = MatchCounterTest.getCountsThread();
+        System.out.println("Thread №" + countThread);
         count = 0;
         File[] files = directory.listFiles();
         for (File file : files){
             if (file.isDirectory()){
-                MatchCounter counter = new MatchCounter(file, keyword);
-                count += counter.find();
+                Future counter = MatchCounterTest.service.submit(new MatchCounter(file, keyword));
+                /*MatchCounter counter = new MatchCounter(file, keyword);*/
+                try {
+                    count += (int) counter.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
             else {
                 if (search(file)) {count++;}
@@ -44,5 +57,10 @@ public class MatchCounter {
         } catch (FileNotFoundException e) {
             return false;
         }
+    }
+
+    @Override
+    public Object call() throws Exception {
+        return find();
     }
 }
