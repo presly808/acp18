@@ -1,11 +1,9 @@
 package sockets;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -24,7 +22,6 @@ public class ServerSocketTest {
     public static void startServer() throws Exception {
         ServerSocket serverSocket = new ServerSocket(PORT);
         CompletableFuture.runAsync(serverSocket::start);
-        Thread.sleep(2000);
     }
 
     @Test
@@ -46,8 +43,8 @@ public class ServerSocketTest {
 
     @Test
     public void testDate() throws IOException {
-        String response = sendReq("localhost", PORT, "help");
-        assertThat(response, containsString("cd"));
+        String response = sendReq("localhost", PORT, "date");
+        assertThat(response, containsString("2018"));
     }
 
     private static String sendReq(String host, int port, String message){

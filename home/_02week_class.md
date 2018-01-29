@@ -16,7 +16,7 @@ Bash or Git Bash
 * set system variable MY_NAME
 * show MY_NAME via echo
 * show PATH system's variable
-* show your ip
+* show your host
 
 
 GIT
