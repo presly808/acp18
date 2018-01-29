@@ -21,9 +21,10 @@ public class TransferRunnable implements Runnable {
     public void run() {
 
         for (int i = 0; i < operationsCount; i++) {
-            int toAccount = (int) (bank.size() * Math.random());
-            double amount = 1000;
+            int toAccount = (int)(Math.random() * bank.size());
+            int amount = (int) maxAmount;
             bank.transfer(fromAccount, toAccount, amount);
         }
     }
+
 }
