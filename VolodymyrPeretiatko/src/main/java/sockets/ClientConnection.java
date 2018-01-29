@@ -27,7 +27,7 @@ public class ClientConnection {
             return in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
-            this.connected = false;
+            //this.connected = false;
             return "";
         }
     }
@@ -37,7 +37,7 @@ public class ClientConnection {
     }
 
     public boolean isConnected() {
-        return this.connected;
+        return socket.isConnected();
     }
 
     public Socket getSocket() {
