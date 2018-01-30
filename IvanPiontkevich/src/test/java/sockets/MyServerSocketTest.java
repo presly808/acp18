@@ -1,11 +1,9 @@
 package sockets;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -15,20 +13,20 @@ import static org.junit.Assert.*;
 /**
  * Created by serhii on 21.01.18.
  */
-public class ServerSocketTest {
+public class MyServerSocketTest {
 
     public static final int PORT = 9999;
     public static final String LOCALHOST = "localhost";
 
     @BeforeClass
     public static void startServer() throws Exception {
-        ServerSocket serverSocket = new ServerSocket(PORT);
-        CompletableFuture.runAsync(serverSocket::start);
+        MyServerSocket myServerSocket = new MyServerSocket(PORT);
+        CompletableFuture.runAsync(myServerSocket::start);
         Thread.sleep(2000);
     }
 
     @Test
-    public void testSimpleCommand() throws IOException {
+    public void testSimpleCommand() throws IOException, InterruptedException {
         String response = sendReq("localhost", PORT, "os");
         assertThat(response, anyOf(equalTo("LINUX"),equalTo("WIN")));
 
@@ -40,14 +38,15 @@ public class ServerSocketTest {
             secResp = sendReq("localhost", PORT, "cd");
         }
 
-        assertThat(secResp, containsString("sockets"));
+        assertThat(secResp, containsString("IvanPiontkevich"));
 
     }
 
     @Test
-    public void testDate() throws IOException {
-        String response = sendReq("localhost", PORT, "help");
-        assertThat(response, containsString("cd"));
+    public void testDate() throws IOException, InterruptedException {
+        String response = sendReq("localhost", PORT, "date");
+        System.out.println(response);
+        assertNotNull(response);
     }
 
     private static String sendReq(String host, int port, String message){
