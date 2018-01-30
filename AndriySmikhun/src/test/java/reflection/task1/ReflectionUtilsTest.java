@@ -4,6 +4,10 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 /**
@@ -40,7 +44,6 @@ public class ReflectionUtilsTest {
 
 
     static class User {
-
         @MyField
         public String name;
         @MyField
