@@ -19,15 +19,12 @@ public class ForkJoinTestTest {
         for (int i = 0; i < SIZE; i++){
             numbers[i] = i;
         }
-        Counter counter = new Counter(numbers, 0, numbers.length, new Filter(){
-            @Override
-            public boolean accept(double x) {
-                return x < 5_000_000;
-            }
-        });
 
         ForkJoinPool pool = new ForkJoinPool();
-        assertThat(counter.compute(), CoreMatchers.equalTo(5_000_000));
+        int result = pool.invoke(
+                new Counter(pool, numbers, 0, numbers.length, x -> x < 5_000_000));
+
+        assertThat(result, CoreMatchers.equalTo(5_000_000));
 
     }
 }
