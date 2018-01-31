@@ -14,7 +14,7 @@ public class Bank {
         }
     }
 
-    public synchronized void transfer(int from, int to, double amount) {
+    public synchronized void transfer(int from, int to, int amount) {
         if (accounts[from] < amount) {return;}
         accounts[from] -= amount;
         accounts[to] += amount;
