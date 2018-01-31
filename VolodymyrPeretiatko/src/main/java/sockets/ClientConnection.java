@@ -43,4 +43,14 @@ public class ClientConnection {
     public Socket getSocket() {
         return socket;
     }
+
+    public void close(){
+        try {
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

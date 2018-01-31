@@ -31,13 +31,17 @@ public class ServerSocket {
             CmdExecutor cmdExecutor = new CmdExecutor();
 
             String result;
-            while (client != null && client.isConnected()) {
+            //while (client != null && client.isConnected()) {
+
                 cmd = client.read();
+                if (cmd == null) continue;
+
                 result = cmdExecutor.exec(cmd);
                 client.send(result);
-            }
+            //}
+            client.close();
         }
-        closeServerSocket(srvSocket);
+        close(srvSocket);
 
     }
 
@@ -52,7 +56,7 @@ public class ServerSocket {
         return srvSocket;
     }
 
-    private void closeServerSocket(java.net.ServerSocket srvSocket){
+    private void close(java.net.ServerSocket srvSocket){
         try {
             srvSocket.close();
         } catch (IOException e) {

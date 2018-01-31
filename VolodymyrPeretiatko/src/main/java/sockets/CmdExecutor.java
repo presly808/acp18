@@ -1,8 +1,7 @@
 package sockets;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Date;
 
 public class CmdExecutor {
 
@@ -12,14 +11,20 @@ public class CmdExecutor {
         this.runtime = Runtime.getRuntime();
     }
 
-    public String exec(String cmd) {
+    /**
+     * Executes Console command in Runtime.
+     *
+     * @param command String console command.
+     * @return result of command execution.
+     */
+    public String exec(String command) {
 
-        String result = ownCommandsHandler(cmd);
+        String result = ownCommandsHandler(command);
         if (!result.isEmpty()) {
             return result;
         }
 
-        return osHandler(cmd);
+        return osHandler(command);
 
     }
 
@@ -29,33 +34,40 @@ public class CmdExecutor {
 
     private String osHandler(String cmd) {
 
-        String result = "",
-                line;
-
+        String result = "";
         Process process = null;
-        BufferedReader bufReadResult,
-                       bufReadErrors;
 
         try {
-            process = runtime.exec(cmd);
-            bufReadResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            while ((line = bufReadResult.readLine()) != null) {
-                result += line + "\n";
 
-            }
+            process = runtime.exec(cmd);
+            process.waitFor();
+
+            result = read(process.getInputStream());
+
         } catch (IOException e) {
             result = "Something gone wrong! - " + e.toString();
         } catch (NullPointerException e){
-            bufReadErrors = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             try {
-                while ((line = bufReadErrors.readLine()) != null) {
-                    result += line + "\n";
-                }
+                result = read(process.getErrorStream());
             } catch (IOException e1) {
-                e1.printStackTrace();
+                result += e1.toString();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            result = "Command didn't execute! - " + e.toString();
         }
 
+        return result;
+    }
+
+    private String read(InputStream inputStream) throws IOException {
+
+        String result = "", line;
+
+        BufferedReader bufReadResult = new BufferedReader(new InputStreamReader(inputStream));
+        while ((line = bufReadResult.readLine()) != null) {
+            result += line + "\n";
+        }
         return result;
     }
 
@@ -69,8 +81,12 @@ public class CmdExecutor {
             return getOSVerion();
         }
 
-        if (cmd.equalsIgnoreCase("-help")) {
-            return "help yourself!";
+        if (cmd.equalsIgnoreCase("date")) {
+            return (new Date(System.currentTimeMillis())).toString();
+        }
+
+        if (cmd.equalsIgnoreCase("cd")) {
+            return new File("sockets").getAbsolutePath();
         }
 
         return "";
