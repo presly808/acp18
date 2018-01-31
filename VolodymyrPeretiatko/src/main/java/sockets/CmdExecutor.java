@@ -62,7 +62,8 @@ public class CmdExecutor {
 
     private String read(InputStream inputStream) throws IOException {
 
-        String result = "", line;
+        String result = "",
+                line;
 
         BufferedReader bufReadResult = new BufferedReader(new InputStreamReader(inputStream));
         while ((line = bufReadResult.readLine()) != null) {

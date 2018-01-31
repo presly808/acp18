@@ -11,14 +11,13 @@ public class ClientConnection {
     private Socket socket;
     private BufferedReader in;
     private PrintStream out;
-    private boolean connected;
 
     public ClientConnection(Socket socket) throws IOException {
         this.socket = socket;
 
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintStream(socket.getOutputStream());
-        this.connected = true;
+
     }
 
     public String read() {
