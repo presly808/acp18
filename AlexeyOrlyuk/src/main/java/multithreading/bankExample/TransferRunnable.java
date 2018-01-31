@@ -1,13 +1,18 @@
 package multithreading.bankExample;
 
+import multithreading.bankExample.bank.Bank;
+
 /**
- * Created by Anna on 12.09.2016.
+ * Bank Client entity. Can be also named as Bank Runner.
+ *
+ * @author Anna
+ * @author alex323glo
+ * @version 1.1
  */
 public class TransferRunnable implements Runnable {
     private Bank bank;
     private int fromAccount;
     private double maxAmount;
-    private int DELAY = 10;
 
     private int operationCount;
 
@@ -28,21 +33,16 @@ public class TransferRunnable implements Runnable {
     @Override
     public void run() {
 
-        try {
-            int i = 0;
+        int i = 0;
             while (true){
-                int toAccount = (int) (bank.size()*Math.random());
+                int toAccount = (int) (bank.size() * Math.random());
                 double amount = maxAmount*Math.random();
                 bank.transfer(fromAccount, toAccount, amount);
-                Thread.sleep((int) (DELAY*Math.random()));
 
                 if (operationCount > 0 && i++ >= operationCount) {
                     break;
                 }
             }
-        }
-        catch (InterruptedException e){}
-
 
     }
 }
