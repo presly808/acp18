@@ -1,4 +1,4 @@
-package multithreading.bankExample;
+package multithreading.exclude.bankExample;
 
 /**
  * Created by Anna on 12.09.2016.
