@@ -40,7 +40,7 @@ public class CmdExecutor {
         try {
 
             process = runtime.exec(cmd);
-            process.waitFor();
+            //process.waitFor();
 
             result = read(process.getInputStream());
 
@@ -52,9 +52,9 @@ public class CmdExecutor {
             } catch (IOException e1) {
                 result += e1.toString();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            result = "Command didn't execute! - " + e.toString();
+        //} catch (InterruptedException e) {
+        //    e.printStackTrace();
+        //    result = "Command didn't execute! - " + e.toString();
         }
 
         return result;
