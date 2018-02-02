@@ -2,11 +2,13 @@ package multithreading.forkJoin;
 
 import java.util.concurrent.RecursiveTask;
 
+import static java.util.concurrent.ForkJoinTask.invokeAll;
+
 /**
  * Created by Anna on 15.09.2016.
  */
 
-public class Counter {
+public class Counter extends RecursiveTask<Integer> {
 
     public static final int THRESHOLD = 1000;
     private double[] values;
@@ -33,7 +35,9 @@ public class Counter {
         } else {
             int mid = (from + to) / 2;
             Counter first = new Counter(values, from, mid, filter);
-            return first.compute();
+            Counter second = new Counter(values, mid, to, filter);
+            invokeAll(first,second);
+            return first.join()+second.join();
         }
     }
 }
