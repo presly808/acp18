@@ -24,13 +24,8 @@ public class DBUtils implements IDB {
     }
 
     @Override
-    public List<User> selectWithFilter(Map<Field, Object> filters, boolean orderBy, int limit) {
+    public List<User> selectWithFilter(Map<Field, Object> filters, Field orderBy, int limit) {
         return null;
-    }
-
-    @Override
-    public boolean createTableAndFill(String csvUrl) {
-        return false;
     }
 
     @Override
