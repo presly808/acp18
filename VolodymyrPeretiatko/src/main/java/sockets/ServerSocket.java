@@ -33,6 +33,7 @@ public class ServerSocket {
             String result;
             //while (client != null && client.isConnected()) {
 
+
                 cmd = client.read();
                 if (cmd == null) continue;
 
