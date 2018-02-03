@@ -8,6 +8,7 @@ import org.junit.*;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -97,7 +98,9 @@ public class IDBTest {
 
     @Test
     public void getUsersGroupByDepartment() throws Exception {
-
+        Map<Department, List<User>> usersGroupByDepartment = idb.getUsersGroupByDepartment();
+        Assert.assertThat(usersGroupByDepartment.keySet().size(), CoreMatchers.equalTo(2));
+        Assert.assertThat(usersGroupByDepartment.values().size(), CoreMatchers.equalTo(2));
     }
 
     @Test
