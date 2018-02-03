@@ -93,5 +93,10 @@ public class DBUtils implements IDB {
         return false;
     }
 
+    @Override
+    public String nativeSQL(String sql) {
+        return null;
+    }
+
 
 }

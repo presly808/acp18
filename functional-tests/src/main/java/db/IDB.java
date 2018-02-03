@@ -43,4 +43,6 @@ public interface IDB {
 
     boolean dropTable(Class clazz);
 
+    String nativeSQL(String sql);
+
 }
