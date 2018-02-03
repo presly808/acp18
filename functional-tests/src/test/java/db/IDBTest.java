@@ -8,6 +8,7 @@ import org.junit.*;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -46,11 +47,11 @@ public class IDBTest {
         department2.setId(1);
         department2.setName("IT");
 
-        User user3 = new User(3,"Yura",35,1500,department2,kiev,null);
-        User user1 = new User(1,"Ivan",30,2500,department2,kiev,user3);
-        User user2 = new User(2,"Oleg",33,3500,department2,odessa, user3);
-        User user4 = new User(4,"Serhii",22,2500,department1,kiev,user3 );
-        User user5 = new User(5,"Olex",24,4500,department1,odessa,user3);
+        User user3 = new User(3, "Yura", 35, 1500, department2, kiev, null);
+        User user1 = new User(1, "Ivan", 30, 2500, department2, kiev, user3);
+        User user2 = new User(2, "Oleg", 33, 3500, department2, odessa, user3);
+        User user4 = new User(4, "Serhii", 22, 2500, department1, kiev, user3);
+        User user5 = new User(5, "Olex", 24, 4500, department1, odessa, user3);
 
         idb.addCity(kiev);
         idb.addCity(odessa);
@@ -82,7 +83,7 @@ public class IDBTest {
 
         Map<Field, Object> map = new HashMap<>();
         map.put(User.class.getDeclaredField("city"), value);
-        idb.selectWithFilter(map,User.class.getDeclaredField("salary"),2);
+        idb.selectWithFilter(map, User.class.getDeclaredField("salary"), 2);
     }
 
     @Test
@@ -92,10 +93,14 @@ public class IDBTest {
 
     @Test
     public void createTable() throws Exception {
+
     }
 
     @Test
     public void getUsersGroupByDepartment() throws Exception {
+        Map<Department, List<User>> usersGroupByDepartment = idb.getUsersGroupByDepartment();
+        Assert.assertThat(usersGroupByDepartment.keySet().size(), CoreMatchers.equalTo(2));
+        Assert.assertThat(usersGroupByDepartment.values().size(), CoreMatchers.equalTo(2));
     }
 
     @Test
@@ -108,18 +113,40 @@ public class IDBTest {
 
     @Test
     public void addUser() throws Exception {
+        User yura = new User(3, "Yura", 35, 1500, null, null, null);
+        User actual = idb.addUser(yura);
+        Assert.assertThat(actual.getName(), CoreMatchers.equalTo("Yura"));
     }
 
     @Test
     public void removeUser() throws Exception {
+        User yura = new User(3, "Yura", 35, 1500, null, null, null);
+        User actual = idb.removeUser(yura);
+        Assert.assertThat(actual.getName(), CoreMatchers.equalTo("Yura"));
     }
 
     @Test
     public void addCity() throws Exception {
+        City kiev = new City();
+        kiev.setId(1);
+        kiev.setName("Kiev");
+
+        City city = idb.addCity(kiev);
+
+
+        Assert.assertThat(city.getId(), CoreMatchers.equalTo(1));
     }
 
     @Test
     public void addDepart() throws Exception {
+
+        Department department1 = new Department();
+        department1.setId(1);
+        department1.setName("IT");
+
+        Department department = idb.addDepart(department1);
+        Assert.assertThat(department.getId(), CoreMatchers.equalTo(1));
+
     }
 
     @Test
