@@ -15,9 +15,7 @@ public interface IDB {
 
     List<User> getAll();
 
-    List<User> selectWithFilter(Map<Field,Object> filters, boolean orderBy, int limit);
-
-    boolean createTableAndFill(String csvUrl);
+    List<User> selectWithFilter(Map<Field,Object> filters, Field orderBy, int limit);
 
     boolean fillTable(String csvUrl);
 
