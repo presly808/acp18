@@ -20,6 +20,11 @@
       "title": "sockets",
       "baseClasses":["multithreading"],
       "testClasses":["multithreading"]
+    },
+    "db" : {
+      "title": "dbsql",
+      "baseClasses":["db"],
+      "testClasses":["db"]
     }
   }
 }
