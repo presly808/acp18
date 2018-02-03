@@ -1,4 +1,4 @@
-package sockets;
+package sockets.exclude;
 
 import java.io.DataInputStream;
 import java.io.PrintStream;

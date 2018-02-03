@@ -39,7 +39,7 @@ public class ServerSocketTest {
             secResp = sendReq("localhost", PORT, "cd");
         }
 
-        assertThat(secResp, containsString("sockets"));
+        assertThat(secResp, containsString("acp18"));
 
     }
 
