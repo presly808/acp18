@@ -100,15 +100,21 @@ public class IDBTest {
     public void getUsersGroupByDepartment() throws Exception {
         Map<Department, List<User>> usersGroupByDepartment = idb.getUsersGroupByDepartment();
         Assert.assertThat(usersGroupByDepartment.keySet().size(), CoreMatchers.equalTo(2));
-        Assert.assertThat(usersGroupByDepartment.values().size(), CoreMatchers.equalTo(2));
+        Assert.assertThat(usersGroupByDepartment.values().size(), CoreMatchers.equalTo(5));
     }
 
     @Test
     public void getAvgSalaryGroupByDepartment() throws Exception {
+        Map<Department, Integer> usersGroupByDepartment = idb.getAvgSalaryGroupByDepartment();
+        Assert.assertThat(usersGroupByDepartment.keySet().size(), CoreMatchers.equalTo(2));
     }
 
     @Test
     public void getUsersGroupByManagersAndOrderedThatLiveInKiev() throws Exception {
+        Map<User, List<User>> usersGroupByDepartment = idb.getUsersGroupByManagersAndOrderedThatLiveInKiev();
+        Assert.assertThat(usersGroupByDepartment.get(
+                new User(3,"test",0)).size(), CoreMatchers.equalTo(4));
+
     }
 
     @Test
