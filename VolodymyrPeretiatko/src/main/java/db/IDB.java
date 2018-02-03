@@ -3,7 +3,6 @@ package db;
 import db.model.City;
 import db.model.Department;
 import db.model.User;
-import multithreading.forkJoin.Filter;
 
 import java.lang.reflect.Field;
 import java.util.List;
