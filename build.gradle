@@ -44,6 +44,12 @@ allprojects {
         }
     }
 
+    sourceSets {
+        main {
+            output.resourcesDir = "build/classes/main"
+        }
+    }
+
     check.dependsOn jacocoTestCoverageVerification
     check.dependsOn jacocoTestReport
 

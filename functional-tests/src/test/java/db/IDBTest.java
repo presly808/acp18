@@ -1,6 +1,11 @@
 package db;
 
+import db.model.City;
+import db.model.Department;
+import db.model.User;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,9 +18,25 @@ public class IDBTest {
     // todo add your implementation
     private IDB idb;
 
+    @Before
+    public void before(){
+        idb.createTable(Department.class);
+        idb.createTable(City.class);
+        idb.createTable(User.class);
+
+        idb.fillTable("");
+    }
+
+    @After
+    public void after(){
+        idb.removeAllValues(Department.class);
+        idb.removeAllValues(City.class);
+        idb.removeAllValues(User.class);
+    }
+
     @Test
     public void getAll() throws Exception {
-
+        Assert.assertThat(idb.getAll().size(), CoreMatchers.equalTo(5));
     }
 
     @Test
