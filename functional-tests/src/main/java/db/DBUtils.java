@@ -24,13 +24,23 @@ public class DBUtils implements IDB {
     }
 
     @Override
-    public List<User> selectWithFilter(Map<Field, Object> filters, Field orderBy, int limit) {
+    public <T> List<T> getAllValues(Class<T> type) {
         return null;
     }
 
     @Override
-    public boolean fillTable(String csvUrl) {
-        return false;
+    public <T> List<T> selectWithFilter(Class<T> type, Map<Field, Object> filters, Field orderBy, int limit) {
+        return null;
+    }
+
+    @Override
+    public <T> T addGen(Class<T> tClass, T obj) {
+        return null;
+    }
+
+    @Override
+    public <T> T removeGen(Class<T> tClass, T obj) {
+        return null;
     }
 
     @Override
