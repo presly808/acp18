@@ -92,7 +92,7 @@ public class IDBTest {
         Map<Field, Object> map = new HashMap<>();
         map.put(User.class.getDeclaredField("city"), value);
         List<User> salariesUsers =
-                idb.selectWithFilter(map, User.class.getDeclaredField("salary"), 2);
+                idb.selectWithFilter(User.class, map, User.class.getDeclaredField("salary"), 2);
 
         assertThat(salariesUsers.get(0).getSalary(), equalTo(2500.0));
         assertThat(salariesUsers.size(), equalTo(2));
