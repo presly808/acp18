@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,22 +20,26 @@ public class DBUtils implements IDB {
 
     private String url;
 
+    private Map<String, String> keyValueMap;
+
+    private Connection conn;
+
     public DBUtils(String url) {
 
         this.url = url;
 
-        Connection conn = null;
         try {
             // db parameters
             //String url = "jdbc:sqlite:C:/sqlite/db/chinook.db";
             // create a connection to the database
+            //
             conn = DriverManager.getConnection(url);
 
             System.out.println("Connection to SQLite has been established.");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -41,10 +47,16 @@ public class DBUtils implements IDB {
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-        }
+        }*/
+
+        keyValueMap = new HashMap<>();
+        keyValueMap.put("int", "INTEGER");
+        keyValueMap.put("double", "REAL");
+        keyValueMap.put("String", "TEXT");
+
     }
 
-    public List<User> getAll(){
+    public List<User> getAll() {
         return null;
     }
 
@@ -61,7 +73,41 @@ public class DBUtils implements IDB {
     @Override
     public boolean createTable(Class clazz) {
 
-        return false;
+        StringBuilder sqlCreateTable = new StringBuilder();
+
+        sqlCreateTable.append("CREATE TABLE ").append(clazz.getSimpleName()).append(" (");
+
+        while (clazz != null) {
+
+            for (Field field : clazz.getDeclaredFields()) {
+
+                String fieldName = field.getName();
+
+                String fieldType = field.getType().getSimpleName();
+
+                fieldType = keyValueMap.get(fieldType);
+
+                if (fieldType == null) fieldType = "INTEGER";
+
+                sqlCreateTable.append(fieldName + " " + fieldType + ",");
+            }
+
+            clazz = clazz.getSuperclass();
+
+        }
+
+        sqlCreateTable.deleteCharAt(sqlCreateTable.length() - 1).append(");");
+
+        try {
+            Statement statement = conn.createStatement();
+            System.out.println(sqlCreateTable.toString());
+            statement.execute(sqlCreateTable.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     @Override
