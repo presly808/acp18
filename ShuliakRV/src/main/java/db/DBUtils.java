@@ -5,6 +5,9 @@ import db.model.Department;
 import db.model.User;
 
 import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +19,29 @@ public class DBUtils implements IDB {
     private String url;
 
     public DBUtils(String url) {
+
         this.url = url;
+
+        Connection conn = null;
+        try {
+            // db parameters
+            //String url = "jdbc:sqlite:C:/sqlite/db/chinook.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection to SQLite has been established.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 
     public List<User> getAll(){
@@ -35,6 +60,7 @@ public class DBUtils implements IDB {
 
     @Override
     public boolean createTable(Class clazz) {
+
         return false;
     }
 
