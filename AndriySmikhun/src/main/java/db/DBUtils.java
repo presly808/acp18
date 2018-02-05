@@ -5,6 +5,10 @@ import db.model.Department;
 import db.model.User;
 
 import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +24,14 @@ public class DBUtils implements IDB {
     }
 
     public List<User> getAll(){
+        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println(conn);
         return null;
     }
 
@@ -35,6 +47,20 @@ public class DBUtils implements IDB {
 
     @Override
     public boolean createTable(Class clazz) {
+
+        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
+
+        String sql = "CREATE TABLE " +
+                clazz.getSimpleName() + " (\n" +
+                "id integer PRIMARY KEY);"
+                ;
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 
