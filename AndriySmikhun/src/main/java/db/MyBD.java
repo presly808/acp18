@@ -7,13 +7,8 @@ import java.sql.SQLException;
 
 public class MyBD {
     public static void main(String[] args) {
-
-
-    }
-
-    public static void createNewDatabase(String fileName) {
-
-        String url = "jdbc:sqlite:/home/andriy/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
+        
+        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
@@ -21,10 +16,8 @@ public class MyBD {
                 System.out.println("The driver name is " + meta.getDriverName());
                 System.out.println("A new database has been created.");
             }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-
 }
