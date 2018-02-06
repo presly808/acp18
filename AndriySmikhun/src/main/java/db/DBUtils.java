@@ -116,6 +116,16 @@ public class DBUtils implements IDB {
 
     @Override
     public boolean dropTable(Class clazz) {
+        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
+        String sql = "DROP TABLE " + clazz.getSimpleName() + ";";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
         return false;
     }
 
