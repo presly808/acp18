@@ -24,7 +24,7 @@ public class DBUtils implements IDB {
     }
 
     public List<User> getAll(){
-        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
+        String url = "jdbc:sqlite:/home/andriy/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
