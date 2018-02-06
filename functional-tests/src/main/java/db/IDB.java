@@ -3,7 +3,6 @@ package db;
 import db.model.City;
 import db.model.Department;
 import db.model.User;
-import multithreading.forkJoin.Filter;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -16,9 +15,13 @@ public interface IDB {
 
     List<User> getAll();
 
-    List<User> selectWithFilter(Map<Field,Object> filters, Field orderBy, int limit);
+    <T> List<T> getAllValues(Class<T> type);
 
-    boolean fillTable(String csvUrl);
+    <T> List<T> selectWithFilter(Class<T> type, Map<Field,Object> filters, Field orderBy, int limit);
+
+    <T> T addGen(Class<T> tClass, T obj);
+
+    <T> T removeGen(Class<T> tClass, T obj);
 
     boolean createTable(Class clazz);
 
