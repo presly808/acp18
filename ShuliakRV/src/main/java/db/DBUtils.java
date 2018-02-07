@@ -22,32 +22,16 @@ public class DBUtils implements IDB {
 
     private Map<String, String> keyValueMap;
 
-    private Connection conn;
 
     public DBUtils(String url) {
 
         this.url = url;
 
         try {
-            // db parameters
-            //String url = "jdbc:sqlite:C:/sqlite/db/chinook.db";
-            // create a connection to the database
-            //
-            conn = DriverManager.getConnection(url);
-
-            System.out.println("Connection to SQLite has been established.");
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } /*finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }*/
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         keyValueMap = new HashMap<>();
         keyValueMap.put("int", "INTEGER");
@@ -61,13 +45,23 @@ public class DBUtils implements IDB {
     }
 
     @Override
-    public List<User> selectWithFilter(Map<Field, Object> filters, Field orderBy, int limit) {
+    public <T> List<T> getAllValues(Class<T> type) {
         return null;
     }
 
     @Override
-    public boolean fillTable(String csvUrl) {
-        return false;
+    public <T> List<T> selectWithFilter(Class<T> type, Map<Field, Object> filters, Field orderBy, int limit) {
+        return null;
+    }
+
+    @Override
+    public <T> T addGen(Class<T> tClass, T obj) {
+        return null;
+    }
+
+    @Override
+    public <T> T removeGen(Class<T> tClass, T obj) {
+        return null;
     }
 
     @Override
@@ -98,9 +92,9 @@ public class DBUtils implements IDB {
 
         sqlCreateTable.deleteCharAt(sqlCreateTable.length() - 1).append(");");
 
-        try {
-            Statement statement = conn.createStatement();
-            System.out.println(sqlCreateTable.toString());
+        try(Connection conn = DriverManager.getConnection(url);
+            Statement statement = conn.createStatement();)
+        {
             statement.execute(sqlCreateTable.toString());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -162,7 +156,21 @@ public class DBUtils implements IDB {
 
     @Override
     public boolean dropTable(Class clazz) {
-        return false;
+
+        StringBuilder sqlCreateTable = new StringBuilder();
+
+        sqlCreateTable.append("DROP TABLE ").append(clazz.getSimpleName()).append(";");
+
+        try(Connection conn = DriverManager.getConnection(url);
+            Statement statement = conn.createStatement();)
+        {
+            statement.execute(sqlCreateTable.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     @Override
