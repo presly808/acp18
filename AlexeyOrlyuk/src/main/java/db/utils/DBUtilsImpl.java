@@ -40,7 +40,7 @@ public class DBUtilsImpl implements DBUtils {
         try (Statement statement = DriverManager
                 .getConnection(url, user, password)
                 .createStatement();
-                ) {
+        ) {
 
             return !statement.execute(ReflectionUtils.createSQLTableStructure(tableClass));
 
@@ -66,7 +66,7 @@ public class DBUtilsImpl implements DBUtils {
         try (Statement statement = DriverManager
                 .getConnection(url, user, password)
                 .createStatement()
-                ) {
+        ) {
 
             return !statement.execute("DROP TABLE " + ReflectionUtils.createTableName(tableClass) + ";");
 
@@ -92,7 +92,7 @@ public class DBUtilsImpl implements DBUtils {
         try (Statement statement = DriverManager
                 .getConnection(url, user, password)
                 .createStatement()
-                ) {
+        ) {
 
             return !statement.execute("DELETE FROM " + ReflectionUtils.createTableName(tableClass) + ";");
 
@@ -118,7 +118,7 @@ public class DBUtilsImpl implements DBUtils {
         try (Statement statement = DriverManager
                 .getConnection(url, user, password)
                 .createStatement()
-                ) {
+        ) {
 
             statement.execute(sql);
             return Converter.resultSetToString(statement.getResultSet());
@@ -166,8 +166,27 @@ public class DBUtilsImpl implements DBUtils {
      */
     @Override
     public <T> T add(Class<T> tableClass, T tableRecord) {
-        // TODO complete
-        throw new UnsupportedOperationException();
+        if (tableClass == null || tableRecord == null) {
+            return null;
+        }
+
+        try (Statement statement = DriverManager
+                .getConnection(url, user, password)
+                .createStatement()
+        ) {
+
+            boolean executionResult = statement.execute(
+                    "INSERT INTO " + ReflectionUtils.createTableName(tableClass) +
+                            " (" + ReflectionUtils.createTableHead(tableClass) + ") " +
+                            "VALUES (" + ReflectionUtils.createTableRecord(tableClass, tableRecord) + ");");
+
+            return executionResult ? null : tableRecord;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
@@ -178,7 +197,33 @@ public class DBUtilsImpl implements DBUtils {
      */
     @Override
     public <T> T remove(Class<T> tableClass, T tableRecord) {
-        // TODO complete
-        throw new UnsupportedOperationException();
+        if (tableClass == null || tableRecord == null) {
+            return null;
+        }
+
+        try (Statement statement = DriverManager
+                .getConnection(url, user, password)
+                .createStatement()
+        ) {
+            String tableName = ReflectionUtils.createTableName(tableClass);
+            String matcher = ReflectionUtils.createSmartIdMatcherOfRecord(tableClass, tableRecord);
+
+            try(ResultSet resultSet = statement.executeQuery(
+                    "SELECT * FROM " + tableName + " WHERE " + matcher + ";"
+            )) {
+                if (resultSet.first()) {
+                    ReflectionUtils.recordToObject(tableClass, resultSet);
+                }
+            }
+
+            boolean result = statement.execute(
+                    "DELETE FROM " + tableName + " " + "WHERE " + matcher + ";");
+            return result ? null : tableRecord;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

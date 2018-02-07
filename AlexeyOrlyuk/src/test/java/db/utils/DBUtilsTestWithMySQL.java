@@ -116,8 +116,6 @@ public class DBUtilsTestWithMySQL {
     public void selectWithFilter() throws Exception {
     }
 
-    // TODO complete implementation
-    @Ignore
     @Test
     public void add() throws Exception {
         User user = new User(1, "Alex", 20);
@@ -138,8 +136,6 @@ public class DBUtilsTestWithMySQL {
         assertEquals(expectedResult, actualResult);
     }
 
-    // TODO complete implementation
-    @Ignore
     @Test
     public void remove() throws Exception {
 

@@ -1,7 +1,13 @@
 package db.utils;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Reflection util methods container.
@@ -10,6 +16,55 @@ import java.sql.SQLException;
  * @version 1.0
  */
 public class Converter {
+
+    /**
+     * Generates new instance of class from String.
+     *
+     * @param objectType target class.
+     * @param stringObject target String version of new class instance.
+     * @return result new instance, if operation was successful, or null, if it wasn't.
+     */
+    public static<T> T stringToObject(Class<T> objectType, String stringObject) {
+        if (objectType == null || stringObject == null) {
+            return null;
+        }
+
+        if (objectType.isPrimitive()) {
+            switch (objectType.getSimpleName()) {
+                case "int":
+                    return (T) Integer.valueOf(stringObject);
+                case "double":
+                    return (T) Double.valueOf(stringObject);
+                case "long":
+                    return (T) Long.valueOf(stringObject);
+            }
+        }
+
+        switch (objectType.getName()) {
+            case "java.lang.String":
+                return (T) stringObject;
+            case "java.lang.Integer":
+                return (T) Integer.valueOf(stringObject);
+            case "java.lang.Double":
+                return (T) Double.valueOf(stringObject);
+            case "java.lang.Long":
+                return (T) Long.valueOf(stringObject);
+        }
+
+        Constructor[] constructors = objectType.getConstructors();
+        for (Constructor constructor : constructors) {
+            if (constructor.getParameterCount() != 1) {
+                continue;
+            }
+
+            T fountObject = tryToUseConstructorWithString(constructor, stringObject);
+            if (fountObject != null) {
+                return fountObject;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Converts java type (Class object) to SQL type (as String).
@@ -70,6 +125,22 @@ public class Converter {
         }
     }
 
+    public static Map<String, String> resultSetToMap(ResultSet resultSet) throws SQLException {
+        Map<String, String> recordTypeValueMap = new TreeMap<>();
+
+        if (resultSet.isClosed()) {
+            return null;
+        }
+
+        ResultSetMetaData metaData = resultSet.getMetaData();
+
+        for (int i = 1; i <= metaData.getColumnCount(); i++) {
+            recordTypeValueMap.put(metaData.getColumnName(i), resultSet.getString(i));
+        }
+
+        return recordTypeValueMap;
+    }
+
     /**
      * Creates String representation of ResultSet object.
      *
@@ -95,6 +166,27 @@ public class Converter {
         } while (resultSet.next());
 
         return resultBuilder.deleteCharAt(resultBuilder.length() - 1).toString();
+    }
+
+    /**
+     * Uses proposed constructor to create new instance.
+     *
+     * @param constructor proposed constructor.
+     * @param stringObject constructor argument.
+     * @return new instance, if operation was successful, or null, if it wasn't.
+     */
+    private static<T> T tryToUseConstructorWithString(Constructor constructor, String stringObject) {
+        for (Class parameterType: constructor.getParameterTypes()) {
+            if (parameterType.equals(String.class)) {
+                try {
+                    return (T) constructor.newInstance(stringObject);
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        }
+        return null;
     }
 
     /**
