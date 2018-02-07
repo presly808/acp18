@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
@@ -18,7 +19,7 @@ import static org.junit.Assert.*;
  */
 public class IDBTest {
     // todo add your implementation
-    private static IDB idb = new DBUtils("D:\\DB\\atabase.db");
+    private static IDB idb = new DBUtils("jdbc:sqlite:database.db");
 
     @BeforeClass
     public static void createtables() {
@@ -80,7 +81,7 @@ public class IDBTest {
 
     @Test
     public void getAll() throws Exception {
-        Assert.assertThat(idb.getAll().size(), CoreMatchers.equalTo(5));
+        assertThat(idb.getAll().size(), equalTo(5));
     }
 
     @Test
@@ -90,27 +91,33 @@ public class IDBTest {
 
         Map<Field, Object> map = new HashMap<>();
         map.put(User.class.getDeclaredField("city"), value);
-        idb.selectWithFilter(map, User.class.getDeclaredField("salary"), 2);
+        List<User> salariesUsers =
+                idb.selectWithFilter(User.class, map, User.class.getDeclaredField("salary"), 2);
+
+        assertThat(salariesUsers.get(0).getSalary(), equalTo(2500.0));
+        assertThat(salariesUsers.size(), equalTo(2));
+        assertThat(salariesUsers.get(1).getSalary(), equalTo(2500.0));
+
     }
 
     @Test
     public void getUsersGroupByDepartment() throws Exception {
         Map<Department, List<User>> usersGroupByDepartment = idb.getUsersGroupByDepartment();
-        Assert.assertThat(usersGroupByDepartment.keySet().size(), CoreMatchers.equalTo(2));
-        Assert.assertThat(usersGroupByDepartment.values().size(), CoreMatchers.equalTo(5));
+        assertThat(usersGroupByDepartment.keySet().size(), equalTo(2));
+        assertThat(usersGroupByDepartment.values().size(), equalTo(5));
     }
 
     @Test
     public void getAvgSalaryGroupByDepartment() throws Exception {
         Map<Department, Integer> usersGroupByDepartment = idb.getAvgSalaryGroupByDepartment();
-        Assert.assertThat(usersGroupByDepartment.keySet().size(), CoreMatchers.equalTo(2));
+        assertThat(usersGroupByDepartment.keySet().size(), equalTo(2));
     }
 
     @Test
     public void getUsersGroupByManagersAndOrderedThatLiveInKiev() throws Exception {
         Map<User, List<User>> usersGroupByDepartment = idb.getUsersGroupByManagersAndOrderedThatLiveInKiev();
-        Assert.assertThat(usersGroupByDepartment.get(
-                new User(3,"test",0)).size(), CoreMatchers.equalTo(4));
+        assertThat(usersGroupByDepartment.get(
+                new User(3,"test",0)).size(), equalTo(4));
 
     }
 
@@ -118,14 +125,14 @@ public class IDBTest {
     public void addUser() throws Exception {
         User yura = new User(120, "TestUser", 35, 1500, null, null, null);
         User actual = idb.addUser(yura);
-        Assert.assertThat(actual.getName(), CoreMatchers.equalTo("TestUser"));
+        assertThat(actual.getName(), equalTo("TestUser"));
     }
 
     @Test
     public void removeUser() throws Exception {
         User yura = new User(3, "Yura", 35, 1500, null, null, null);
         User actual = idb.removeUser(yura);
-        Assert.assertThat(actual.getName(), CoreMatchers.equalTo("Yura"));
+        assertThat(actual.getName(), equalTo("Yura"));
     }
 
     @Test
@@ -136,7 +143,7 @@ public class IDBTest {
 
         City city = idb.addCity(kiev);
 
-        Assert.assertThat(city.getId(), CoreMatchers.equalTo(5));
+        assertThat(city.getId(), equalTo(5));
     }
 
     @Test
@@ -147,7 +154,7 @@ public class IDBTest {
         department1.setName("TESTDEPART");
 
         Department department = idb.addDepart(department1);
-        Assert.assertThat(department.getId(), CoreMatchers.equalTo(8));
+        assertThat(department.getId(), equalTo(8));
 
     }
 
@@ -156,7 +163,7 @@ public class IDBTest {
         City city = new City();
         city.setId(1);
         City ret = idb.removeCity(city);
-        Assert.assertThat(ret.getName(), CoreMatchers.equalTo("Kiev"));
+        assertThat(ret.getName(), equalTo("Kiev"));
     }
 
     @Test
@@ -165,7 +172,7 @@ public class IDBTest {
         department.setId(1);
         Department rem = idb.removeDepart(department);
 
-        Assert.assertThat(rem.getName(), CoreMatchers.is("QA"));
+        assertThat(rem.getName(), is("QA"));
     }
 
 }
