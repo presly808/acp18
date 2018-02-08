@@ -41,25 +41,35 @@ public class DBUtils implements IDB {
     }
 
     @Override
-    public List<User> selectWithFilter(Map<Field, Object> filters, Field orderBy, int limit) {
+    public <T> List<T> getAllValues(Class<T> type) {
         return null;
     }
 
     @Override
-    public boolean fillTable(String csvUrl) {
-        return false;
+    public <T> List<T> selectWithFilter(Class<T> type, Map<Field, Object> filters, Field orderBy, int limit) {
+        return null;
+    }
+
+    @Override
+    public <T> T addGen(Class<T> tClass, T obj) {
+        return null;
+    }
+
+    @Override
+    public <T> T removeGen(Class<T> tClass, T obj) {
+        return null;
     }
 
     @Override
     public boolean createTable(Class clazz) {
 
-
-
-        String sql = "CREATE TABLE " +
+        if (clazz.getSimpleName().equals("User"))
+        {String sql = "CREATE TABLE " +
                 clazz.getSimpleName() + " (\n" +
-                "id integer PRIMARY KEY);"
-                ;
+                "id integer PRIMARY KEY" +
+                 ");"
 
+        }
         try (Connection conn = this.connect();
              Statement stmt = conn.createStatement()) {
             return stmt.execute(sql);
@@ -96,7 +106,7 @@ public class DBUtils implements IDB {
                 "VALUES(?,?,?,?,?,?,?)";
         try
             (Connection conn = connect();
-                    PreparedStatement pstmt = conn.prepareStatement(sql));{
+                    PreparedStatement pstmt = conn.prepareStatement(sql)){
 
                   }catch (SQLException e){
             System.out.println(e);

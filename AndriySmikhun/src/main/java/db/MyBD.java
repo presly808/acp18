@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class MyBD {
     public static void main(String[] args) {
 
-        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
+        String url = "jdbc:sqlite:database.db";
 /*
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
@@ -20,11 +20,11 @@ public class MyBD {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }*/
+        }
+*/
+       DBUtils dbutils = new DBUtils(url);
 
-        DBUtils dbutils = new DBUtils(url);
-
-        System.out.println("Create Table" + dbutils.createTable(Base.class));
+        //System.out.println("Create Table" + dbutils.createTable(Base.class));
         System.out.println("Drop Table" + dbutils.dropTable(Base.class));
     }
 }
