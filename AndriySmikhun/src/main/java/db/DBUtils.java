@@ -5,10 +5,7 @@ import db.model.Department;
 import db.model.User;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 import java.util.Map;
 
@@ -24,43 +21,62 @@ public class DBUtils implements IDB {
     }
 
     public List<User> getAll(){
-        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
-        Connection conn = null;
+        String sql = "SELECT * FROM user";
+
         try {
-            conn = DriverManager.getConnection(url);
+            Connection conn = connect();
+            Statement stmp = conn.createStatement();
+            ResultSet rs = stmp.executeQuery(sql);
+            while (rs.next()){
+                System.out.println(rs.getInt("id"));
+                System.out.println(rs.getString("name"));
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println(conn);
+
+
+
         return null;
     }
 
     @Override
-    public List<User> selectWithFilter(Map<Field, Object> filters, Field orderBy, int limit) {
+    public <T> List<T> getAllValues(Class<T> type) {
         return null;
     }
 
     @Override
-    public boolean fillTable(String csvUrl) {
-        return false;
+    public <T> List<T> selectWithFilter(Class<T> type, Map<Field, Object> filters, Field orderBy, int limit) {
+        return null;
+    }
+
+    @Override
+    public <T> T addGen(Class<T> tClass, T obj) {
+        return null;
+    }
+
+    @Override
+    public <T> T removeGen(Class<T> tClass, T obj) {
+        return null;
     }
 
     @Override
     public boolean createTable(Class clazz) {
 
-        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
-
-        String sql = "CREATE TABLE " +
+        if (clazz.getSimpleName().equals("User"))
+        {String sql = "CREATE TABLE " +
                 clazz.getSimpleName() + " (\n" +
-                "id integer PRIMARY KEY);"
-                ;
+                "id integer PRIMARY KEY" +
+                 ");"
 
-        try (Connection conn = DriverManager.getConnection(url);
+        }
+        try (Connection conn = this.connect();
              Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
+            return stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return false;
     }
 
@@ -86,6 +102,17 @@ public class DBUtils implements IDB {
 
     @Override
     public User addUser(User userWithoutId) {
+        String sql = "INSERT IN TO user(id,name,age,salary,departament, city, manage) " +
+                "VALUES(?,?,?,?,?,?,?)";
+        try
+            (Connection conn = connect();
+                    PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+                  }catch (SQLException e){
+            System.out.println(e);
+        }
+
+
         return null;
     }
 
@@ -116,7 +143,7 @@ public class DBUtils implements IDB {
 
     @Override
     public boolean dropTable(Class clazz) {
-        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
+
         String sql = "DROP TABLE " + clazz.getSimpleName() + ";";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -134,5 +161,15 @@ public class DBUtils implements IDB {
         return null;
     }
 
+    public Connection connect(){
+        String url = "jdbc:sqlite:C:/Users/smikhun/IdeaProjects/acp18/AndriySmikhun/src/main/java/db/MyDB.bd";
+        Connection connect = null;
+        try {
+            connect = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return connect;
+    }
 
 }
