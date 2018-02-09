@@ -3,6 +3,7 @@ package db;
 import db.model.City;
 import db.model.Department;
 import db.model.User;
+import multithreading.forkJoin.Filter;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -41,5 +42,7 @@ public interface IDB {
     Department removeDepart(Department department);
 
     boolean dropTable(Class clazz);
+
+    String nativeSQL(String sql);
 
 }
