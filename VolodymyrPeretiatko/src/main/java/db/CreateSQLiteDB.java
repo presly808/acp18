@@ -36,6 +36,6 @@ public class CreateSQLiteDB {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        createNewDatabase("sqliteTest.db");
+        createNewDatabase("sqlite.db");
     }
 }

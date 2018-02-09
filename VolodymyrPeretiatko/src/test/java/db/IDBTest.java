@@ -3,7 +3,6 @@ package db;
 import db.model.City;
 import db.model.Department;
 import db.model.User;
-import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import java.lang.reflect.Field;
@@ -19,7 +18,7 @@ import static org.junit.Assert.*;
  */
 public class IDBTest {
     // todo add your implementation
-    private static IDB idb = new DBUtils("jdbc:sqlite:database.db");
+    private static IDB idb = new DBUtils("jdbc:sqlite:/home/valdess/IdeaProjects/acp18/VolodymyrPeretiatko/src/main/java/db/sqlite.db");
 
     @BeforeClass
     public static void createtables() {
