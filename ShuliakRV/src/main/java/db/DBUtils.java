@@ -5,6 +5,7 @@ import db.model.Department;
 import db.model.User;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -92,9 +93,8 @@ public class DBUtils implements IDB {
 
         sqlCreateTable.deleteCharAt(sqlCreateTable.length() - 1).append(");");
 
-        try(Connection conn = DriverManager.getConnection(url);
-            Statement statement = conn.createStatement();)
-        {
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement statement = conn.createStatement();) {
             statement.execute(sqlCreateTable.toString());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,8 +125,62 @@ public class DBUtils implements IDB {
     }
 
     @Override
-    public User addUser(User userWithoutId) {
-        return null;
+    public User addUser(User user) {
+
+        StringBuilder sqlHeader = new StringBuilder();
+        StringBuilder sqlValues = new StringBuilder();
+
+        Class classUser = user.getClass();
+
+        sqlHeader.append("INSERT INTO TABLE ").append(classUser.getSimpleName()).append(" (");
+
+        while (classUser != null) {
+
+            for (Field field : classUser.getDeclaredFields()) {
+                sqlHeader.append(field.getName()).append(",");
+                try {
+                    String fieldType = field.getType().getSimpleName();
+
+                    fieldType = keyValueMap.get(fieldType);
+
+                    String fieldValue = "";
+
+                    if (fieldType == null) {
+
+                        try {
+                            fieldValue = field.get(user).getClass().getMethod("getId").
+                                    invoke(field.get(user)).toString();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        fieldValue = field.get(user).toString();
+                    }
+
+                    sqlValues.append(fieldValue).append(",");
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            classUser = classUser.getSuperclass();
+        }
+        sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
+        sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").append("VALUES (").append(sqlValues);
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement statement = conn.createStatement();) {
+            conn.setAutoCommit(true);
+            statement.execute(sqlHeader.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return user;
     }
 
     @Override
@@ -161,9 +215,8 @@ public class DBUtils implements IDB {
 
         sqlCreateTable.append("DROP TABLE ").append(clazz.getSimpleName()).append(";");
 
-        try(Connection conn = DriverManager.getConnection(url);
-            Statement statement = conn.createStatement();)
-        {
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement statement = conn.createStatement();) {
             statement.execute(sqlCreateTable.toString());
         } catch (SQLException e) {
             e.printStackTrace();
