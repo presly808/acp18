@@ -64,9 +64,10 @@ public class IDBTest {
         idb.addCity(odessa);
         idb.addDepart(department1);
         idb.addDepart(department2);
-        idb.addUser(user3);
+
         idb.addUser(user1);
         idb.addUser(user2);
+        idb.addUser(user3);
         idb.addUser(user4);
         idb.addUser(user5);
     }
