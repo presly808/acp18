@@ -25,6 +25,11 @@
       "title": "dbsql",
       "baseClasses":["db"],
       "testClasses":["db"]
+    },
+    "hibernate" : {
+      "title": "hibernateTas",
+      "baseClasses":["hibernate"],
+      "testClasses":["hibernate"]
     }
   }
 }
