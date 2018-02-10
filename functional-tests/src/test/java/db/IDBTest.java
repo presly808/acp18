@@ -7,9 +7,11 @@ import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -19,7 +21,7 @@ import static org.junit.Assert.*;
  */
 public class IDBTest {
     // todo add your implementation
-    private static IDB idb = new DBUtils("./database.db");
+    private static IDB idb = new DBUtils("jdbc:sqlite:database.db");
 
     @BeforeClass
     public static void createtables() {
@@ -87,6 +89,7 @@ public class IDBTest {
     @Test
     public void selectWithFilter() throws Exception {
         City value = new City();
+        value.setId(1);
         value.setName("Kiev");
 
         Map<Field, Object> map = new HashMap<>();
@@ -100,11 +103,13 @@ public class IDBTest {
 
     }
 
+    // may be used java8
     @Test
     public void getUsersGroupByDepartment() throws Exception {
         Map<Department, List<User>> usersGroupByDepartment = idb.getUsersGroupByDepartment();
         assertThat(usersGroupByDepartment.keySet().size(), equalTo(2));
-        assertThat(usersGroupByDepartment.values().size(), equalTo(5));
+        assertThat(usersGroupByDepartment.values()
+                .stream().flatMap(Collection::stream).collect(Collectors.toList()).size(), equalTo(5));
     }
 
     @Test
@@ -113,6 +118,7 @@ public class IDBTest {
         assertThat(usersGroupByDepartment.keySet().size(), equalTo(2));
     }
 
+    // may be used java8
     @Test
     public void getUsersGroupByManagersAndOrderedThatLiveInKiev() throws Exception {
         Map<User, List<User>> usersGroupByDepartment = idb.getUsersGroupByManagersAndOrderedThatLiveInKiev();
