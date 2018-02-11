@@ -28,7 +28,7 @@ public class User extends Base {
     private User manage;
 
     // start work date
-    @Temporal(TemporalType.DATE)
+    @Column
     private LocalDateTime localDateTime;
 
     public User() {
