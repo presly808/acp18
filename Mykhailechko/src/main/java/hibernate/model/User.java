@@ -1,5 +1,6 @@
 package hibernate.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -8,11 +9,16 @@ import java.time.LocalDateTime;
 public class User extends Base {
 
     private int age;
+
     private double salary;
+
     private Department department;
+
     private City city;
+
     private User manage;
     // start work date
+
     private LocalDateTime localDateTime;
 
     public User() {
