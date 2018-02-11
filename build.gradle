@@ -51,7 +51,8 @@ allprojects {
 
     task copyTaskWithPatterns(type: Copy) {
         from 'src/main/java'
-        into 'build/classes/main'
+        from 'src/main/resources'
+        into 'build/classes/java/main'
         include '**/*.txt'
         include '**/*.js'
         include '**/*.html'
@@ -64,6 +65,7 @@ allprojects {
     }
 
     compileJava.dependsOn copyTaskWithPatterns
+    compileTestJava.dependsOn compileJava
 
     check.dependsOn jacocoTestCoverageVerification
     check.dependsOn jacocoTestReport
