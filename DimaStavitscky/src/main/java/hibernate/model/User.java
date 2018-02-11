@@ -1,18 +1,34 @@
 package hibernate.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * Created by serhii on 03.02.18.
  */
+@Entity
+@Table(name = "users")
 public class User extends Base {
 
+    @Column
     private int age;
+    @Column
     private double salary;
+
+    @OneToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
     private Department department;
+
+    @OneToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id")
     private City city;
+
+    @OneToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id")
     private User manage;
+
     // start work date
+    @Temporal(TemporalType.DATE)
     private LocalDateTime localDateTime;
 
     public User() {

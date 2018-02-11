@@ -1,11 +1,19 @@
 package hibernate.model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * Created by serhii on 03.02.18.
  */
 public class Base {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
+    @Column
     protected String name;
 
     public Base() {
