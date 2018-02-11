@@ -5,13 +5,13 @@ import javax.persistence.*;
 /**
  * Created by serhii on 03.02.18.
  */
-@Entity
-@Table(name = "bases")
+@MappedSuperclass
 public class Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
+    @Column(nullable = false)
     protected String name;
 
     public Base() {
