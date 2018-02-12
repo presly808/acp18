@@ -10,5 +10,10 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "Cities", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class City extends Base {
+    public City(String name) {
+        super(name);
+    }
 
+    public City() {
+    }
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by serhii on 03.02.18.
  */
 @MappedSuperclass
-public class Base {
+public abstract class Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,6 +15,10 @@ public class Base {
     protected String name;
 
     public Base() {
+    }
+
+    public Base(String name) {
+        this.name = name;
     }
 
     public Base(int id, String name) {
