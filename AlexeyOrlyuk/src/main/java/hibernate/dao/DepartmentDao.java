@@ -26,6 +26,7 @@ public class DepartmentDao implements Dao<Department, Integer> {
 
     public DepartmentDao(EntityManagerFactory factory) {
         this.factory = factory;
+        LOGGER.trace("create new instance of DepartmentDao");
     }
 
     /**
@@ -36,6 +37,7 @@ public class DepartmentDao implements Dao<Department, Integer> {
      */
     @Override
     public List<Department> findAll() {
+        LOGGER.info("search for all Departments (without limits)");
         return ActionWrapper.wrap(factory, new Department(), ActionWrapper.NO_LIMIT)
                 .execute((manager, entity, limit) -> manager
                         .createQuery(SELECT_ALL_DEPARTMENTS_QUERY, Department.class)
@@ -61,6 +63,7 @@ public class DepartmentDao implements Dao<Department, Integer> {
             return null;
         }
 
+        LOGGER.info("search for all Departments (with limits)");
         return ActionWrapper.wrap(factory, new Department(), length)
                 .execute((manager, entity, limit) -> manager
                         .createQuery(SELECT_ALL_DEPARTMENTS_QUERY, Department.class)
@@ -83,6 +86,7 @@ public class DepartmentDao implements Dao<Department, Integer> {
             return null;
         }
 
+        LOGGER.info("search for single Department");
         return ActionWrapper.wrap(factory, new Department())
                 .execute((manager, entity) -> {
                     return manager.find(entity.getClass(), integer);
@@ -103,6 +107,7 @@ public class DepartmentDao implements Dao<Department, Integer> {
             return null;
         }
 
+        LOGGER.info("remove single Department");
         return ActionWrapper.wrap(factory, new Department())
                 .executeWithTransaction((manager, entity) -> {
                     Department removed = manager.find(entity.getClass(), integer);
@@ -127,6 +132,7 @@ public class DepartmentDao implements Dao<Department, Integer> {
             return null;
         }
 
+        LOGGER.info("update single Department");
         return ActionWrapper.wrap(factory, entity)
                 .executeWithTransaction((manager, wrapEntity) -> {
                     Department old = manager.find(wrapEntity.getClass(), wrapEntity.getId()).clone();
@@ -149,9 +155,11 @@ public class DepartmentDao implements Dao<Department, Integer> {
             return null;
         }
 
+        LOGGER.info("create and save new Department");
         ActionWrapper.wrap(factory, entity)
                 .executeWithTransaction(EntityManager::persist);
 
+        LOGGER.info("new Department was successfully created");
         return ActionWrapper.wrap(factory, entity)
                 .execute((manager, wrapEntity) -> {
                     return manager.find(wrapEntity.getClass(), wrapEntity.getId());

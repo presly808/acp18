@@ -26,6 +26,7 @@ public class UserDao implements Dao<User, Integer> {
 
     public UserDao(EntityManagerFactory factory) {
         this.factory = factory;
+        LOGGER.trace("create new instance of UserDao");
     }
 
     /**
@@ -36,6 +37,7 @@ public class UserDao implements Dao<User, Integer> {
      */
     @Override
     public List<User> findAll() {
+        LOGGER.info("search for all Users (without limits)");
         return ActionWrapper.wrap(factory, new User(), ActionWrapper.NO_LIMIT)
                 .execute((manager, entity, limit) -> manager
                         .createQuery(SELECT_ALL_USERS_QUERY, User.class)
@@ -61,6 +63,7 @@ public class UserDao implements Dao<User, Integer> {
             return null;
         }
 
+        LOGGER.info("search for all Users (with limits)");
         return ActionWrapper.wrap(factory, new User(), length)
                 .execute((manager, entity, limit) -> manager
                         .createQuery(SELECT_ALL_USERS_QUERY, User.class)
@@ -83,6 +86,7 @@ public class UserDao implements Dao<User, Integer> {
             return null;
         }
 
+        LOGGER.info("search for single User");
         return ActionWrapper.wrap(factory, new User())
                 .execute((manager, entity) -> {
                     return manager.find(entity.getClass(), integer);
@@ -103,6 +107,7 @@ public class UserDao implements Dao<User, Integer> {
             return null;
         }
 
+        LOGGER.info("remove single User");
         return ActionWrapper.wrap(factory, new User())
                 .executeWithTransaction((manager, entity) -> {
                     User removed = manager.find(entity.getClass(), integer);
@@ -127,6 +132,7 @@ public class UserDao implements Dao<User, Integer> {
             return null;
         }
 
+        LOGGER.info("update single User");
         return ActionWrapper.wrap(factory, entity)
                 .executeWithTransaction((manager, wrapEntity) -> {
                     User old = manager.find(wrapEntity.getClass(), wrapEntity.getId()).clone();
@@ -149,10 +155,13 @@ public class UserDao implements Dao<User, Integer> {
             return null;
         }
 
+        LOGGER.info("create and save new User");
         ActionWrapper.wrap(factory, entity).executeWithTransaction(EntityManager::persist);
 
-        return ActionWrapper.wrap(factory, entity).execute(((manager, wrapEntity) -> {
-            return manager.find(wrapEntity.getClass(), wrapEntity.getId());
-        }));
+        LOGGER.info("new User was successfully created");
+        return ActionWrapper.wrap(factory, entity)
+                .execute((manager, wrapEntity) -> {
+                    return manager.find(wrapEntity.getClass(), wrapEntity.getId());
+                });
     }
 }
