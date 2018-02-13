@@ -4,9 +4,7 @@ import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 import hibernate.util.ActionWrapper;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,24 +16,28 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class UserDaoTest {
-
-    private static final String PERSISTENCE_UNIT = "hibernate-h2-unit";
+public class UserDaoTest extends DaoTest {
 
     private static EntityManagerFactory factory;
     private static Dao<User, Integer> userDao;
 
-    private static List<User> testUserList;
+    private List<User> testUserList;
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        factory = Persistence.createEntityManagerFactory(H2_PERSISTENCE_UNIT);
+        userDao = new UserDao(factory);
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+        factory.close();
+    }
 
     @Before
     public void setUp() throws Exception {
 
-        // Init dao and factory:
-        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        userDao = new UserDao(factory);
-
-
-        // Init records of "users", "managers" and "cities" tables (5 users, 1 department, 1 city, 1 manager (user)):
+        // Init records of "users", "departments" and "cities" tables (5 users, 1 department, 1 city, 1 manager (user)):
         Department department = new Department("test_department");
         City city = new City("test_city");
         User userManager = new User("TestUserManager", 40, 10000,
@@ -54,7 +56,7 @@ public class UserDaoTest {
         testUserList.add(new User("TestUser5", 25, 5000,
                 department, city, userManager, LocalDateTime.now()));
 
-        // Write records to DB (Note: it will update some Users' fields in List, such as id!!!):
+        // Write records to DB (Note: it will update some entity instances' fields in List, such as id!!!):
         ActionWrapper.wrap(factory, city).executeWithTransaction(EntityManager::persist);
         ActionWrapper.wrap(factory, department).executeWithTransaction(EntityManager::persist);
         ActionWrapper.wrap(factory, new User()).executeWithTransaction((manager, entity) -> {
@@ -64,42 +66,14 @@ public class UserDaoTest {
 
     @After
     public void tearDown() throws Exception {
+        boolean usersRemoved = removeAndCheck(factory, User.class, new User(), SELECT_ALL_USERS_QUERY);
+        boolean citiesRemoved = removeAndCheck(factory, City.class, new City(), SELECT_ALL_CITIES_QUERY);
+        boolean departmentsRemoved =
+                removeAndCheck(factory, Department.class, new Department(), SELECT_ALL_DEPARTMENTS_QUERY);
 
-        // Remove all records from "users", "managers" and "cities" tables:
-        ActionWrapper.wrap(factory, new User())
-                .executeWithTransaction(((manager, entity) -> {
-                    List<User> userList = manager.createQuery("SELECT u FROM User u", User.class).getResultList();
-                    userList.forEach(manager::remove);
-                }));
-
-        ActionWrapper.wrap(factory, new Department())
-                .executeWithTransaction(((manager, entity) -> {
-                    List<Department> departmentList =
-                            manager.createQuery("SELECT d FROM Department d", Department.class).getResultList();
-                    departmentList.forEach(manager::remove);
-                }));
-        ActionWrapper.wrap(factory, new City())
-                .executeWithTransaction(((manager, entity) -> {
-                    List<City> cityList =
-                            manager.createQuery("SELECT c FROM City c", City.class).getResultList();
-                    cityList.forEach(manager::remove);
-                }));
-
-
-        // Check if all records were successfully removed:
-        List<User> emptyUserList = ActionWrapper
-                .wrap(factory, new User(), ActionWrapper.NO_LIMIT)
-                .execute((manager, entity, limit) -> manager
-                        .createQuery("SELECT u FROM User u", User.class)
-                        .setMaxResults(limit)
-                        .getResultList());
-
-        if (!emptyUserList.isEmpty()) {
-            throw new Exception("Users' table wasn't cleaned up during tearDown() execution!");
+        if (!usersRemoved || !departmentsRemoved || !citiesRemoved) {
+            throw new Exception("Some test tables weren't cleaned up during tearDown() execution!");
         }
-
-
-        factory.close();
     }
 
     @Test
@@ -115,7 +89,7 @@ public class UserDaoTest {
         int testStartPoint = 1;
         int testLimit = 3;
 
-        List<User> expected = testUserList.subList(testStartPoint, testStartPoint+ testLimit);
+        List<User> expected = testUserList.subList(testStartPoint, testStartPoint + testLimit);
         List<User> actual = userDao.findAll(testStartPoint, testLimit);
 
         assertEquals(expected, actual);
@@ -142,7 +116,7 @@ public class UserDaoTest {
         List<User> expectedList = testUserList.subList(0, lastElementIndex);
         List<User> actualList = ActionWrapper.wrap(factory, new User(), ActionWrapper.NO_LIMIT)
                 .execute((manager, entity, limit) -> manager
-                        .createQuery("SELECT u FROM User u", User.class).setMaxResults(limit).getResultList());
+                        .createQuery(SELECT_ALL_USERS_QUERY, User.class).setMaxResults(limit).getResultList());
 
         assertEquals(expected, actual);
         assertEquals(expectedList, actualList);
@@ -154,7 +128,7 @@ public class UserDaoTest {
         double testNewSalary = 1;
 
         User expectedOld = testUserList.get(0);
-        User expectedNew = (User) testUserList.get(0).clone();
+        User expectedNew = testUserList.get(0).clone();
         expectedNew.setSalary(testNewSalary);
 
         User actualOld = userDao.update(expectedNew);
@@ -175,9 +149,8 @@ public class UserDaoTest {
 
         List<User> actualList = ActionWrapper.wrap(factory, new User(), ActionWrapper.NO_LIMIT)
                 .execute((manager, entity, limit) -> manager
-                        .createQuery("SELECT u FROM User u", User.class).setMaxResults(limit).getResultList());
+                        .createQuery(SELECT_ALL_USERS_QUERY, User.class).setMaxResults(limit).getResultList());
 
         assertEquals(expectedList, actualList);
     }
-
 }
