@@ -1,15 +1,23 @@
 package hibernate.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 /**
  * Test entity POJO class.
+ *
+ * @author alex323glo
+ * @version 1.0
  */
 @Entity
 @Table(name = "test_entity")
 public class TestEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column

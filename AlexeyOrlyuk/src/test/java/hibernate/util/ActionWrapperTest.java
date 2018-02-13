@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class TestActionWrapper {
 
     private static EntityManagerFactory managerFactory;
-    private static final String PERSISTENCE_UNIT = "hibernate-unit";
+    private static final String PERSISTENCE_UNIT = "hibernate-h2-unit";
 
     @Before
     public void setUp() throws Exception {
@@ -125,9 +125,9 @@ public class TestActionWrapper {
 
         TestEntity expected = new TestEntity(testEntity.getId(), "new_test_value");
 
-        ActionWrapper.wrap(managerFactory, expected).executeWithTransaction(((manager, entity) -> {
-                    manager.merge(entity);
-                }));
+        ActionWrapper
+                .wrap(managerFactory, expected)
+                .executeWithTransaction((ActionWrapper.Procedure<TestEntity>) EntityManager::merge);
 
         List<TestEntity> actual = checkPersistenceStatus();
 
