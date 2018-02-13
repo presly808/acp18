@@ -15,15 +15,15 @@ public class User extends Base {
     @Column
     private double salary;
 
-    @OneToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
     private City city;
 
-    @OneToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     private User manage;
 
@@ -34,16 +34,17 @@ public class User extends Base {
     public User() {
     }
 
+    public User(int id, String name, int age) {
+        super(id, name);
+        this.age = age;
+    }
+
     public User(int age, double salary, Department department, City city) {
         this.age = age;
         this.salary = salary;
         this.department = department;
         this.city = city;
-    }
-
-    public User(int id, String name, int age) {
-        super(id, name);
-        this.age = age;
+        manage = null;
     }
 
     public User(int id, String name, int age, double salary, Department department, City city) {
@@ -52,6 +53,29 @@ public class User extends Base {
         this.salary = salary;
         this.department = department;
         this.city = city;
+    }
+
+    public User(String name, int age, double salary, Department department, City city, User manage) {
+        super.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.department = department;
+        this.city = city;
+        this.manage = manage;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "age=" + age +
+                ", salary=" + salary +
+                ", department=" + department +
+                ", city=" + city +
+                ", manage=" + manage +
+                ", localDateTime=" + localDateTime +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public int getAge() {
@@ -84,15 +108,6 @@ public class User extends Base {
 
     public void setCity(City city) {
         this.city = city;
-    }
-
-    public User(int id, String name, int age, double salary, Department department, City city, User manage) {
-        super(id, name);
-        this.age = age;
-        this.salary = salary;
-        this.department = department;
-        this.city = city;
-        this.manage = manage;
     }
 
     public LocalDateTime getLocalDateTime() {

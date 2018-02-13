@@ -1,13 +1,12 @@
 package hibernate.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by serhii on 03.02.18.
  */
+
+@MappedSuperclass
 public class Base {
 
     @Id
@@ -17,6 +16,10 @@ public class Base {
     protected String name;
 
     public Base() {
+    }
+
+    public Base(String name) {
+        this.name = name;
     }
 
     public Base(int id, String name) {
