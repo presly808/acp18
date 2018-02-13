@@ -1,7 +1,7 @@
 package hibernate.dao;
 
 import hibernate.model.City;
-import org.apache.log4j.Logger;
+
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
@@ -9,35 +9,33 @@ public class DaoCity implements Dao<City, Integer>{
 
     private EntityManagerFactory factory;
 
-    private static final Logger LOG = Logger.getLogger(DaoCity.class);
-
     public DaoCity(EntityManagerFactory factory) {
         this.factory = factory;
     }
 
 
     public City create(City entity){
-        return (City) DaoUtilH2Db.create(entity, factory, LOG);
+        return (City) DaoUtilH2Db.create(entity, factory);
     }
 
     @Override
     public List<City> findAll() {
-        return null;
+        return (List<City>) DaoUtilH2Db.findAll(City.class, factory);
     }
 
     @Override
     public List<City> findAll(int offset, int length) {
-        return null;
+        return (List<City>) DaoUtilH2Db.findAll(City.class, factory, offset, length);
     }
 
     @Override
-    public City find(Integer integer) {
-        return null;
+    public City find(Integer id) {
+        return (City) DaoUtilH2Db.find(City.class, id, factory);
     }
 
     @Override
     public City remove(Integer id) {
-        return (City) DaoUtilH2Db.remove(City.class, id, factory, LOG);
+        return (City) DaoUtilH2Db.remove(City.class, id, factory);
     }
 
     @Override

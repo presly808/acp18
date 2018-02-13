@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * Created by serhii on 03.02.18.
  */
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User extends Base {
     @Column
     private int age;

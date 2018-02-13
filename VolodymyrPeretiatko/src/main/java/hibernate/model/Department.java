@@ -8,6 +8,12 @@ import javax.persistence.UniqueConstraint;
  * Created by serhii on 03.02.18.
  */
 @Entity
-@Table(name = "Departments", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+@Table(name = "departments", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Department extends Base {
+    public Department() {
+    }
+
+    public Department(String name) {
+        super(name);
+    }
 }
