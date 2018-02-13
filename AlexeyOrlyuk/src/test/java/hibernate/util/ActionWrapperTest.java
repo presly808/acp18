@@ -5,14 +5,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.*;
-
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class TestActionWrapper {
+public class ActionWrapperTest {
 
     private static EntityManagerFactory managerFactory;
     private static final String PERSISTENCE_UNIT = "hibernate-h2-unit";
@@ -131,8 +133,9 @@ public class TestActionWrapper {
 
         List<TestEntity> actual = checkPersistenceStatus();
 
-        assertEquals(expected, actual.get(0));
+        assertNotNull(actual);
         assertEquals(1, actual.size());
+        assertEquals(expected, actual.get(0));
     }
 
     @Test

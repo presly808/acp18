@@ -18,6 +18,11 @@ public class ActionWrapper {
     private static final Logger LOGGER = Logger.getLogger(ActionWrapper.class);
 
     /**
+     * Defines that max limit for group function result will be equal to max integer value.
+     */
+    public static final int NO_LIMIT = Integer.MAX_VALUE;
+
+    /**
      * Wraps args (factory and entity) into executable statement.
      * Note: will produce statement, which executes Functions and Procedures!
      *
