@@ -4,6 +4,7 @@ import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 import hibernate.util.ActionWrapper;
+import org.apache.log4j.Logger;
 import org.junit.*;
 
 import javax.persistence.EntityManager;
@@ -14,9 +15,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static hibernate.dao.DaoTestUtils.*;
 import static org.junit.Assert.*;
 
-public class UserDaoTest extends DaoTest {
+public class UserDaoTest {
+
+    private static final Logger LOGGER = Logger.getLogger(UserDaoTest.class);
 
     private static EntityManagerFactory factory;
     private static Dao<User, Integer> userDao;
@@ -71,8 +75,8 @@ public class UserDaoTest extends DaoTest {
         boolean departmentsRemoved =
                 removeAndCheck(factory, Department.class, new Department(), SELECT_ALL_DEPARTMENTS_QUERY);
 
-        if (!usersRemoved || !departmentsRemoved || !citiesRemoved) {
-            throw new Exception("Some test tables weren't cleaned up during tearDown() execution!");
+        if (!usersRemoved || !citiesRemoved || !departmentsRemoved) {
+            LOGGER.error("some of test tables were not cleaned up after test during tearDown() method execution");
         }
     }
 
@@ -124,7 +128,6 @@ public class UserDaoTest extends DaoTest {
 
     @Test
     public void update() throws Exception {
-        int testId = testUserList.get(0).getId();
         double testNewSalary = 1;
 
         User expectedOld = testUserList.get(0);

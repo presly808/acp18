@@ -3,13 +3,12 @@ package hibernate.dao;
 import hibernate.util.ActionWrapper;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
 
 /**
  * Created by alex323glo on 13.02.18.
  */
-public class DaoTest {
+public class DaoTestUtils {
 
     public static final String MYSQL_PERSISTENCE_UNIT = "hibernate-h2-unit";
     public static final String H2_PERSISTENCE_UNIT = "hibernate-h2-unit";
@@ -26,7 +25,7 @@ public class DaoTest {
      * @param specialQuery String query, which SELECTs all entity records.
      * @return true, if all records were successfully removed.
      */
-    static<T> boolean removeAndCheck(EntityManagerFactory factory, Class<T> entityType, T entity,
+    public static<T> boolean removeAndCheck(EntityManagerFactory factory, Class<T> entityType, T entity,
                                             String specialQuery) {
         ActionWrapper.wrap(factory, entity)
                 .executeWithTransaction(((manager, wrapEntity) -> {

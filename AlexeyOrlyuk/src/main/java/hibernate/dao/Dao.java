@@ -5,13 +5,13 @@ import java.util.List;
 /**
  * General DAO interface.
  *
- * @param <T> type of stored entity.
- * @param <ID> type of ID (PRIMARY KEY) field of stored entity.
+ * @param <V> type of stored entity (VALUE).
+ * @param <K> type of id (KEY) field of stored entity.
  *
  * @author alex323glo
  * @version 1.0
  */
-public interface Dao<T,ID> {
+public interface Dao<V,K> {
 
     /**
      * Searches for all stored entity instances.
@@ -19,7 +19,7 @@ public interface Dao<T,ID> {
      * @return List of stored instances, if operation was successful, or null,
      * if it wasn't.
      */
-    List<T> findAll();
+    List<V> findAll();
 
     /**
      * Searches for all stored entity instances.
@@ -32,7 +32,7 @@ public interface Dao<T,ID> {
      * @return limited List of stored instances, if operation was successful, or null,
      * if it wasn't.
      */
-    List<T> findAll(int offset, int length);
+    List<V> findAll(int offset, int length);
 
     /**
      * Searches for stored entity instance by its ID.
@@ -41,7 +41,7 @@ public interface Dao<T,ID> {
      * @return needed instance, if operation was successful, or null,
      * if it wasn't or if such instance was not stored to DB.
      */
-    T find(ID id);
+    V find(K id);
 
     /**
      * Removes from DB stored entity instance by its ID.
@@ -50,7 +50,7 @@ public interface Dao<T,ID> {
      * @return removed instance, if operation was successful, or null,
      * if it wasn't or if such instance was not stored to DB.
      */
-    T remove(ID id);
+    V remove(K id);
 
     /**
      * Updates stored entity instance.
@@ -61,7 +61,7 @@ public interface Dao<T,ID> {
      * @return old variant of instance, if operation was successful, or null,
      * if it wasn't or if such instance was not stored to DB.
      */
-    T update(T entity);
+    V update(V entity);
 
     /**
      * Creates new entity instance (stores it to DB).
@@ -70,6 +70,6 @@ public interface Dao<T,ID> {
      * @return stored variant of instance (with assigned ID field), if operation
      * was successful, or null, if it wasn't.
      */
-    T create(T entity);
+    V create(V entity);
 
 }

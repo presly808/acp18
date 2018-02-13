@@ -1,11 +1,10 @@
 package hibernate.dao;
 
-import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.util.ActionWrapper;
+import org.apache.log4j.Logger;
 import org.junit.*;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -13,8 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static hibernate.dao.DaoTestUtils.*;
 
-public class DepartmentDaoTest extends DaoTest {
+public class DepartmentDaoTest {
+
+    private static final Logger LOGGER = Logger.getLogger(DepartmentDaoTest.class);
 
     private static EntityManagerFactory factory;
     private static Dao<Department, Integer> departmentDao;
@@ -52,7 +54,7 @@ public class DepartmentDaoTest extends DaoTest {
     @After
     public void tearDown() throws Exception {
         if (!removeAndCheck(factory, Department.class, new Department(), SELECT_ALL_DEPARTMENTS_QUERY)) {
-            throw new Exception("One test table (Departments) wasn't cleaned up during tearDown() execution!");
+            LOGGER.error("some of test tables were not cleaned up after test during tearDown() method execution");
         }
     }
 
@@ -104,7 +106,6 @@ public class DepartmentDaoTest extends DaoTest {
 
     @Test
     public void update() throws Exception {
-        int testId = testDepartmentList.get(0).getId();
         String testNewName = "new_department_name";
 
         Department expectedOld = testDepartmentList.get(0);
