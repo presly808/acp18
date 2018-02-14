@@ -1,16 +1,11 @@
 package sockets;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -27,33 +22,34 @@ public class ServerSocketTest {
     public static void startServer() throws Exception {
         ServerSocket serverSocket = new ServerSocket(PORT);
         CompletableFuture.runAsync(serverSocket::start);
-        Thread.sleep(2000);
+        Thread.sleep(3000);
+
     }
 
     @Test
     public void testSimpleCommand() throws IOException {
         String response = sendReq("localhost", PORT, "os");
-        assertThat(response, anyOf(equalTo("LINUX"), equalTo("WIN")));
+        assertThat(response, anyOf(equalTo("LINUX"),equalTo("WIN")));
 
 
         String secResp = null;
-        if (Objects.equals(response, "LINUX")) {
+        if(Objects.equals(response, "LINUX")){
             secResp = sendReq("localhost", PORT, "pwd");
-        } else if (Objects.equals(response, "WIN")) {
+        } else if(Objects.equals(response, "WIN")){
             secResp = sendReq("localhost", PORT, "cd");
         }
 
-        assertThat(secResp, containsString("sockets"));
+        assertThat(secResp, containsString("acp18"));
 
     }
 
     @Test
     public void testDate() throws IOException {
-        String response = sendReq("localhost", PORT, "help");
-        assertThat(response.toLowerCase(), containsString("cd"));
+        String response = sendReq("localhost", PORT, "date");
+        assertThat(response, containsString("2018"));
     }
 
-    private static String sendReq(String host, int port, String message) {
+    private static String sendReq(String host, int port, String message){
 
         try (Socket socket = new Socket(host, port);
              BufferedReader inputStreamReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -63,31 +59,17 @@ public class ServerSocketTest {
 
             printWriter.flush();
 
-            return CompletableFuture.supplyAsync(() -> {
-                try {
-                    return inputStreamReader.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }).get(2, TimeUnit.SECONDS);
+            return inputStreamReader.readLine();
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
         }
-
         return null;
     }
 
     @AfterClass
     public static void shutDownServer() throws Exception {
-        sendReq(LOCALHOST, PORT, "shutdown-server");
+        sendReq(LOCALHOST,PORT,"shutdown-server");
     }
 
 
