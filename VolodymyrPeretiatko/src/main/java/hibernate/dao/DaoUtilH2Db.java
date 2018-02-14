@@ -2,10 +2,7 @@ package hibernate.dao;
 
 import hibernate.model.Base;
 
-
-import hibernate.model.City;
 import org.apache.log4j.Logger;
-import org.hibernate.query.criteria.internal.CriteriaUpdateImpl;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
@@ -13,7 +10,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
 
 public class DaoUtilH2Db {
 
@@ -111,6 +107,28 @@ public class DaoUtilH2Db {
 
         return query.getResultList();
 
+    }
+
+    public static Base update(Class cls, Base entity, EntityManagerFactory factory) {
+
+        String clsName = cls.getSimpleName();
+
+        LOG.info("Update " + clsName);
+
+        EntityManager manager = factory.createEntityManager();
+        EntityTransaction transaction = manager.getTransaction();
+
+        try {
+            Base persistedEntity = (Base) manager.find(cls, entity.getId());
+            persistedEntity.update(entity);
+            transaction.begin();
+            manager.merge(persistedEntity);
+            transaction.commit();
+            return persistedEntity;
+        } finally {
+            LOG.info(clsName + " was updated by");
+            manager.close();
+        }
     }
 
 }

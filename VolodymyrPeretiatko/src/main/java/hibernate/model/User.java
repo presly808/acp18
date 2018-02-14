@@ -13,14 +13,17 @@ public class User extends Base {
     private int age;
     @Column
     private double salary;
-    @Column
+
     @ManyToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
-    @Column
+
     @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
-    @Column
+
     @ManyToOne
+    @JoinColumn(name = "manage_id", referencedColumnName = "id")
     private User manage;
     // start work date
     @Column
@@ -104,5 +107,17 @@ public class User extends Base {
 
     public void setManage(User manage) {
         this.manage = manage;
+    }
+
+    @Override
+    public void update(Base another) {
+        super.update(another);
+        if (another instanceof User){
+            this.setAge(((User)another).getAge());
+            this.setSalary(((User)another).getSalary());
+            this.setDepartment(((User)another).getDepartment());
+            this.setCity(((User)another).getCity());
+        }
+
     }
 }

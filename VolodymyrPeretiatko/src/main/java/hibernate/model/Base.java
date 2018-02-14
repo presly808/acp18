@@ -56,4 +56,9 @@ public abstract class Base {
     public int hashCode() {
         return id;
     }
+
+    public void update(Base another){
+        this.setName(another.getName());
+    }
+
 }

@@ -29,6 +29,15 @@ public class InitTable {
 
         System.out.println(c2.getName());
 
+        City c = new City("Dno");
+        c.setId(1);
+
+        dc.update(c);
+
+        c2 = dc.find(1);
+
+        System.out.println(c2.getName());
+
         List<City> list = dc.findAll();
 
         System.out.println(list.toString());

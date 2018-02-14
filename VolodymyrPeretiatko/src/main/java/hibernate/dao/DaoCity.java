@@ -13,7 +13,7 @@ public class DaoCity implements Dao<City, Integer>{
         this.factory = factory;
     }
 
-
+    @Override
     public City create(City entity){
         return (City) DaoUtilH2Db.create(entity, factory);
     }
@@ -40,6 +40,6 @@ public class DaoCity implements Dao<City, Integer>{
 
     @Override
     public City update(City entity) {
-        return null;
+        return (City) DaoUtilH2Db.update(City.class, entity, factory);
     }
 }

@@ -1,5 +1,6 @@
 package hibernate.service;
 
+import hibernate.dao.Dao;
 import hibernate.exception.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
@@ -7,24 +8,59 @@ import hibernate.model.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 /**
  * Created by serhii on 10.02.18.
  */
 public class MainServiceImpl implements MainService {
+
+    private static final Logger LOGGER = Logger.getLogger((MainServiceImpl.class));
+
+    private Dao<User, Integer> userDao;
+    private Dao<Department, Integer> departmentDao;
+
     @Override
     public User register(User user) throws AppException {
-        return null;
+
+        User createdUser = userDao.create(user);
+
+        if (createdUser == null) {
+            LOGGER.error("User wasn't registered");
+        } else {
+            LOGGER.info("User was registered");
+        }
+
+        return createdUser;
     }
 
     @Override
     public Department addDepartment(Department department) throws AppException {
-        return null;
+
+        Department createdDepartment = departmentDao.create(department);
+
+        if (createdDepartment == null) {
+            LOGGER.error("Department wasn't added");
+        } else {
+            LOGGER.info("Department was added");
+        }
+
+        return createdDepartment;
+
     }
 
     @Override
     public User update(User user) throws AppException {
-        return null;
+
+        User oldUser = userDao.update(user);
+
+        if (oldUser == null) {
+            LOGGER.error("existent User wasn't added");
+        } else {
+            LOGGER.info("existent User was successfully added");
+        }
+
+        return oldUser;
     }
 
     @Override
