@@ -25,7 +25,7 @@ public class User extends Base {
     @ManyToOne
     @JoinColumn(name = "manage_id", referencedColumnName = "id")
     private User manage;
-    // start work date
+
     @Column
     private LocalDateTime localDateTime;
 
@@ -50,6 +50,16 @@ public class User extends Base {
         this.salary = salary;
         this.department = department;
         this.city = city;
+    }
+
+    public User(String name, int age, double salary, Department department, City city, User manage, LocalDateTime localDateTime) {
+        super(name);
+        this.age = age;
+        this.salary = salary;
+        this.department = department;
+        this.city = city;
+        this.manage = manage;
+        this.localDateTime = localDateTime;
     }
 
     public int getAge() {

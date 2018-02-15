@@ -1,6 +1,5 @@
 package hibernate.dao;
 
-import hibernate.model.Department;
 import hibernate.model.User;
 
 import javax.persistence.EntityManagerFactory;
@@ -41,6 +40,6 @@ public class DaoUser implements Dao<User, Integer> {
 
     @Override
     public User update(User entity) {
-        return (User) DaoUtilH2Db.update(Department.class, entity, factory);
+        return (User) DaoUtilH2Db.update(User.class, entity, factory);
     }
 }

@@ -20,6 +20,11 @@ public class MainServiceImpl implements MainService {
     private Dao<User, Integer> userDao;
     private Dao<Department, Integer> departmentDao;
 
+    public MainServiceImpl(Dao<User, Integer> userDao, Dao<Department, Integer> departmentDao) {
+        this.userDao = userDao;
+        this.departmentDao = departmentDao;
+    }
+
     @Override
     public User register(User user) throws AppException {
 
@@ -106,5 +111,9 @@ public class MainServiceImpl implements MainService {
     @Override
     public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
         return null;
+    }
+
+    public User findUserById(Integer id){
+        return userDao.find(id);
     }
 }
