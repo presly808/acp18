@@ -62,12 +62,12 @@ public class DBUtils implements IDB {
 
     @Override
     public boolean createTable(Class clazz) {
-
+        String sql = "";
         if (clazz.getSimpleName().equals("User"))
-        {String sql = "CREATE TABLE " +
+        {sql = "CREATE TABLE " +
                 clazz.getSimpleName() + " (\n" +
                 "id integer PRIMARY KEY" +
-                 ");"
+                 ");";
 
         }
         try (Connection conn = this.connect();
