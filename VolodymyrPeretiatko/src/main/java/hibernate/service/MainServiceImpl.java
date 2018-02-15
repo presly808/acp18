@@ -55,9 +55,10 @@ public class MainServiceImpl implements MainService {
         User oldUser = userDao.update(user);
 
         if (oldUser == null) {
-            LOGGER.error("existent User wasn't added");
+            LOGGER.error("User wasn't added");
+            throw new AppException("User wasn't added");
         } else {
-            LOGGER.info("existent User was successfully added");
+            LOGGER.info("User was successfully added");
         }
 
         return oldUser;
@@ -65,7 +66,16 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public User remove(User user) throws AppException {
-        return null;
+
+        User removedUser = userDao.remove(user.getId());
+
+        if (removedUser == null) {
+            LOGGER.error("User wasn't removed");
+        } else {
+            LOGGER.info("User was removed");
+        }
+
+        return removedUser;
     }
 
     @Override
