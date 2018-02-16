@@ -1,7 +1,6 @@
 package hibernate.dao;
 
 import hibernate.model.Department;
-import hibernate.model.User;
 import hibernate.wrap.TransactionWrapper;
 import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;

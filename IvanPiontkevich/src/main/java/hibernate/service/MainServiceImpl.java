@@ -51,7 +51,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public User remove(User user) throws AppException {
-        if (user == null && user.getId() >=0){
+        if (user == null || user.getId() <=0){
             LOGGER.error("User is null");
             throw new AppException("NullUserException");
         }
@@ -156,8 +156,4 @@ public class MainServiceImpl implements MainService {
         return userByDate;
     }
 
-    @Override
-    public User findById(int i) {
-        return userDao.find(i);
-    }
 }

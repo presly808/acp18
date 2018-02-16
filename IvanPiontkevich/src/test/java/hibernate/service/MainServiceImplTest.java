@@ -128,7 +128,7 @@ public class MainServiceImplTest {
     @Test
     public void update() throws Exception {
 
-        User forUpate = service.findById(6);
+        User forUpate = userDao.find(6);
         forUpate.setCity(new City("Donetsk"));
         forUpate.setName("Vasia");
         forUpate.setDepartment(new Department("HR"));

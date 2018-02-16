@@ -33,6 +33,4 @@ public interface MainService {
 
     List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException;
 
-
-    User findById(int i);
 }
