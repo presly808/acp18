@@ -1,6 +1,7 @@
 package hibernate.dao;
 
 import hibernate.exception.AppException;
+import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 import org.apache.log4j.Logger;
@@ -63,11 +64,12 @@ public class DaoUserImpl implements DaoUser {
 
         LOG.info("getAvgSalaryGroupByDepartment UserDaoImpl");
 
-        EntityManager manager = factory.createEntityManager();
+        String queryTxt = "SELECT e.department, AVG(e.salary) " +
+                          "FROM User e " +
+                          "GROUP BY e.department";
 
-        Query query = manager.createQuery("SELECT e.department, AVG(e.salary) " +
-                                          "FROM User e " +
-                                          "GROUP BY e.department");
+        EntityManager manager = factory.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
 
         query.getResultList();
 
@@ -75,22 +77,57 @@ public class DaoUserImpl implements DaoUser {
     }
 
     @Override
-    public Map<User, List<User>> getUsersByCityGroupByManagersAndOrdered() throws AppException {
+    public Map<User, List<User>> getUsersByCityGroupByManagersAndOrdered(City city) throws AppException {
+
+
         return null;
     }
 
     @Override
     public List<User> findByName(String name) throws AppException {
-        return null;
+
+        LOG.info("findByName UserDaoImpl");
+
+        String queryTxt = "SELECT e " +
+                          "FROM User e " +
+                          "WHERE e.name = :name";
+
+        EntityManager manager = factory.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+        query.setParameter("name", name);
+
+        return query.getResultList();
     }
 
     @Override
     public List<User> findInSalaryRange(double minSal, double maxSal) throws AppException {
-        return null;
+        LOG.info("findByName UserDaoImpl");
+
+        String queryTxt = "SELECT e " +
+                          "FROM User e " +
+                          "WHERE e.salary >= :minSal AND e.salary <= :maxSal";
+
+        EntityManager manager = factory.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+        query.setParameter("minSal", minSal);
+        query.setParameter("maxSal", maxSal);
+
+        return query.getResultList();
     }
 
     @Override
     public List<User> findByDateRange(LocalDateTime start, LocalDateTime end) throws AppException {
-        return null;
+        LOG.info("findByName UserDaoImpl");
+
+        String queryTxt = "SELECT e " +
+                          "FROM User e " +
+                          "WHERE e.localDateTime >= :start AND e.localDateTime <= :end";
+
+        EntityManager manager = factory.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        return query.getResultList();
     }
 }
