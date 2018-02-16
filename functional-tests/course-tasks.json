@@ -28,7 +28,7 @@
     },
     "hibernate" : {
       "title": "hibernateTas",
-      "baseClasses":["hibernate"],
+      "baseClasses":["hibernate", "META-INF"],
       "testClasses":["hibernate"]
     }
   }
