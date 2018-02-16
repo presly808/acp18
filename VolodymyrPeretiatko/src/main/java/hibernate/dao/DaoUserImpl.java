@@ -5,6 +5,7 @@ import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 import org.apache.log4j.Logger;
+import org.hibernate.transform.Transformers;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -60,7 +61,7 @@ public class DaoUserImpl implements DaoUser {
     //DaoUsr
 
     @Override
-    public Map<Department, Integer> getAvgSalaryGroupByDepartment() throws AppException {
+    public List getAvgSalaryGroupByDepartment() throws AppException {
 
         LOG.info("getAvgSalaryGroupByDepartment UserDaoImpl");
 
@@ -71,16 +72,26 @@ public class DaoUserImpl implements DaoUser {
         EntityManager manager = factory.createEntityManager();
         Query query = manager.createQuery(queryTxt);
 
-        query.getResultList();
+        return query.getResultList();
 
-        return null;
     }
 
     @Override
-    public Map<User, List<User>> getUsersByCityGroupByManagersAndOrdered(City city) throws AppException {
+    public List getUsersByCityGroupByManagersAndOrdered(City city) throws AppException {
 
+        LOG.info("getUsersByCityGroupByManagersAndOrdered UserDaoImpl");
 
-        return null;
+        String queryTxt = "SELECT e.manage, e " +
+                          "FROM User e " +
+                          "WHERE e.city = :city " +
+                          "ORDER BY e.name";
+
+        EntityManager manager = factory.createEntityManager();
+        Query query = manager.createQuery(queryTxt);
+        query.setParameter("city", city);
+
+        return query.getResultList();
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import hibernate.model.Department;
 import hibernate.model.User;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -90,8 +91,17 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Map<Department, Integer> getAvgSalaryGroupByDepartment() throws AppException {
-        return userDao.getAvgSalaryGroupByDepartment();
+    public Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppException {
+
+        List<Object[]> resultQuery = userDao.getAvgSalaryGroupByDepartment();
+
+        Map<Department, Double> result = new HashMap<>();
+
+        for(Object[] row : resultQuery){
+            result.put(((Department) row[0]), (Double) row[1]);
+        }
+
+        return result;
     }
 
     @Override
