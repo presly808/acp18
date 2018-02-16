@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
@@ -119,9 +118,11 @@ public class MainServiceImplTest {
     }
 
     @Test
-    public void removeDepartment(){
-        Department department = departmentDao.remove(3);
-        assertEquals(department.getName(), "IT");
+    public void removeDepartment() throws AppException {
+        Department department = new Department("HR");
+        service.addDepartment(department);
+        Department dep = departmentDao.remove(9);
+        assertEquals(dep.getName(), "HR");
     }
 
     @Test
