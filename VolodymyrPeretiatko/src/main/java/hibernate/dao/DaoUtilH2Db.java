@@ -2,6 +2,7 @@ package hibernate.dao;
 
 import hibernate.model.Base;
 
+import hibernate.model.City;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManagerFactory;
@@ -120,8 +121,8 @@ public class DaoUtilH2Db {
 
         try {
             Base persistedEntity = (Base) manager.find(cls, entity.getId());
-            persistedEntity.update(entity);
             transaction.begin();
+            persistedEntity.update(entity);
             manager.merge(persistedEntity);
             transaction.commit();
             return persistedEntity;
@@ -131,4 +132,22 @@ public class DaoUtilH2Db {
         }
     }
 
+    public static boolean removeAll(Class cls, EntityManagerFactory factory) {
+
+        String clsName = cls.getSimpleName();
+
+        LOG.info("delete all " + clsName);
+
+        EntityManager manager = factory.createEntityManager();
+        EntityTransaction transaction = manager.getTransaction();
+        try {
+            transaction.begin();
+            manager.createQuery("DELETE FROM " + clsName).executeUpdate();
+            transaction.commit();
+
+            return true;
+        } finally {
+            manager.close();
+        }
+    }
 }

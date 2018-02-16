@@ -42,4 +42,10 @@ public class DaoDepartment implements Dao<Department, Integer> {
     public Department update(Department entity) {
         return (Department) DaoUtilH2Db.update(Department.class, entity, factory);
     }
+
+    @Override
+    public boolean removeAll() {
+        return DaoUtilH2Db.removeAll(Department.class, factory);
+    }
+
 }

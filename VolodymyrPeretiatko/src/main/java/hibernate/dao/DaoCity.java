@@ -42,4 +42,9 @@ public class DaoCity implements Dao<City, Integer>{
     public City update(City entity) {
         return (City) DaoUtilH2Db.update(City.class, entity, factory);
     }
+
+    @Override
+    public boolean removeAll() {
+        return DaoUtilH2Db.removeAll(City.class, factory);
+    }
 }

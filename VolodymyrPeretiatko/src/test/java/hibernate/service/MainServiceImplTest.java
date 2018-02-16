@@ -8,7 +8,6 @@ import hibernate.model.Department;
 import hibernate.model.User;
 import org.junit.*;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -30,14 +29,14 @@ public class MainServiceImplTest {
     private static User userVova = new User("Vova", 25, 1000.00, departIT, cityKiev, null, LocalDateTime.of(2000, 10, 10, 0, 0));
     private static User userPetr = new User("Petr", 27, 2000.00, departSB, cityKiev, null, LocalDateTime.of(2010, 10, 10, 0, 0));
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
         service = new MainServiceImpl(new DaoUser(factory), new DaoDepartment(factory));
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
         factory.close();
         factory = null;
         service = null;
@@ -59,6 +58,7 @@ public class MainServiceImplTest {
     public void update() throws Exception {
         User actual = service.register(userVova);
         actual.setName("Kaban");
+        actual.setId(1);
         service.update(actual);
 
         System.out.println(actual);

@@ -42,4 +42,9 @@ public class DaoUser implements Dao<User, Integer> {
     public User update(User entity) {
         return (User) DaoUtilH2Db.update(User.class, entity, factory);
     }
+
+    @Override
+    public boolean removeAll() {
+        return DaoUtilH2Db.removeAll(User.class, factory);
+    }
 }
