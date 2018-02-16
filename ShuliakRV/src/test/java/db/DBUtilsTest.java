@@ -1,6 +1,5 @@
 package db;
 
-import db.model.Base;
 import db.model.City;
 import db.model.Department;
 import db.model.User;

@@ -76,15 +76,18 @@ public class DBUtils implements IDB {
 
             for (Field field : clazz.getDeclaredFields()) {
 
-                String fieldName = field.getName();
+                if (!field.isSynthetic()) {
 
-                String fieldType = field.getType().getSimpleName();
+                    String fieldName = field.getName();
 
-                fieldType = keyValueMap.get(fieldType);
+                    String fieldType = field.getType().getSimpleName();
 
-                if (fieldType == null) fieldType = "INTEGER";
+                    fieldType = keyValueMap.get(fieldType);
 
-                sqlCreateTable.append(fieldName + " " + fieldType + ",");
+                    if (fieldType == null) fieldType = "INTEGER";
+
+                    sqlCreateTable.append(fieldName + " " + fieldType + ",");
+                }
             }
 
             clazz = clazz.getSuperclass();
@@ -125,62 +128,96 @@ public class DBUtils implements IDB {
     }
 
     @Override
-    public User addUser(User user) {
+    public User addUser(User userWithoutId) {
 
         StringBuilder sqlHeader = new StringBuilder();
         StringBuilder sqlValues = new StringBuilder();
 
-        Class classUser = user.getClass();
+        Class classUser = userWithoutId.getClass();
 
-        sqlHeader.append("INSERT INTO TABLE ").append(classUser.getSimpleName()).append(" (");
+        sqlHeader.append("INSERT INTO ").append(classUser.getSimpleName()).append(" (");
 
         while (classUser != null) {
 
             for (Field field : classUser.getDeclaredFields()) {
-                sqlHeader.append(field.getName()).append(",");
-                try {
-                    String fieldType = field.getType().getSimpleName();
 
-                    fieldType = keyValueMap.get(fieldType);
+                if (!field.isSynthetic()) {
 
-                    String fieldValue = "";
+                    sqlHeader.append(field.getName()).append(",");
 
-                    if (fieldType == null) {
+                    try {
+                        String fieldType = field.getType().getSimpleName();
 
-                        try {
-                            fieldValue = field.get(user).getClass().getMethod("getId").
-                                    invoke(field.get(user)).toString();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        } catch (NoSuchMethodException e) {
-                            e.printStackTrace();
+                        fieldType = keyValueMap.get(fieldType);
+
+                        String fieldValue = "";
+
+                        if (fieldType == null) {
+
+                            Object target = field.get(userWithoutId);
+
+                            if (target == null) {
+                                fieldValue = "NULL";
+
+                            } else {
+
+                                try {
+                                    fieldValue = target.getClass().getMethod("getId").
+                                            invoke(target).toString();
+                                } catch (InvocationTargetException e) {
+                                    e.printStackTrace();
+                                } catch (NoSuchMethodException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                        } else {
+                            String fieldName = field.getName();
+                            try {
+                                fieldValue = userWithoutId.getClass().getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1)).
+                                        invoke(userWithoutId).toString();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (fieldType.equals("TEXT")) {
+                                fieldValue = String.format("'%s'", fieldValue);
+                            }
+
                         }
 
-                    } else {
-                        fieldValue = field.get(user).toString();
+                        sqlValues.append(fieldValue).append(",");
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
                     }
-
-                    sqlValues.append(fieldValue).append(",");
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
                 }
             }
 
             classUser = classUser.getSuperclass();
         }
         sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
-        sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").append("VALUES (").append(sqlValues);
+        sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").
+                append("VALUES (").append(sqlValues);
 
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement statement = conn.createStatement();) {
+        try (
+                Connection conn = DriverManager.getConnection(url);
+                Statement statement = conn.createStatement();)
+
+        {
             conn.setAutoCommit(true);
             statement.execute(sqlHeader.toString());
-        } catch (SQLException e) {
+        } catch (
+                SQLException e)
+
+        {
             e.printStackTrace();
             return null;
         }
 
-        return user;
+        return userWithoutId;
     }
 
     @Override

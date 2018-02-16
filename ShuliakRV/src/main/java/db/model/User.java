@@ -7,9 +7,9 @@ public class User extends Base {
 
     private int age;
     private double salary;
-    private Department department;
-    private City city;
-    private User manage;
+    public Department department;
+    public City city;
+    public User manage;
 
     public User() {
     }
