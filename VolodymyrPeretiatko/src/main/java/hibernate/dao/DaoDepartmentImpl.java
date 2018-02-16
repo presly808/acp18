@@ -5,11 +5,11 @@ import hibernate.model.Department;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-public class DaoDepartment implements Dao<Department, Integer> {
+public class DaoDepartmentImpl implements Dao<Department, Integer> {
 
     private EntityManagerFactory factory;
 
-    public DaoDepartment(EntityManagerFactory factory) {
+    public DaoDepartmentImpl(EntityManagerFactory factory) {
         this.factory = factory;
     }
 

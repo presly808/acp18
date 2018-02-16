@@ -5,11 +5,11 @@ import hibernate.model.City;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-public class DaoCity implements Dao<City, Integer>{
+public class DaoCityImpl implements Dao<City, Integer>{
 
     private EntityManagerFactory factory;
 
-    public DaoCity(EntityManagerFactory factory) {
+    public DaoCityImpl(EntityManagerFactory factory) {
         this.factory = factory;
     }
 

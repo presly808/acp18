@@ -21,7 +21,7 @@ public class DaoCityTest {
     @BeforeClass
     public static void init() throws Exception {
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
-        dao = new DaoCity(factory);
+        dao = new DaoCityImpl(factory);
 
         dao.create(cityKiev);
         dao.create(cityLviv);

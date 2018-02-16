@@ -76,7 +76,6 @@ public class DaoUtilH2Db {
         try {
             return (Base) manager.find(cls, id);
         } finally {
-            LOG.info(clsName + " was not found by id" + id);
             manager.close();
         }
     }

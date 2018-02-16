@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class DaoUserTest {
 
     private static EntityManagerFactory factory;
-    private static DaoUser dao;
+    private static DaoUserImpl dao;
 
 
     private static User userVova;
@@ -23,10 +23,10 @@ public class DaoUserTest {
     @BeforeClass
     public static void init() throws Exception {
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
-        dao = new DaoUser(factory);
+        dao = new DaoUserImpl(factory);
 
-        DaoDepartment daoDepartment = new DaoDepartment(factory);
-        DaoCity daoCity = new DaoCity(factory);
+        DaoDepartmentImpl daoDepartment = new DaoDepartmentImpl(factory);
+        DaoCityImpl daoCity = new DaoCityImpl(factory);
 
         Department departmentIT = daoDepartment.create(new Department("IT"));
         Department departmentSB = daoDepartment.create(new Department("SB"));

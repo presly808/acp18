@@ -1,6 +1,7 @@
 package hibernate.service;
 
 import hibernate.dao.Dao;
+import hibernate.dao.DaoUser;
 import hibernate.exception.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
@@ -17,10 +18,10 @@ public class MainServiceImpl implements MainService {
 
     private static final Logger LOGGER = Logger.getLogger((MainServiceImpl.class));
 
-    private Dao<User, Integer> userDao;
+    private DaoUser userDao;
     private Dao<Department, Integer> departmentDao;
 
-    public MainServiceImpl(Dao<User, Integer> userDao, Dao<Department, Integer> departmentDao) {
+    public MainServiceImpl(DaoUser userDao, Dao<Department, Integer> departmentDao) {
         this.userDao = userDao;
         this.departmentDao = departmentDao;
     }
@@ -90,7 +91,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Map<Department, Integer> getAvgSalaryGroupByDepartment() throws AppException {
-        return null;
+        return userDao.getAvgSalaryGroupByDepartment();
     }
 
     @Override

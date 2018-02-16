@@ -21,7 +21,7 @@ public class DaoDepartmentTest {
     @BeforeClass
     public static void init() throws Exception {
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
-        dao = new DaoDepartment(factory);
+        dao = new DaoDepartmentImpl(factory);
 
         dao.create(departmentIT);
         dao.create(departmentSB);
