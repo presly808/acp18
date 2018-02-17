@@ -23,7 +23,7 @@ public interface MainService {
 
     Map<Department, List<User>> getUsersGroupByDepartment() throws AppException;
 
-    Map<Department, Integer> getAvgSalaryGroupByDepartment() throws AppException;
+    Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppException;
 
     Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppException;
 

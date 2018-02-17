@@ -2,18 +2,21 @@ package hibernate.dao;
 
 import hibernate.model.Base;
 
-
 import hibernate.model.City;
 import org.apache.log4j.Logger;
+
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 public class DaoUtilH2Db {
 
-    public static Base create(Base entity, EntityManagerFactory factory, Logger LOG) {
+    private static final Logger LOG = Logger.getLogger(DaoUtilH2Db.class);
+
+    public static Base create(Base entity, EntityManagerFactory factory) {
 
         String clsName = entity.getClass().getSimpleName();
 
@@ -23,7 +26,7 @@ public class DaoUtilH2Db {
 
         try {
             transaction.begin();
-            manager.persist((City) entity);
+            manager.persist(entity);
             transaction.commit();
             LOG.info(clsName + " was saved");
         } catch (Exception e) {
@@ -36,7 +39,7 @@ public class DaoUtilH2Db {
         return entity;
     }
 
-    public static Base remove(Class cls, Integer id, EntityManagerFactory factory, Logger LOG) {
+    public static Base remove(Class cls, Integer id, EntityManagerFactory factory) {
 
         String clsName = cls.getSimpleName();
 
@@ -53,7 +56,7 @@ public class DaoUtilH2Db {
             LOG.info(clsName + " was deleted");
         } catch (Exception e) {
             transaction.rollback();
-            LOG.error(clsName + " was not saved", e);
+            LOG.error(clsName + " was not removed", e);
         } finally {
             manager.close();
         }
@@ -61,4 +64,89 @@ public class DaoUtilH2Db {
         return (Base) entity;
     }
 
+    public static Base find(Class cls, Integer id, EntityManagerFactory factory) {
+
+        String clsName = cls.getSimpleName();
+
+        LOG.info("find by id " + clsName);
+
+        EntityManager manager = factory.createEntityManager();
+        //EntityTransaction transaction = manager.getTransaction();
+
+        try {
+            return (Base) manager.find(cls, id);
+        } finally {
+            manager.close();
+        }
+    }
+
+    public static List<?> findAll(Class cls, EntityManagerFactory factory){
+
+        String clsName = cls.getSimpleName();
+
+        LOG.info("get all " + clsName);
+
+        EntityManager manager = factory.createEntityManager();
+
+        return manager.createQuery("SELECT e FROM " + clsName + " e").getResultList();
+
+    }
+
+    public static List<?> findAll(Class cls, EntityManagerFactory factory, int offset, int length){
+
+        String clsName = cls.getSimpleName();
+
+        LOG.info("get all " + clsName);
+
+        EntityManager manager = factory.createEntityManager();
+
+        Query query = manager.createQuery("SELECT e FROM " + clsName + " e");
+
+        query.setMaxResults(length);
+        query.setFirstResult(offset);
+
+        return query.getResultList();
+
+    }
+
+    public static Base update(Class cls, Base entity, EntityManagerFactory factory) {
+
+        String clsName = cls.getSimpleName();
+
+        LOG.info("Update " + clsName);
+
+        EntityManager manager = factory.createEntityManager();
+        EntityTransaction transaction = manager.getTransaction();
+
+        try {
+            Base persistedEntity = (Base) manager.find(cls, entity.getId());
+            transaction.begin();
+            persistedEntity.update(entity);
+            manager.merge(persistedEntity);
+            transaction.commit();
+            return persistedEntity;
+        } finally {
+            LOG.info(clsName + " was updated by");
+            manager.close();
+        }
+    }
+
+    public static boolean removeAll(Class cls, EntityManagerFactory factory) {
+
+        String clsName = cls.getSimpleName();
+
+        LOG.info("delete all " + clsName);
+
+        EntityManager manager = factory.createEntityManager();
+        EntityTransaction transaction = manager.getTransaction();
+        try {
+            transaction.begin();
+            manager.createQuery("DELETE FROM " + clsName).executeUpdate();
+            transaction.commit();
+
+            return true;
+        } finally {
+            manager.close();
+        }
+    }
 }

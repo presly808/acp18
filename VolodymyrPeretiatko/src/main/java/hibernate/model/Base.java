@@ -11,7 +11,7 @@ public abstract class Base {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
-    @Column(nullable = false)
+    @Column(length = 30, nullable = false)
     protected String name;
 
     public Base() {
@@ -56,4 +56,9 @@ public abstract class Base {
     public int hashCode() {
         return id;
     }
+
+    public void update(Base another){
+        this.setName(another.getName());
+    }
+
 }
