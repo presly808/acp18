@@ -1,7 +1,6 @@
 package hibernate.service;
 
 import hibernate.dao.Dao;
-import hibernate.dao.DaoCity;
 import hibernate.dao.DaoUser;
 import hibernate.exception.AppException;
 import hibernate.model.Department;
