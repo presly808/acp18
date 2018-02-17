@@ -1,7 +1,7 @@
 package hibernate.dao;
 
 import hibernate.model.Base;
-git
+
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManagerFactory;
