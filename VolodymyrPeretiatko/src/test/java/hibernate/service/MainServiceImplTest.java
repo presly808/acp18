@@ -122,15 +122,6 @@ public class MainServiceImplTest {
     }
 
     @Test
-    public void getUsersGroupByManagersAndOrderedThatLiveInKiev() throws Exception {
-
-
-
-        service.getUsersGroupByManagersAndOrderedThatLiveInKiev();
-
-    }
-
-    @Test
     public void findByName() throws Exception {
         Assert.assertTrue(service.findByName("Petr").size() == 1);
     }
