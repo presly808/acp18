@@ -1,6 +1,6 @@
 package hibernate.dao;
 
-import hibernate.exceptionExclude.AppException;
+import hibernate.exception.AppException;
 import hibernate.model.User;
 
 import java.time.LocalDateTime;

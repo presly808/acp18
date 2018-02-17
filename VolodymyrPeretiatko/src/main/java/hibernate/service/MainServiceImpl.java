@@ -3,7 +3,7 @@ package hibernate.service;
 import hibernate.dao.Dao;
 import hibernate.dao.DaoCity;
 import hibernate.dao.DaoUser;
-import hibernate.exceptionExclude.AppException;
+import hibernate.exception.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
 
@@ -23,14 +23,12 @@ public class MainServiceImpl implements MainService {
     private static final Logger LOGGER = Logger.getLogger((MainServiceImpl.class));
 
     private DaoUser userDao;
-    private DaoCity cityDao;
     private Dao<Department, Integer> departmentDao;
 
 
-    public MainServiceImpl(DaoUser userDao, Dao<Department, Integer> departmentDao, DaoCity daoCity) {
+    public MainServiceImpl(DaoUser userDao, Dao<Department, Integer> departmentDao) {
         this.userDao = userDao;
         this.departmentDao = departmentDao;
-        this.cityDao = daoCity;
     }
 
     @Override
@@ -49,6 +47,8 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Department addDepartment(Department department) throws AppException {
+
+        if (department == null) throw new AppException("Null come to me");
 
         Department createdDepartment = departmentDao.create(department);
 

@@ -1,4 +1,4 @@
-package hibernate.exceptionExclude;
+package hibernate.exception;
 
 /**
  * General Application Exception class.

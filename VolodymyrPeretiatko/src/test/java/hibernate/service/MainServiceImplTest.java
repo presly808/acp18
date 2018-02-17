@@ -3,6 +3,7 @@ package hibernate.service;
 import hibernate.dao.DaoCityImpl;
 import hibernate.dao.DaoDepartmentImpl;
 import hibernate.dao.DaoUserImpl;
+import hibernate.exception.AppException;
 import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
@@ -41,7 +42,7 @@ public class MainServiceImplTest {
         DaoDepartmentImpl daoDepartment = new DaoDepartmentImpl(factory);
         DaoCityImpl daoCity = new DaoCityImpl(factory);
 
-        service = new MainServiceImpl(daoUser, daoDepartment, daoCity);
+        service = new MainServiceImpl(daoUser, daoDepartment);
 
         cityKiev = daoCity.create(new City("Kiev"));
         cityLviv = daoCity.create(new City("Lviv"));
@@ -112,7 +113,7 @@ public class MainServiceImplTest {
 
         Map<Department, List<User>> actual = service.getUsersGroupByDepartment();
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
 
     }
 
@@ -131,5 +132,9 @@ public class MainServiceImplTest {
         assertTrue(service.findInRange(1900.00, 2100.00).size() == 1);
     }
 
+    @Test(expected = AppException.class)
+    public void addDepartmentWithException() throws Exception {
+        service.addDepartment(null);
+    }
 
 }

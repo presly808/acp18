@@ -1,6 +1,6 @@
 package hibernate.service;
 
-import hibernate.exceptionExclude.AppException;
+import hibernate.exception.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
 

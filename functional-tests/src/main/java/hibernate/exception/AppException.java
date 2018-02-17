@@ -1,4 +1,4 @@
-package hibernate.exceptionExclude;
+package hibernate.exception;
 
 /**
  * Created by serhii on 10.02.18.
