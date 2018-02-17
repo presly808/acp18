@@ -6,10 +6,9 @@ import db.model.User;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,15 +95,7 @@ public class DBUtils implements IDB {
 
         sqlCreateTable.deleteCharAt(sqlCreateTable.length() - 1).append(");");
 
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement statement = conn.createStatement();) {
-            statement.execute(sqlCreateTable.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
+        return executeDDL(sqlCreateTable.toString());
     }
 
     @Override
@@ -137,85 +128,17 @@ public class DBUtils implements IDB {
 
         sqlHeader.append("INSERT INTO ").append(classUser.getSimpleName()).append(" (");
 
-        while (classUser != null) {
+        Map<String,String> map = getFieldsFromObject(userWithoutId);
 
-            for (Field field : classUser.getDeclaredFields()) {
-
-                if (!field.isSynthetic()) {
-
-                    sqlHeader.append(field.getName()).append(",");
-
-                    try {
-                        String fieldType = field.getType().getSimpleName();
-
-                        fieldType = keyValueMap.get(fieldType);
-
-                        String fieldValue = "";
-
-                        if (fieldType == null) {
-
-                            Object target = field.get(userWithoutId);
-
-                            if (target == null) {
-                                fieldValue = "NULL";
-
-                            } else {
-
-                                try {
-                                    fieldValue = target.getClass().getMethod("getId").
-                                            invoke(target).toString();
-                                } catch (InvocationTargetException e) {
-                                    e.printStackTrace();
-                                } catch (NoSuchMethodException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-
-                        } else {
-                            String fieldName = field.getName();
-                            try {
-                                fieldValue = userWithoutId.getClass().getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1)).
-                                        invoke(userWithoutId).toString();
-                            } catch (InvocationTargetException e) {
-                                e.printStackTrace();
-                            } catch (NoSuchMethodException e) {
-                                e.printStackTrace();
-                            }
-
-                            if (fieldType.equals("TEXT")) {
-                                fieldValue = String.format("'%s'", fieldValue);
-                            }
-
-                        }
-
-                        sqlValues.append(fieldValue).append(",");
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            classUser = classUser.getSuperclass();
+        for (String key : map.keySet()) {
+          sqlHeader.append(key).append(",");
+          sqlValues.append(map.get(key)).append(",");
         }
         sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
         sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").
                 append("VALUES (").append(sqlValues);
 
-        try (
-                Connection conn = DriverManager.getConnection(url);
-                Statement statement = conn.createStatement();)
-
-        {
-            conn.setAutoCommit(true);
-            statement.execute(sqlHeader.toString());
-        } catch (
-                SQLException e)
-
-        {
-            e.printStackTrace();
-            return null;
-        }
+        executeSQL(sqlHeader.toString());
 
         return userWithoutId;
     }
@@ -252,9 +175,28 @@ public class DBUtils implements IDB {
 
         sqlCreateTable.append("DROP TABLE ").append(clazz.getSimpleName()).append(";");
 
+        return executeDDL(sqlCreateTable.toString());
+    }
+
+    @Override
+    public String nativeSQL(String sql) {
+
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();) {
-            statement.execute(sqlCreateTable.toString());
+            statement.execute(sql.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return null;
+    }
+
+    private boolean executeDDL(String sql) {
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement statement = conn.createStatement();) {
+            statement.execute(sql.toString());
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -263,9 +205,88 @@ public class DBUtils implements IDB {
         return true;
     }
 
-    @Override
-    public String nativeSQL(String sql) {
-        return null;
+    public boolean executeSQL(String sql) {
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement statement = conn.createStatement();) {
+             statement.execute(sql.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    private <T> Map<String, String> getFieldsFromObject(T obj) {
+
+        Class clazz = obj.getClass();
+
+        Map<String, String> map = new HashMap<>();
+
+        while (clazz != null) {
+
+            for (Field field : clazz.getDeclaredFields()) {
+
+                if (!field.isSynthetic()) {
+
+                    String fieldName = field.getName();
+
+                    String fieldValue = "";
+
+                    String fieldType = field.getType().getSimpleName();
+
+                    fieldType = keyValueMap.get(fieldType);
+
+                    if (fieldType == null) {
+
+                        Object target = null;
+                        try {
+                            target = field.get(obj);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+
+                        if (target == null) {
+                            fieldValue = "NULL";
+
+                        } else {
+                            fieldName="Id";
+                            fieldValue = getFieldValue(target, fieldName);
+                        }
+
+                    } else {
+                        fieldValue = getFieldValue(obj, fieldName);
+                    }
+
+                    if ("TEXT".equals(fieldType)) {
+                        fieldValue = String.format("'%s'", fieldValue);
+                    }
+
+                    map.put(fieldName,fieldValue);
+
+                }
+            }
+
+            clazz = clazz.getSuperclass();
+        }
+
+        return map;
+    }
+
+    private <T> String getFieldValue(T obj, String fieldName) {
+
+        String value = null;
+
+        try {
+            value = obj.getClass().getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1)).
+                    invoke(obj).toString();
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return value;
     }
 
 
