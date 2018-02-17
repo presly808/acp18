@@ -82,6 +82,7 @@ public class MainServiceImpl implements MainService {
 
         if (removedUser == null) {
             LOGGER.error("User wasn't removed");
+            throw new AppException("User wasn't removed");
         } else {
             LOGGER.info("User was removed");
         }
