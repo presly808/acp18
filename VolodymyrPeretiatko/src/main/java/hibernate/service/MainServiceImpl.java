@@ -3,7 +3,7 @@ package hibernate.service;
 import hibernate.dao.Dao;
 import hibernate.dao.DaoCity;
 import hibernate.dao.DaoUser;
-import hibernate.exception.AppException;
+import hibernate.exception.AppExceptionExclude;
 import hibernate.model.Department;
 import hibernate.model.User;
 
@@ -32,7 +32,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public User register(User user) throws AppException {
+    public User register(User user) throws AppExceptionExclude {
 
         User createdUser = userDao.create(user);
 
@@ -46,7 +46,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Department addDepartment(Department department) throws AppException {
+    public Department addDepartment(Department department) throws AppExceptionExclude {
 
         Department createdDepartment = departmentDao.create(department);
 
@@ -61,13 +61,13 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public User update(User user) throws AppException {
+    public User update(User user) throws AppExceptionExclude {
 
         User oldUser = userDao.update(user);
 
         if (oldUser == null) {
             LOGGER.error("User wasn't added");
-            throw new AppException("User wasn't added");
+            throw new AppExceptionExclude("User wasn't added");
         } else {
             LOGGER.info("User was successfully added");
         }
@@ -76,13 +76,13 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public User remove(User user) throws AppException {
+    public User remove(User user) throws AppExceptionExclude {
 
         User removedUser = userDao.remove(user.getId());
 
         if (removedUser == null) {
             LOGGER.error("User wasn't removed");
-            throw new AppException("User wasn't removed");
+            throw new AppExceptionExclude("User wasn't removed");
         } else {
             LOGGER.info("User was removed");
         }
@@ -91,7 +91,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Map<Department, List<User>> getUsersGroupByDepartment() throws AppException {
+    public Map<Department, List<User>> getUsersGroupByDepartment() throws AppExceptionExclude {
 
         List<User> allUsers = userDao.findAll();
 
@@ -102,7 +102,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppException {
+    public Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppExceptionExclude {
 
         List<Object[]> resultQuery = userDao.getAvgSalaryGroupByDepartment();
 
@@ -116,7 +116,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppException {
+    public Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppExceptionExclude {
 
         List<User> resultQuery = userDao.getUsersByCityAndOrdered("Kiev");
 
@@ -127,17 +127,17 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<User> findByName(String name) throws AppException {
+    public List<User> findByName(String name) throws AppExceptionExclude {
         return userDao.findByName(name);
     }
 
     @Override
-    public List<User> findInRange(double minSal, double maxSal) throws AppException {
+    public List<User> findInRange(double minSal, double maxSal) throws AppExceptionExclude {
         return userDao.findInSalaryRange(minSal, maxSal);
     }
 
     @Override
-    public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
+    public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppExceptionExclude {
         return userDao.findByDateRange(start, end);
     }
 

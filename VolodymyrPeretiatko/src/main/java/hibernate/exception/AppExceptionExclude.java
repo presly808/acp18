@@ -3,9 +3,9 @@ package hibernate.exception;
 /**
  * Created by serhii on 10.02.18.
  */
-public class AppException extends Exception {
+public class AppExceptionExclude extends Exception {
 
-    public AppException(String message) {
+    public AppExceptionExclude(String message) {
         super(message);
     }
 }

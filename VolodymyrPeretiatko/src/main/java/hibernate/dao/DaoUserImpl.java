@@ -1,6 +1,6 @@
 package hibernate.dao;
 
-import hibernate.exception.AppException;
+import hibernate.exception.AppExceptionExclude;
 import hibernate.model.User;
 import org.apache.log4j.Logger;
 
@@ -57,7 +57,7 @@ public class DaoUserImpl implements DaoUser {
     //DaoUsr
 
     @Override
-    public List getAvgSalaryGroupByDepartment() throws AppException {
+    public List getAvgSalaryGroupByDepartment() throws AppExceptionExclude {
 
         LOG.info("getAvgSalaryGroupByDepartment UserDaoImpl");
 
@@ -73,7 +73,7 @@ public class DaoUserImpl implements DaoUser {
     }
 
     @Override
-    public List getUsersByCityAndOrdered(String city) throws AppException {
+    public List getUsersByCityAndOrdered(String city) throws AppExceptionExclude {
 
         LOG.info("getUsersByCityAndOrdered UserDaoImpl");
 
@@ -91,7 +91,7 @@ public class DaoUserImpl implements DaoUser {
     }
 
     @Override
-    public List<User> findByName(String name) throws AppException {
+    public List<User> findByName(String name) throws AppExceptionExclude {
 
         LOG.info("findByName UserDaoImpl");
 
@@ -107,7 +107,7 @@ public class DaoUserImpl implements DaoUser {
     }
 
     @Override
-    public List<User> findInSalaryRange(double minSal, double maxSal) throws AppException {
+    public List<User> findInSalaryRange(double minSal, double maxSal) throws AppExceptionExclude {
         LOG.info("findByName UserDaoImpl");
 
         String queryTxt = "SELECT e " +
@@ -123,7 +123,7 @@ public class DaoUserImpl implements DaoUser {
     }
 
     @Override
-    public List<User> findByDateRange(LocalDateTime start, LocalDateTime end) throws AppException {
+    public List<User> findByDateRange(LocalDateTime start, LocalDateTime end) throws AppExceptionExclude {
         LOG.info("findByName UserDaoImpl");
 
         String queryTxt = "SELECT e " +
