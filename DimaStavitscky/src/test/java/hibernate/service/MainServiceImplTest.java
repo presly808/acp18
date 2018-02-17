@@ -39,7 +39,7 @@ public class MainServiceImplTest {
     private static User user5;;
 
     private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("hibernate-unit");
-    ;
+
     private static MainService service = new MainServiceImpl(factory);
     private static Dao<User, Integer> daoUser = new UserDaoImpl(factory);
 
@@ -68,7 +68,7 @@ public class MainServiceImplTest {
         user4 = new User("Serhii", 22, 2500, department2, odessa, user1, date2015);
         user5 = new User("Olex", 24, 4500, department1, kiev, user2, date2005);
 
-        EntityManager manager = factory.createEntityManager();
+        /*EntityManager manager = factory.createEntityManager();
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
@@ -85,13 +85,12 @@ public class MainServiceImplTest {
 
         } finally {
             manager.close();
-        }
-        /*service.register(user1);
+        }*/
+        service.register(user1);
         service.register(user2);
         service.register(user3);
         service.register(user4);
         service.register(user5);
-        service.register(user6);*/
     }
 
     @Test
@@ -159,5 +158,4 @@ public class MainServiceImplTest {
                 && actual.contains(user5)
                 && !actual.contains(user4));
     }
-
 }
