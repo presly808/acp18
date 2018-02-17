@@ -121,26 +121,7 @@ public class DBUtils implements IDB {
     @Override
     public User addUser(User userWithoutId) {
 
-        StringBuilder sqlHeader = new StringBuilder();
-        StringBuilder sqlValues = new StringBuilder();
-
-        Class classUser = userWithoutId.getClass();
-
-        sqlHeader.append("INSERT INTO ").append(classUser.getSimpleName()).append(" (");
-
-        Map<String,String> map = getFieldsFromObject(userWithoutId);
-
-        for (String key : map.keySet()) {
-          sqlHeader.append(key).append(",");
-          sqlValues.append(map.get(key)).append(",");
-        }
-        sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
-        sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").
-                append("VALUES (").append(sqlValues);
-
-        executeSQL(sqlHeader.toString());
-
-        return userWithoutId;
+        return addObject(userWithoutId);
     }
 
     @Override
@@ -150,7 +131,8 @@ public class DBUtils implements IDB {
 
     @Override
     public City addCity(City city) {
-        return null;
+
+        return addObject(city);
     }
 
     @Override
@@ -160,7 +142,8 @@ public class DBUtils implements IDB {
 
     @Override
     public Department addDepart(Department department) {
-        return null;
+
+        return addObject(department);
     }
 
     @Override
@@ -209,7 +192,7 @@ public class DBUtils implements IDB {
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();) {
-             statement.execute(sql.toString());
+            statement.execute(sql.toString());
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -252,20 +235,17 @@ public class DBUtils implements IDB {
                             fieldValue = "NULL";
 
                         } else {
-                            fieldName="Id";
+                            fieldName = "Id";
                             fieldValue = getFieldValue(target, fieldName);
                         }
 
                     } else {
                         fieldValue = getFieldValue(obj, fieldName);
+                        if (fieldType.equals("TEXT")) {
+                            fieldValue = String.format("'%s'", fieldValue);
+                        }
                     }
-
-                    if ("TEXT".equals(fieldType)) {
-                        fieldValue = String.format("'%s'", fieldValue);
-                    }
-
-                    map.put(fieldName,fieldValue);
-
+                    map.put(fieldName, fieldValue);
                 }
             }
 
@@ -287,6 +267,30 @@ public class DBUtils implements IDB {
         }
 
         return value;
+    }
+
+    private <T> T addObject(T obj) {
+
+        StringBuilder sqlHeader = new StringBuilder();
+        StringBuilder sqlValues = new StringBuilder();
+
+        Class classUser = obj.getClass();
+
+        sqlHeader.append("INSERT INTO ").append(classUser.getSimpleName()).append(" (");
+
+        Map<String, String> map = getFieldsFromObject(obj);
+
+        for (String key : map.keySet()) {
+            sqlHeader.append(key).append(",");
+            sqlValues.append(map.get(key)).append(",");
+        }
+        sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
+        sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").
+                append("VALUES (").append(sqlValues);
+
+        executeSQL(sqlHeader.toString());
+
+        return obj;
     }
 
 

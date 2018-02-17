@@ -27,6 +27,8 @@ public class DBUtilsTest {
 
         IDB idb = new DBUtils("jdbc:sqlite:D:\\DB\\database.db");
 
+        idb.createTable(Department.class);
+        idb.createTable(City.class);
         idb.createTable(User.class);
 
         City kiev = new City();
@@ -52,17 +54,19 @@ public class DBUtilsTest {
         User user4 = new User(4, "Serhii", 22, 2500, department1, kiev, user3);
         User user5 = new User(5, "Olex", 24, 4500, department1, odessa, user3);
 
-  /*      idb.addCity(kiev);
+        idb.addCity(kiev);
         idb.addCity(odessa);
         idb.addDepart(department1);
-        idb.addDepart(department2);*/
+        idb.addDepart(department2);
         idb.addUser(user3);
- //       idb.addUser(user1);
-  //      idb.addUser(user2);
-  //      idb.addUser(user4);
-   //     idb.addUser(user5);
+        idb.addUser(user1);
+        idb.addUser(user2);
+        idb.addUser(user4);
+        idb.addUser(user5);
 
         idb.dropTable(User.class);
+        idb.dropTable(Department.class);
+        idb.dropTable(City.class);
 
 
     }
