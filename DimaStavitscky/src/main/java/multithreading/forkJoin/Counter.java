@@ -35,7 +35,7 @@ public class Counter extends RecursiveTask<Integer> {
         } else {
             int mid = (from + to) / 2;
             Counter first = new Counter(values, from, mid, filter);
-            Counter second = new Counter(values, mid, to,  filter);
+            Counter second = new Counter(values, mid, to, filter);
 
             first.fork();
             second.fork();

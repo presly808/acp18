@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.concurrent.ForkJoinPool;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by serhii on 27.01.18.
@@ -13,13 +13,13 @@ import static org.junit.Assert.*;
 public class ForkJoinTestTest {
 
     @Test
-    public void mainTest(){
+    public void mainTest() {
         final int SIZE = 10000000;
         double[] numbers = new double[SIZE];
-        for (int i = 0; i < SIZE; i++){
+        for (int i = 0; i < SIZE; i++) {
             numbers[i] = i;
         }
-        Counter counter = new Counter(numbers, 0, numbers.length, new Filter(){
+        Counter counter = new Counter(numbers, 0, numbers.length, new Filter() {
             @Override
             public boolean accept(double x) {
                 return x < 5_000_000;

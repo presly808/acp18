@@ -3,12 +3,15 @@ package multithreading.mathCounting;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * Created by Anna on 14.09.2016.
  */
-public class MatchCounter implements Callable<Integer>{
+public class MatchCounter implements Callable<Integer> {
 
     private File directory;
     private String keyword;
@@ -22,11 +25,11 @@ public class MatchCounter implements Callable<Integer>{
     }
 
     @Override
-    public Integer call(){
+    public Integer call() {
         count = 0;
         File[] files = directory.listFiles();
-        for (File file : files){
-            if (file.isDirectory()){
+        for (File file : files) {
+            if (file.isDirectory()) {
                 Future<Integer> counter = service.submit(new MatchCounter(file, keyword, service));
 
                 try {
@@ -36,19 +39,20 @@ public class MatchCounter implements Callable<Integer>{
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
-                if (search(file)) {count++;}
+            } else {
+                if (search(file)) {
+                    count++;
+                }
             }
         }
         return count;
     }
 
-    public boolean search(File file){
-        try (Scanner in = new Scanner(file)){
+    public boolean search(File file) {
+        try (Scanner in = new Scanner(file)) {
             boolean found = false;
-            while (!found && in.hasNextLine()){
-                String line  = in.nextLine();
+            while (!found && in.hasNextLine()) {
+                String line = in.nextLine();
                 if (line.contains(keyword)) {
                     System.out.println(file.getPath());
                     found = true;

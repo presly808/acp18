@@ -3,7 +3,9 @@ package multithreading.exclude.bankExample;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.*;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Anna on 12.09.2016.
@@ -11,8 +13,8 @@ import java.util.concurrent.locks.*;
 public class Bank {
 
     private final int[] accounts;
-    private Lock lock;
     Condition condition;
+    private Lock lock;
     private BlockingQueue<Integer> blockingQueue;
 
     public Bank(int n, int initialBalance) {
@@ -22,7 +24,7 @@ public class Bank {
         condition = lock.newCondition();
 
         accounts = new int[n];
-        for (int i = 0; i < accounts.length; i++){
+        for (int i = 0; i < accounts.length; i++) {
             accounts[i] = initialBalance;
         }
     }
@@ -56,13 +58,13 @@ public class Bank {
 
     public int getTotalBalance() {
         int sum = 0;
-        for (int a: accounts){
+        for (int a : accounts) {
             sum += a;
         }
         return sum;
     }
 
-    public int size(){
+    public int size() {
         return accounts.length;
     }
 }
