@@ -15,15 +15,15 @@ public class User extends Base {
     @Column
     private double salary;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id")
     private City city;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "manager_id")
     private User manage;
 
@@ -34,34 +34,24 @@ public class User extends Base {
     public User() {
     }
 
-    public User(int id, String name, int age) {
-        super(id, name);
-        this.age = age;
-    }
-
-    public User(int age, double salary, Department department, City city) {
-        this.age = age;
-        this.salary = salary;
-        this.department = department;
-        this.city = city;
-        manage = null;
-    }
-
-    public User(int id, String name, int age, double salary, Department department, City city) {
-        super(id, name);
-        this.age = age;
-        this.salary = salary;
-        this.department = department;
-        this.city = city;
-    }
-
-    public User(String name, int age, double salary, Department department, City city, User manage) {
-        super.name = name;
+    public User(String name, int age, double salary, Department department, City city, User manage, LocalDateTime localDateTime) {
+        super(name);
         this.age = age;
         this.salary = salary;
         this.department = department;
         this.city = city;
         this.manage = manage;
+        this.localDateTime = localDateTime;
+    }
+
+    public User(int id, String name, int age, double salary, Department department, City city, User manage, LocalDateTime localDateTime) {
+        super(id, name);
+        this.age = age;
+        this.salary = salary;
+        this.department = department;
+        this.city = city;
+        this.manage = manage;
+        this.localDateTime = localDateTime;
     }
 
     @Override
@@ -76,6 +66,31 @@ public class User extends Base {
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        User user = (User) o;
+
+        return super.id == user.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        long temp;
+        result = 31 * result + age;
+        temp = Double.doubleToLongBits(salary);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (department != null ? department.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (manage != null ? manage.hashCode() : 0);
+        result = 31 * result + (localDateTime != null ? localDateTime.hashCode() : 0);
+        return result;
     }
 
     public int getAge() {

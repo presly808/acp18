@@ -24,11 +24,11 @@ public class Department extends Base {
                 '}';
     }
 
-    public int getId(){
+    public int getId() {
         return super.id;
     }
 
-    public String getName(){
+    public String getName() {
         return super.name;
     }
 }

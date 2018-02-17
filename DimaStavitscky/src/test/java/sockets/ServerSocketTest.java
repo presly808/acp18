@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -32,29 +31,6 @@ public class ServerSocketTest {
         MyServerSocket serverSocket = new MyServerSocket(PORT);
         CompletableFuture.runAsync(serverSocket::start);
         Thread.sleep(2000);
-    }
-
-    @Test
-    public void testSimpleCommand() throws IOException {
-        String response = sendReq("localhost", PORT, "os");
-        assertThat(response, anyOf(equalTo("LINUX"), equalTo("WIN")));
-
-
-        String secResp = null;
-        if (Objects.equals(response, "LINUX")) {
-            secResp = sendReq("localhost", PORT, "pwd");
-        } else if (Objects.equals(response, "WIN")) {
-            secResp = sendReq("localhost", PORT, "cd");
-        }
-
-        assertThat(secResp, containsString("sockets"));
-
-    }
-
-    @Test
-    public void testDate() throws IOException {
-        String response = sendReq("localhost", PORT, "help");
-        assertThat(response.toLowerCase(), containsString("cd"));
     }
 
     private static String sendReq(String host, int port, String message) {
@@ -92,6 +68,29 @@ public class ServerSocketTest {
     @AfterClass
     public static void shutDownServer() throws Exception {
         sendReq(LOCALHOST, PORT, "shutdown-server");
+    }
+
+    @Test
+    public void testSimpleCommand() throws IOException {
+        String response = sendReq("localhost", PORT, "os");
+        assertThat(response, anyOf(equalTo("LINUX"), equalTo("WIN")));
+
+
+        String secResp = null;
+        if (Objects.equals(response, "LINUX")) {
+            secResp = sendReq("localhost", PORT, "pwd");
+        } else if (Objects.equals(response, "WIN")) {
+            secResp = sendReq("localhost", PORT, "cd");
+        }
+
+        assertThat(secResp, containsString("acp18"));
+
+    }
+
+    @Test
+    public void testDate() throws IOException {
+        String response = sendReq("localhost", PORT, "ls");
+        assertThat(response.toLowerCase(), containsString("dimastavitscky"));
     }
 
 
