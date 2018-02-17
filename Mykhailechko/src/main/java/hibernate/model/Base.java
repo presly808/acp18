@@ -5,8 +5,7 @@ import javax.persistence.*;
 /**
  * Created by serhii on 03.02.18.
  */
-@Entity
-@Table
+@MappedSuperclass
 public class Base {
 
     @Id
@@ -20,6 +19,10 @@ public class Base {
 
     public Base(int id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public Base(String name) {
         this.name = name;
     }
 
@@ -52,5 +55,13 @@ public class Base {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Base{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

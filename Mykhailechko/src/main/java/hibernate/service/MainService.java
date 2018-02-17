@@ -1,6 +1,7 @@
 package hibernate.service;
 
 import hibernate.exception.AppException;
+import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 
@@ -16,6 +17,8 @@ public interface MainService {
     User register(User user) throws AppException;
 
     Department addDepartment(Department department) throws AppException;
+
+    City addCity(City city) throws AppException;
 
     User update(User user) throws AppException;
 
@@ -33,5 +36,6 @@ public interface MainService {
 
     List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException;
 
+    List<User> findAll();
 
 }

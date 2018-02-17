@@ -1,6 +1,9 @@
 package hibernate.service;
 
+import hibernate.dao.Dao;
+import hibernate.dao.DaoImpl;
 import hibernate.exception.AppException;
+import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 
@@ -12,14 +15,31 @@ import java.util.Map;
  * Created by serhii on 10.02.18.
  */
 public class MainServiceImpl implements MainService {
+
+    private Dao dao;
+
+    public MainServiceImpl() {
+        this.dao = new DaoImpl();
+    }
+
     @Override
     public User register(User user) throws AppException {
-        return null;
+        dao.create(user);
+        return user;
     }
 
     @Override
     public Department addDepartment(Department department) throws AppException {
-        return null;
+
+        dao.create(department);
+
+        return department;
+    }
+
+    @Override
+    public City addCity(City city) throws AppException {
+        dao.create(city);
+        return city;
     }
 
     @Override
@@ -49,6 +69,15 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public List<User> findByName(String name) throws AppException {
+
+        List<User> users = dao.findAll();
+        
+//
+//        for (User :
+//             ) {
+//
+//        }
+
         return null;
     }
 
@@ -61,4 +90,10 @@ public class MainServiceImpl implements MainService {
     public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
         return null;
     }
+
+    @Override
+    public List<User> findAll() {
+        return this.dao.findAll();
+    }
+
 }
