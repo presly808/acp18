@@ -12,6 +12,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -37,7 +41,7 @@ public class MainServiceImplTest {
         DaoDepartmentImpl daoDepartment = new DaoDepartmentImpl(factory);
         DaoCityImpl daoCity = new DaoCityImpl(factory);
 
-        service = new MainServiceImpl(daoUser, daoDepartment);
+        service = new MainServiceImpl(daoUser, daoDepartment, daoCity);
 
         cityKiev = daoCity.create(new City("Kiev"));
         cityLviv = daoCity.create(new City("Lviv"));
@@ -46,10 +50,13 @@ public class MainServiceImplTest {
         departSB = daoDepartment.create(new Department("SB"));
 
         userVova = new User("Vova", 25, 1000.00, departIT, cityKiev, null, LocalDateTime.of(2000, 10, 10, 0, 0));
-        userPetr = new User("Petr", 27, 2000.00, departSB, cityKiev, null, LocalDateTime.of(2010, 10, 10, 0, 0));
+        userPetr = new User("Petr", 27, 2000.00, departSB, cityKiev, userVova, LocalDateTime.of(2010, 10, 10, 0, 0));
 
         daoUser.create(userVova);
         daoUser.create(userPetr);
+
+        userVova.setManage(userPetr);
+        daoUser.update(userVova);
     }
 
     @AfterClass
@@ -66,6 +73,8 @@ public class MainServiceImplTest {
 
         userTest = service.register(userTest);
         assertTrue(userTest.getId() != 0);
+
+        service.remove(userTest);
 
         System.out.println();
 
@@ -88,12 +97,23 @@ public class MainServiceImplTest {
 
     }
 
-    @Test
-    public void remove() throws Exception {
-    }
 
     @Test
     public void getUsersGroupByDepartment() throws Exception {
+
+        Map<Department, List<User>> expected = new HashMap<>();
+        List depItUsers = new ArrayList<User>();
+        depItUsers.add(userVova);
+        expected.put(departIT, depItUsers);
+
+        List depSbUsers = new ArrayList<User>();
+        depSbUsers.add(userPetr);
+        expected.put(departSB, depSbUsers);
+
+        Map<Department, List<User>> actual = service.getUsersGroupByDepartment();
+
+        Assert.assertEquals(expected, actual);
+
     }
 
     @Test
@@ -103,6 +123,11 @@ public class MainServiceImplTest {
 
     @Test
     public void getUsersGroupByManagersAndOrderedThatLiveInKiev() throws Exception {
+
+
+
+        service.getUsersGroupByManagersAndOrderedThatLiveInKiev();
+
     }
 
     @Test

@@ -1,18 +1,14 @@
 package hibernate.dao;
 
 import hibernate.exception.AppException;
-import hibernate.model.City;
-import hibernate.model.Department;
 import hibernate.model.User;
 import org.apache.log4j.Logger;
-import org.hibernate.transform.Transformers;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 public class DaoUserImpl implements DaoUser {
 
@@ -77,13 +73,13 @@ public class DaoUserImpl implements DaoUser {
     }
 
     @Override
-    public List getUsersByCityGroupByManagersAndOrdered(City city) throws AppException {
+    public List getUsersByCityAndOrdered(String city) throws AppException {
 
-        LOG.info("getUsersByCityGroupByManagersAndOrdered UserDaoImpl");
+        LOG.info("getUsersByCityAndOrdered UserDaoImpl");
 
-        String queryTxt = "SELECT e.manage, e " +
+        String queryTxt = "SELECT e " +
                           "FROM User e " +
-                          "WHERE e.city = :city " +
+                          "WHERE e.city.name = :city " +
                           "ORDER BY e.name";
 
         EntityManager manager = factory.createEntityManager();

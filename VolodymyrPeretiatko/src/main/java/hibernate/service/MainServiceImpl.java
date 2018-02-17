@@ -1,6 +1,7 @@
 package hibernate.service;
 
 import hibernate.dao.Dao;
+import hibernate.dao.DaoCity;
 import hibernate.dao.DaoUser;
 import hibernate.exception.AppException;
 import hibernate.model.Department;
@@ -10,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -22,7 +25,8 @@ public class MainServiceImpl implements MainService {
     private DaoUser userDao;
     private Dao<Department, Integer> departmentDao;
 
-    public MainServiceImpl(DaoUser userDao, Dao<Department, Integer> departmentDao) {
+
+    public MainServiceImpl(DaoUser userDao, Dao<Department, Integer> departmentDao, DaoCity daoCity) {
         this.userDao = userDao;
         this.departmentDao = departmentDao;
     }
@@ -87,7 +91,13 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Map<Department, List<User>> getUsersGroupByDepartment() throws AppException {
-        return null;
+
+        List<User> allUsers = userDao.findAll();
+
+        Map<Department, List<User>> departmentListMap = allUsers.stream()
+                .collect(Collectors.groupingBy(User::getDepartment, Collectors.toList()));
+
+        return departmentListMap;
     }
 
     @Override
@@ -106,7 +116,13 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppException {
-        return null;
+
+        List<User> resultQuery = userDao.getUsersByCityAndOrdered("Kiev");
+
+        Map<User, List<User>> departmentListMap = resultQuery.stream()
+                .collect(Collectors.groupingBy(User::getManage, Collectors.toList()));
+
+        return departmentListMap;
     }
 
     @Override
@@ -121,7 +137,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
-        return null;
+        return userDao.findByDateRange(start, end);
     }
 
     public User findUserById(Integer id){

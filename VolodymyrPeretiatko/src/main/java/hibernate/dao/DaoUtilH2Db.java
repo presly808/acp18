@@ -1,8 +1,7 @@
 package hibernate.dao;
 
 import hibernate.model.Base;
-
-import hibernate.model.City;
+git
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManagerFactory;
@@ -91,6 +90,21 @@ public class DaoUtilH2Db {
         return manager.createQuery("SELECT e FROM " + clsName + " e").getResultList();
 
     }
+
+    public static Base findByName(Class cls, String name, EntityManagerFactory factory){
+
+        String clsName = cls.getSimpleName();
+
+        LOG.info("get all " + clsName);
+
+        EntityManager manager = factory.createEntityManager();
+
+        List result = manager.createQuery("SELECT e FROM " + clsName + " e").getResultList();
+
+        return (Base) result.get(0);
+
+    }
+
 
     public static List<?> findAll(Class cls, EntityManagerFactory factory, int offset, int length){
 

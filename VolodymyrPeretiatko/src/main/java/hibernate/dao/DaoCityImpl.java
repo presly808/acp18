@@ -5,7 +5,7 @@ import hibernate.model.City;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-public class DaoCityImpl implements Dao<City, Integer>{
+public class DaoCityImpl implements DaoCity{
 
     private EntityManagerFactory factory;
 
@@ -46,5 +46,10 @@ public class DaoCityImpl implements Dao<City, Integer>{
     @Override
     public boolean removeAll() {
         return DaoUtilH2Db.removeAll(City.class, factory);
+    }
+
+    @Override
+    public City getByName(String name) {
+        return (City) DaoUtilH2Db.findByName(City.class, name, factory);
     }
 }
