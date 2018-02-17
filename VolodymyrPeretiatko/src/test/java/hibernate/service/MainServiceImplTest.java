@@ -123,17 +123,13 @@ public class MainServiceImplTest {
 
     @Test
     public void findByName() throws Exception {
-        Assert.assertTrue(service.findByName("Petr").size() == 1);
+        assertTrue(service.findByName("Petr").size() == 1);
     }
 
     @Test
     public void findInRange() throws Exception {
-        Assert.assertTrue(service.findInRange(1900.00, 2100.00).size() == 1);
+        assertTrue(service.findInRange(1900.00, 2100.00).size() == 1);
     }
 
-    @Test
-    public void findByDate() throws Exception {
-
-    }
 
 }

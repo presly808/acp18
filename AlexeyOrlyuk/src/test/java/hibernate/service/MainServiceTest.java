@@ -3,7 +3,7 @@ package hibernate.service;
 import hibernate.dao.Dao;
 import hibernate.dao.DepartmentDao;
 import hibernate.dao.UserDao;
-import hibernate.exception.AppException;
+import hibernate.exceptionExclude.AppException;
 import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;

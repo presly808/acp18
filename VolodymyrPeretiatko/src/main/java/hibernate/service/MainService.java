@@ -1,6 +1,6 @@
 package hibernate.service;
 
-import hibernate.exception.AppExceptionExclude;
+import hibernate.exceptionExclude.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
 
@@ -13,25 +13,25 @@ import java.util.Map;
  */
 public interface MainService {
 
-    User register(User user) throws AppExceptionExclude;
+    User register(User user) throws AppException;
 
-    Department addDepartment(Department department) throws AppExceptionExclude;
+    Department addDepartment(Department department) throws AppException;
 
-    User update(User user) throws AppExceptionExclude;
+    User update(User user) throws AppException;
 
-    User remove(User user) throws AppExceptionExclude;
+    User remove(User user) throws AppException;
 
-    Map<Department, List<User>> getUsersGroupByDepartment() throws AppExceptionExclude;
+    Map<Department, List<User>> getUsersGroupByDepartment() throws AppException;
 
-    Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppExceptionExclude;
+    Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppException;
 
-    Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppExceptionExclude;
+    Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppException;
 
-    List<User> findByName(String name) throws AppExceptionExclude;
+    List<User> findByName(String name) throws AppException;
 
-    List<User> findInRange(double minSal, double maxSal) throws AppExceptionExclude;
+    List<User> findInRange(double minSal, double maxSal) throws AppException;
 
-    List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppExceptionExclude;
+    List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException;
 
 
 }
