@@ -7,6 +7,7 @@ import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,8 @@ public class MainServiceImpl implements MainService {
 
     private Dao dao;
 
-    public MainServiceImpl() {
-        this.dao = new DaoImpl();
+    public MainServiceImpl(EntityManager em) {
+        this.dao = DaoImpl.getInstance(em);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class MainServiceImpl implements MainService {
 //
 //        }
 
-        return null;
+        return users;
     }
 
     @Override

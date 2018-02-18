@@ -6,13 +6,20 @@ import hibernate.model.Department;
 import hibernate.model.User;
 import hibernate.service.MainService;
 import hibernate.service.MainServiceImpl;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Run {
     public static void main(String[] args) throws AppException {
 
-        MainService mainService = new MainServiceImpl();
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hiberdb");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        MainService mainService = new MainServiceImpl(entityManager);
 
         City city1 = new City("Kyiv");
         City city2 = new City("Lviv");
@@ -45,5 +52,12 @@ public class Run {
         for (User u : users) {
             System.out.println(u.toString());
         }
+
+//        List<User> user1 = mainService.findAll();
+//
+//        for (User u1 : user1) {
+//               u1.toString();
+//        }
+
     }
 }

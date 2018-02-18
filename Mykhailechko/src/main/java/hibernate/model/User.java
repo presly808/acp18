@@ -122,14 +122,14 @@ public class User extends Base {
 
     @Override
     public String toString() {
-        return "User{" +
-                "age=" + age +
+        return "User{id=" + id +
+                ", name='" + name +
+                ", age=" + age +
                 ", salary=" + salary +
                 ", department=" + department +
                 ", city=" + city +
+                ", manage=" + manage +
                 ", localDateTime=" + localDateTime +
-                ", id=" + id +
-                ", name='" + name + '\'' +
                 '}';
     }
 }

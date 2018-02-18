@@ -9,18 +9,27 @@ import java.util.List;
 
 public class DaoImpl<T,ID> implements Dao<T,ID> {
 
-    //private Class
+    private static final DaoImpl instance = new DaoImpl();
+    private static EntityManager entityManager;
     private T persistentClass;
-    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("hiberdb");
-    private static EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     // todo factory must be passed or manage, we should not create factory inside
-    public DaoImpl() {
+
+    //private DaoImpl() {
+    //}
+
+    public static DaoImpl getInstance(EntityManager em){
+        //entityManagerFactory = Persistence.createEntityManagerFactory("hiberdb");
+        //entityManager = entityManagerFactory.createEntityManager();
+         entityManager = em;
+         return instance;
     }
 
     @Override
     public List<T> findAll() {
         List<T> result = entityManager.createQuery("SELECT t FROM " + getPersistentClass().getClass().getSimpleName() + " t").getResultList();
+
+        //List<T> result = entityManager.createQuery("SELECT t FROM T t").getResultList();
         return result;
     }
 
