@@ -70,4 +70,40 @@ public class DBUtilsTest {
 
 
     }
+
+    @Test
+    public void setFieldValue() throws Exception {
+
+        IDB idb = new DBUtils("jdbc:sqlite:D:\\DB\\database.db");
+
+        idb.createTable(User.class);
+
+        City kiev = new City();
+        kiev.setId(1);
+        kiev.setName("Kiev");
+
+        City odessa = new City();
+        odessa.setId(2);
+        odessa.setName("Oddessa");
+
+        Department department1 = new Department();
+        department1.setId(1);
+        department1.setName("IT");
+
+
+        Department department2 = new Department();
+        department2.setId(2);
+        department2.setName("QA");
+
+        User user3 = new User(3, "Yura", 35, 1500, department2, kiev, null);
+
+        idb.setFieldValue(user3,"age", 5);
+
+        user3.setAge(5);
+
+        assertEquals(user3.getAge(),5);
+
+        idb.dropTable(User.class);
+
+    }
 }

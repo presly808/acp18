@@ -5,6 +5,7 @@ import db.model.Department;
 import db.model.User;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -47,5 +48,8 @@ public interface IDB {
     boolean dropTable(Class clazz);
 
     String nativeSQL(String sql);
+
+    public <T> void setFieldValue(T obj, String fieldName, Object fieldValue) throws NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException;
 
 }
