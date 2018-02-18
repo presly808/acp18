@@ -95,7 +95,15 @@ public class DBUtils implements IDB {
 
         sqlCreateTable.deleteCharAt(sqlCreateTable.length() - 1).append(");");
 
-        return executeDDL(sqlCreateTable.toString());
+        boolean result;
+        try {
+            result = executeSQL(sqlCreateTable.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return result;
     }
 
     @Override
@@ -154,51 +162,34 @@ public class DBUtils implements IDB {
     @Override
     public boolean dropTable(Class clazz) {
 
-        StringBuilder sqlCreateTable = new StringBuilder();
+        StringBuilder sqlDropTable = new StringBuilder();
 
-        sqlCreateTable.append("DROP TABLE ").append(clazz.getSimpleName()).append(";");
+        sqlDropTable.append("DROP TABLE ").append(clazz.getSimpleName()).append(";");
 
-        return executeDDL(sqlCreateTable.toString());
+        boolean result = false;
+        try {
+            result = executeSQL(sqlDropTable.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return result;
     }
 
     @Override
     public String nativeSQL(String sql) {
 
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement statement = conn.createStatement();) {
-            statement.execute(sql.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
         return null;
     }
 
-    private boolean executeDDL(String sql) {
+
+    public boolean executeSQL(String sql) throws SQLException {
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();) {
-            statement.execute(sql.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            return statement.execute(sql.toString());
         }
-
-        return true;
-    }
-
-    public boolean executeSQL(String sql) {
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement statement = conn.createStatement();) {
-            statement.execute(sql.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
     }
 
     private <T> Map<String, String> getFieldsFromObject(T obj) {
@@ -284,11 +275,16 @@ public class DBUtils implements IDB {
             sqlHeader.append(key).append(",");
             sqlValues.append(map.get(key)).append(",");
         }
-        sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
         sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").
-                append("VALUES (").append(sqlValues);
+                append("VALUES (");
+        sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
 
-        executeSQL(sqlHeader.toString());
+        try {
+            executeSQL(sqlHeader.append(sqlValues).toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
 
         return obj;
     }
