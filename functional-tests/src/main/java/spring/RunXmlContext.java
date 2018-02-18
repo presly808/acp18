@@ -9,7 +9,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class RunXmlContext {
 
     public static void main(String[] args) {
-        ApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("spring-context.xml");
+        ApplicationContext xmlApplicationContext =
+                new ClassPathXmlApplicationContext("/spring/spring-context.xml");
         IUserService iUserService = xmlApplicationContext.getBean(IUserService.class);
 
     }
