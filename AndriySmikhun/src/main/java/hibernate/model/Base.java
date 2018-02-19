@@ -1,11 +1,18 @@
 package hibernate.model;
 
+import javax.persistence.*;
+
 /**
  * Created by serhii on 03.02.18.
  */
-public class Base {
 
+@MappedSuperclass
+@Table(name = "base")
+public class Base {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
+    @Column
     protected String name;
 
     public Base() {

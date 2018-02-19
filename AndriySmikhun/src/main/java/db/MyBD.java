@@ -1,6 +1,7 @@
 package db;
 
 import db.model.Base;
+import db.model.User;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -10,8 +11,8 @@ import java.sql.SQLException;
 public class MyBD {
     public static void main(String[] args) {
 
-        String url = "jdbc:sqlite:database.db";
-/*
+        String url = "jdbc:sqlite:/home/andriy/IdeaProjects/acp18/AndriySmikhun/src/main/java/hibernate/database.db";
+
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
@@ -21,10 +22,10 @@ public class MyBD {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-*/
-       DBUtils dbutils = new DBUtils(url);
 
-        //System.out.println("Create Table" + dbutils.createTable(Base.class));
-        System.out.println("Drop Table" + dbutils.dropTable(Base.class));
+       //DBUtils dbutils = new DBUtils(url);
+
+       // System.out.println("Create Table" + dbutils.createTable(User.class));
+       // System.out.println("Drop Table" + dbutils.dropTable(User.class));
     }
 }

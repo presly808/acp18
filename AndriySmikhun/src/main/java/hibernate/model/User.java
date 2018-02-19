@@ -1,18 +1,35 @@
 package hibernate.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * Created by serhii on 03.02.18.
  */
-public class User extends Base {
 
+@Entity
+@Table(name = "users")
+public class User extends Base {
+    @Column
     private int age;
+
+    @Column
     private double salary;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
+
+    @ManyToOne
+    @JoinColumn(name = "manage_id", referencedColumnName = "id")
     private User manage;
+
     // start work date
+    @Column
     private LocalDateTime localDateTime;
 
     public User() {
