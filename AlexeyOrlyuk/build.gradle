@@ -9,6 +9,7 @@ repositories {
 }
 
 def springVersion = '5.0.3.RELEASE'
+def aspectJVersion = '1.8.13'
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -48,4 +49,20 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.springframework/spring-orm
     compile group: 'org.springframework', name: 'spring-orm', version: springVersion
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-tx
+    compile group: 'org.springframework', name: 'spring-tx', version: springVersion
+
+
+    // AspectJ:
+
+    // https://mvnrepository.com/artifact/org.aspectj/aspectjtools
+    compile group: 'org.aspectj', name: 'aspectjtools', version: aspectJVersion
+
+    // https://mvnrepository.com/artifact/org.aspectj/aspectjrt
+    compile group: 'org.aspectj', name: 'aspectjrt', version: aspectJVersion
+
+    // https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: aspectJVersion
+
 }

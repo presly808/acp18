@@ -33,8 +33,8 @@ public class UserServiceTestWithXMLConfig {
 
     @Before
     public void setUp() throws Exception {
-        myUserDao = (MyUserDao) context.getBean("myUserDao");
-        myUserService = (MyUserService) context.getBean("myUserService");
+        myUserDao = context.getBean(MyUserDao.class);
+        myUserService = context.getBean(MyUserService.class);
 
         testMyUser = myUserDao.create(new MyUser("Test_user"));
     }
