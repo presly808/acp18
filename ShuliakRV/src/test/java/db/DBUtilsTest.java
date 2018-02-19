@@ -5,6 +5,7 @@ import db.model.Department;
 import db.model.User;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
 public class DBUtilsTest {
@@ -23,7 +24,7 @@ public class DBUtilsTest {
     }
 
     @Test
-    public void addUser() throws Exception {
+    public void addUser1() throws Exception {
 
         IDB idb = new DBUtils("jdbc:sqlite:D:\\DB\\database.db");
 
@@ -97,13 +98,79 @@ public class DBUtilsTest {
 
         User user3 = new User(3, "Yura", 35, 1500, department2, kiev, null);
 
-        idb.setFieldValue(user3,"age", 5);
-
         user3.setAge(5);
 
         assertEquals(user3.getAge(),5);
 
         idb.dropTable(User.class);
 
+    }
+
+    @Test
+    public void executeSQL(String sql) {
+
+        IDB idb = new DBUtils("jdbc:sqlite:D:\\DB\\database.db");
+
+        idb.createTable(User.class);
+
+        City kiev = new City();
+        kiev.setId(1);
+        kiev.setName("Kiev");
+
+        City odessa = new City();
+        odessa.setId(2);
+        odessa.setName("Oddessa");
+
+        Department department1 = new Department();
+        department1.setId(1);
+        department1.setName("IT");
+
+
+        Department department2 = new Department();
+        department2.setId(2);
+        department2.setName("QA");
+
+    }
+
+    @Test
+    public void addUser() throws Exception {
+
+        IDB idb = new DBUtils("jdbc:sqlite:D:\\DB\\database.db");
+
+        idb.createTable(User.class);
+
+        City kiev = new City();
+        kiev.setId(1);
+        kiev.setName("Kiev");
+
+        City odessa = new City();
+        odessa.setId(2);
+        odessa.setName("Oddessa");
+
+        Department department1 = new Department();
+        department1.setId(1);
+        department1.setName("IT");
+
+
+        Department department2 = new Department();
+        department2.setId(2);
+        department2.setName("QA");
+
+
+        User yura = new User(120, "TestUser", 35, 1500, null, null, null);
+        User actual = idb.addUser(yura);
+        assertThat(actual.getName(), equalTo("TestUser"));
+    }
+
+    @Test
+    public void removeUser() throws Exception {
+
+        IDB idb = new DBUtils("jdbc:sqlite:D:\\DB\\database.db");
+
+        idb.createTable(User.class);
+
+        User yura = new User(3, "Yura", 35, 1500, null, null, null);
+        User actual = idb.removeUser(yura);
+        assertThat(actual.getName(), equalTo("Yura"));
     }
 }

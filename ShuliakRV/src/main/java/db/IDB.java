@@ -49,7 +49,4 @@ public interface IDB {
 
     String nativeSQL(String sql);
 
-    public <T> void setFieldValue(T obj, String fieldName, Object fieldValue) throws NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException;
-
 }

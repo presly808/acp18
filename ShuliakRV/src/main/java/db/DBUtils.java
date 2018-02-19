@@ -6,6 +6,8 @@ import db.model.User;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +43,7 @@ public class DBUtils implements IDB {
 
     public List<User> getAll() {
         try {
-            return querySQL(User.class,"SELECT * FROM USER");
+            return querySQL(User.class, "SELECT * FROM USER");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -60,12 +62,50 @@ public class DBUtils implements IDB {
 
     @Override
     public <T> T addGen(Class<T> tClass, T obj) {
-        return null;
+
+        StringBuilder sqlHeader = new StringBuilder();
+        StringBuilder sqlValues = new StringBuilder();
+
+        sqlHeader.append("INSERT INTO ").append(tClass.getSimpleName()).append(" (");
+
+        Map<String, String> map = null;
+        try {
+            map = getFieldsFromObject(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        for (String key : map.keySet()) {
+            sqlHeader.append(key).append(",");
+            sqlValues.append(map.get(key)).append(",");
+        }
+        sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").
+                append("VALUES (");
+        sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
+
+        return executeSQL(sqlHeader.append(sqlValues).toString()) > 0 ? obj : null;
     }
+
 
     @Override
     public <T> T removeGen(Class<T> tClass, T obj) {
-        return null;
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("DELETE FROM ").append(tClass.getSimpleName()).append(" WHERE id = ");
+
+        Map<String, String> map = null;
+        try {
+            map = getFieldsFromObject(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        sql.append(map.get("id")).append(";");
+
+        return executeSQL(sql.toString()) > 0 ? obj : null;
     }
 
     @Override
@@ -99,7 +139,7 @@ public class DBUtils implements IDB {
         }
         sqlCreateTable.deleteCharAt(sqlCreateTable.length() - 1).append(");");
 
-        return executeSQL(sqlCreateTable.toString()) >= 0 ? true : false;
+        return executeSQL(sqlCreateTable.toString()) == 0 ? true : false;
     }
 
     @Override
@@ -125,49 +165,38 @@ public class DBUtils implements IDB {
     @Override
     public User addUser(User userWithoutId) {
 
-        try {
-            return addObject(userWithoutId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return addGen(User.class, userWithoutId);
+
     }
 
     @Override
     public User removeUser(User user) {
-        return null;
+
+        return removeGen(User.class, user);
     }
 
     @Override
     public City addCity(City city) {
 
-        try {
-            return addObject(city);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return addGen(City.class, city);
     }
 
     @Override
     public City removeCity(City city) {
-        return null;
+
+        return removeGen(City.class, city);
     }
 
     @Override
     public Department addDepart(Department department) {
 
-        try {
-            return addObject(department);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return addGen(Department.class, department);
     }
 
     @Override
     public Department removeDepart(Department department) {
-        return null;
+
+        return removeGen(Department.class, department);
     }
 
     @Override
@@ -177,7 +206,7 @@ public class DBUtils implements IDB {
 
         sqlDropTable.append("DROP TABLE ").append(clazz.getSimpleName()).append(";");
 
-        return executeSQL(sqlDropTable.toString()) >= 0 ? true : false;
+        return executeSQL(sqlDropTable.toString()) == 0 ? true : false;
     }
 
     @Override
@@ -191,6 +220,7 @@ public class DBUtils implements IDB {
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();) {
+            System.out.println(sql);
             return statement.executeUpdate(sql);
         } catch (SQLException e) {
             return -1;
@@ -200,28 +230,33 @@ public class DBUtils implements IDB {
 
     private <T> List<T> querySQL(Class<T> clazz, String sql) throws InvocationTargetException,
             SQLException, InstantiationException,
-            NoSuchMethodException, IllegalAccessException {
+            NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();
-             ResultSet rs = statement.executeQuery(sql);) {
+             ResultSet rs = statement.executeQuery(sql);)
+        {
             return getListFromResultSet(clazz, rs);
         }
     }
 
     private <T> List<T> getListFromResultSet(Class<T> clazz, ResultSet rs)
             throws SQLException, IllegalAccessException, InstantiationException,
-            NoSuchMethodException, InvocationTargetException {
+            NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
 
         List<T> list = new ArrayList<>();
+
+        int i=0;
 
         while (rs.next()) {
 
             T obj = clazz.newInstance();
 
-            while (clazz != null) {
+            Class<T> cl = clazz;
 
-                for (Field field : clazz.getDeclaredFields()) {
+            while (cl != null) {
+
+                for (Field field : cl.getDeclaredFields()) {
 
                     if (!field.isSynthetic()) {
 
@@ -236,17 +271,19 @@ public class DBUtils implements IDB {
                         String fieldNameTable = fieldName;
 
                         if (fieldType == null) {
-                            fieldNameTable = fieldName + "Id";
+                           // fieldNameTable += "Id";
+                            fieldValue = null;
+                        } else {
+
+                            fieldValue = rs.getObject(fieldNameTable);
                         }
 
-                        fieldValue = rs.getObject(fieldNameTable);
-
-                        setFieldValue(obj, fieldName, fieldValue);
+                        setFieldValue(obj, fieldName, field.getType(), fieldValue);
 
                     }
                 }
 
-                clazz = (Class<T>) clazz.getSuperclass();
+                cl = (Class<T>) cl.getSuperclass();
 
             }
 
@@ -258,10 +295,10 @@ public class DBUtils implements IDB {
 
     }
 
+    private <T> Map<String, String> getFieldsFromObject(T obj) throws NoSuchMethodException,
+            IllegalAccessException, InvocationTargetException {
 
-    private <T> Map<String, String> getFieldsFromObject(T obj) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-
-        Class<T> clazz = (Class<T>) obj.getClass();
+        Class clazz = obj.getClass();
 
         Map<String, String> map = new HashMap<>();
 
@@ -273,91 +310,68 @@ public class DBUtils implements IDB {
 
                     String fieldName = field.getName();
 
-                    String fieldValue = "";
+                    String fieldValue = "NULL";
 
                     String fieldType = field.getType().getSimpleName();
+
+                    Object value = getFieldValue(obj, fieldName);
 
                     fieldType = fieldTypeMap.get(fieldType);
 
                     if (fieldType == null) {
 
-                        Object target = null;
-                        try {
-                            target = field.get(obj);
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                            return null;
-                        }
+                        fieldName += "Id";
+                    }
 
-                        if (target == null) {
-                            fieldValue = "NULL";
+                    if (value != null) {
 
-                        } else {
-                            fieldName += "Id";
-                            fieldValue = (String) getFieldValue(target, "Id");
-                        }
+                        if (fieldType == null) {
 
-                    } else {
-                        fieldValue = (String) getFieldValue(obj, fieldName);
-                        if (fieldType.equals("TEXT")) {
-                            fieldValue = String.format("'%s'", fieldValue);
+                            fieldValue = getFieldValue(value, "id").toString();
+
+                        } else
+
+                        {
+                            fieldValue = value.toString();
+
+                            if (fieldType.equals("TEXT")) {
+                                fieldValue = String.format("'%s'", fieldValue);
+                            }
                         }
                     }
+
                     map.put(fieldName, fieldValue);
                 }
+
             }
 
-            clazz = (Class<T>) clazz.getSuperclass();
+            clazz = clazz.getSuperclass();
         }
 
         return map;
     }
 
+
     private <T> Object getFieldValue(T obj, String fieldName)
             throws NoSuchMethodException, InvocationTargetException,
             IllegalAccessException {
 
-        Object value;
-
-        value = obj.getClass().getMethod("get" +
+        Method meth = obj.getClass().getMethod("get" +
                 fieldName.substring(0, 1).toUpperCase() +
-                fieldName.substring(1)).
-                invoke(obj).toString();
+                fieldName.substring(1));
 
-        return value;
+        return meth.invoke(obj);
     }
 
-    public <T> void setFieldValue(T obj, String fieldName, Object fieldValue) throws NoSuchMethodException,
+    private <T> void setFieldValue(T obj, String fieldName, Class fieldType, Object fieldValue) throws NoSuchMethodException,
             InvocationTargetException, IllegalAccessException {
 
-        obj.getClass().getMethod("set" +
+        Method meth = obj.getClass().getMethod("set" +
                 fieldName.substring(0, 1).toUpperCase() +
-                fieldName.substring(1)).
-                invoke(obj, fieldValue);
-    }
+                fieldName.substring(1), fieldType);
 
+        meth.invoke(obj, fieldValue);
 
-    private <T> T addObject(T obj) throws NoSuchMethodException,
-            IllegalAccessException, InvocationTargetException {
-
-        StringBuilder sqlHeader = new StringBuilder();
-        StringBuilder sqlValues = new StringBuilder();
-
-        Class<T> classUser = (Class<T>) obj.getClass();
-
-        sqlHeader.append("INSERT INTO ").append(classUser.getSimpleName()).append(" (");
-
-        Map<String, String> map = getFieldsFromObject(obj);
-
-        for (String key : map.keySet()) {
-            sqlHeader.append(key).append(",");
-            sqlValues.append(map.get(key)).append(",");
-        }
-        sqlHeader.deleteCharAt(sqlHeader.length() - 1).append(") ").
-                append("VALUES (");
-        sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
-
-        return executeSQL(sqlHeader.append(sqlValues).toString()) >= 0 ? obj : null;
     }
 
 

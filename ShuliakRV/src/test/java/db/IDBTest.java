@@ -3,7 +3,6 @@ package db;
 import db.model.City;
 import db.model.Department;
 import db.model.User;
-import org.hamcrest.CoreMatchers;
 import org.junit.*;
 
 import java.lang.reflect.Field;
@@ -162,6 +161,7 @@ public class IDBTest {
     public void removeCity() throws Exception {
         City city = new City();
         city.setId(1);
+
         City ret = idb.removeCity(city);
         assertThat(ret.getName(), equalTo("Kiev"));
     }
