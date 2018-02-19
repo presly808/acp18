@@ -3,8 +3,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence "
         version="2.0">
-
-
     <persistence-unit name="spring-h2-unit" transaction-type="RESOURCE_LOCAL">
         <description>Spring H2 tutor DB.</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>

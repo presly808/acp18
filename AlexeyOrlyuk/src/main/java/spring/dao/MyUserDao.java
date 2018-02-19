@@ -1,5 +1,7 @@
 package spring.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import spring.model.MyUser;
 
 import javax.persistence.EntityManager;
@@ -9,8 +11,10 @@ import javax.persistence.EntityTransaction;
 /**
  * Created by alex323glo on 18.02.18.
  */
+@Component
 public class MyUserDao implements IMyUserDao {
 
+    @Autowired
     private EntityManagerFactory factory;
 
     public EntityManagerFactory getFactory() {

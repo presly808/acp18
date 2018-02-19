@@ -1,5 +1,7 @@
 package spring.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import spring.dao.IMyUserDao;
 import spring.exception.AppException;
 import spring.model.MyUser;
@@ -7,8 +9,10 @@ import spring.model.MyUser;
 /**
  * Created by alex323glo on 18.02.18.
  */
+@Service
 public class MyUserService implements IMyUserService {
 
+    @Autowired
     private IMyUserDao myUserDao;
 
     public IMyUserDao getMyUserDao() {

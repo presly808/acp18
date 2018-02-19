@@ -15,7 +15,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@Ignore
 public class UserServiceTestWithAnnotationConfig {
 
     private static ApplicationContext context;
@@ -31,10 +30,10 @@ public class UserServiceTestWithAnnotationConfig {
 
     @Before
     public void setUp() throws Exception {
-        testMyUser = myUserDao.create(new MyUser("Test_user"));
-
         myUserDao = context.getBean(MyUserDao.class);
         myUserService = context.getBean(MyUserService.class);
+
+        testMyUser = myUserDao.create(new MyUser("Test_user"));
     }
 
     @After
@@ -45,7 +44,7 @@ public class UserServiceTestWithAnnotationConfig {
 
         try {
             transaction.begin();
-            List<MyUser> existentUsers = manager.createQuery("SELECT u FROM User u", MyUser.class).getResultList();
+            List<MyUser> existentUsers = manager.createQuery("SELECT mu FROM MyUser mu", MyUser.class).getResultList();
             System.out.println("tearDown(): Removing Users:");
             existentUsers.forEach(System.out::println);
             existentUsers.forEach(manager::remove);
