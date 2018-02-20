@@ -93,7 +93,7 @@ public class IDBTest {
         List<User> salariesUsers =
                 idb.selectWithFilter(User.class, map, User.class.getDeclaredField("salary"), 2);
 
-        assertThat(salariesUsers.get(0).getSalary(), equalTo(2500.0));
+        assertThat(salariesUsers.get(0).getSalary(), equalTo(1500.0));
         assertThat(salariesUsers.size(), equalTo(2));
         assertThat(salariesUsers.get(1).getSalary(), equalTo(2500.0));
 

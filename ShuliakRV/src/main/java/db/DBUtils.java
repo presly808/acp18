@@ -62,7 +62,48 @@ public class DBUtils implements IDB {
 
     @Override
     public <T> List<T> selectWithFilter(Class<T> type, Map<Field, Object> filters, Field orderBy, int limit) {
-        return null;
+
+        List<T> list;
+
+        StringBuilder joinStatement = new StringBuilder();
+
+        StringBuilder whereStatement = new StringBuilder();
+
+
+        for (Field key : filters.keySet()) {
+
+            String fieldName = key.getName();
+
+            String fieldType = key.getType().getSimpleName();
+
+            Object fieldvalue = filters.get(key);
+
+            fieldType = fieldTypeMap.get(fieldType);
+
+            if (fieldType==null) {
+                fieldName +="Id";
+
+                joinStatement.append("JOIN ").append(key.getType().getSimpleName()).
+                        append(" ON ").append(type.getSimpleName()+"."+fieldName + " = "+
+                        key.getType().getSimpleName()+".id" );
+            }
+            else
+            {
+                whereStatement.append(fieldName+" = "+fieldvalue.toString()).append(" AND ");
+            }
+
+        }
+
+        try {
+            list = querySQL(type,"SELECT * FROM "+type.getSimpleName()+" "+joinStatement
+                    +" WHERE "+whereStatement.toString()+" 1=1 "+" ORDER BY "+orderBy.getName()+
+            " LIMIT "+limit);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return list;
     }
 
     @Override
@@ -150,7 +191,7 @@ public class DBUtils implements IDB {
     @Override
     public boolean removeAllValues(Class clazz) {
 
-        return executeSQL("DELETE FROM" + clazz.getSimpleName()+";") > 0 ? true : false;
+        return executeSQL("DELETE FROM " + clazz.getSimpleName()+";") > 0 ? true : false;
     }
 
     @Override
@@ -246,9 +287,36 @@ public class DBUtils implements IDB {
     @Override
     public String nativeSQL(String sql) {
 
-        return null;
-    }
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement statement = conn.createStatement();) {
 
+            StringBuilder str = new StringBuilder();
+
+            boolean res = statement.execute(sql);
+
+            if (res) {
+                ResultSet rs = statement.getResultSet();
+                int columnCount = rs.getMetaData().getColumnCount();
+                while (rs.next()) {
+                    for (int i = 0; i < columnCount; ) {
+                        str.append(rs.getString(i + 1));
+                        if (++i < columnCount) str.append(",");
+                    }
+                    str.append(System.getProperty("line.separator"));
+                }
+            }
+            else
+            {
+                str.append(String.valueOf(statement.getUpdateCount()));
+            }
+
+            return str.toString();
+
+        } catch (SQLException e) {
+            return "Error";
+        }
+
+    }
 
     private int executeSQL(String sql) {
 
@@ -265,7 +333,7 @@ public class DBUtils implements IDB {
     private <T> List<T> querySQL(Class<T> clazz, String sql) throws
             InvocationTargetException, SQLException, InstantiationException,
             NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
-
+        System.out.println(sql);
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();
              ResultSet rs = statement.executeQuery(sql);) {
