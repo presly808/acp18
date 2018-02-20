@@ -228,14 +228,13 @@ public class DBUtils implements IDB {
 
     }
 
-    private <T> List<T> querySQL(Class<T> clazz, String sql) throws InvocationTargetException,
-            SQLException, InstantiationException,
+    private <T> List<T> querySQL(Class<T> clazz, String sql) throws
+            InvocationTargetException, SQLException, InstantiationException,
             NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();
-             ResultSet rs = statement.executeQuery(sql);)
-        {
+             ResultSet rs = statement.executeQuery(sql);) {
             return getListFromResultSet(clazz, rs);
         }
     }
@@ -245,8 +244,6 @@ public class DBUtils implements IDB {
             NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
 
         List<T> list = new ArrayList<>();
-
-        int i=0;
 
         while (rs.next()) {
 
@@ -268,14 +265,19 @@ public class DBUtils implements IDB {
 
                         fieldType = fieldTypeMap.get(fieldType);
 
-                        String fieldNameTable = fieldName;
-
                         if (fieldType == null) {
-                           // fieldNameTable += "Id";
-                            fieldValue = null;
+
+                            fieldValue = rs.getObject(fieldName + "Id");
+
+                            if (fieldValue != null) {
+
+                                fieldValue = querySQL(field.getType(),
+                                        "SELECT * FROM " + field.getType().getSimpleName() + " WHERE id = "
+                                                + rs.getInt(fieldName + "Id") + ";").get(0);
+                            }
                         } else {
 
-                            fieldValue = rs.getObject(fieldNameTable);
+                            fieldValue = rs.getObject(fieldName);
                         }
 
                         setFieldValue(obj, fieldName, field.getType(), fieldValue);
