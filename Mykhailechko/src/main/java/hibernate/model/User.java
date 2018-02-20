@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table
+
 public class User extends Base {
 
     private int age;
@@ -71,6 +72,15 @@ public class User extends Base {
         this.manage = manage;
         this.localDateTime = localDateTime;
     }
+    public User(int id, String name, int age, double salary, Department department, City city, User manage, LocalDateTime localDateTime) {
+        super(id, name);
+        this.age = age;
+        this.salary = salary;
+        this.department = department;
+        this.city = city;
+        this.manage = manage;
+        this.localDateTime = localDateTime;
+    }
 
     public int getAge() {
         return age;
@@ -126,8 +136,8 @@ public class User extends Base {
                 ", name='" + name +
                 ", age=" + age +
                 ", salary=" + salary +
-                ", department=" + department +
-                ", city=" + city +
+                ", department=" + department.getId() +
+                ", city=" + city.getId() +
                 ", manage=" + manage +
                 ", localDateTime=" + localDateTime +
                 '}';

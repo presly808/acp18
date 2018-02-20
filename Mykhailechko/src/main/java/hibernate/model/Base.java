@@ -5,7 +5,13 @@ import javax.persistence.*;
 /**
  * Created by serhii on 03.02.18.
  */
+
 @MappedSuperclass
+@NamedQueries({@NamedQuery(name = "getUsersGroupByDepartment", query = "SELECT u from User u"),
+               @NamedQuery(name = "getAvgSalaryGroupByDepartment", query = "SELECT u.department, avg(u.salary) as sal from User u group by u.department"),
+               @NamedQuery(name = "getUsersGroupByManagersAndOrderedThatLiveInKiev", query = "SELECT u from User u where u.city.name = 'Kyiv'")
+            })
+
 public class Base {
 
     @Id
