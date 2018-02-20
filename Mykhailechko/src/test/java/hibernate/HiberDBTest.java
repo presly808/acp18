@@ -8,16 +8,23 @@ import hibernate.model.Department;
 import hibernate.model.User;
 import hibernate.service.MainService;
 import hibernate.service.MainServiceImpl;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.time.LocalDateTime;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
+
 public class HiberDBTest {
+
+    private static MainService mainService;
 
     @BeforeClass
     public static void initDB(){
         EntetyManagerSingleton.getEntetyManagerSingleton();
-        MainService mainService = new MainServiceImpl(
+        mainService = new MainServiceImpl(
                 new DaoImpl<>(City.class,EntetyManagerSingleton.getEntityManager()),
                 new DaoImpl<>(Department.class,EntetyManagerSingleton.getEntityManager()),
                 new DaoImpl<>(User.class,EntetyManagerSingleton.getEntityManager()));
@@ -55,8 +62,26 @@ public class HiberDBTest {
         } catch (AppException e) {
             e.printStackTrace();
         }
+    }
 
+    @Test
+    public void register() throws AppException {
+        User user = new User("Vasyl",34,2500, new Department("MachineLearning"), new City("Rivne"), null, LocalDateTime.now());
+        User actual = mainService.register(user);
+        assertThat(actual.getName(), equalTo("Vasyl"));
+        assertThat(actual.getDepartment().getName(), equalTo("MachineLearning"));
+        assertThat(actual.getCity().getName(), equalTo("Rivne"));
+    }
 
-
+    @Test
+    public void addDepartment() throws AppException {
+        Department department = new Department("MachineLearning");
+        Department actual = mainService.addDepartment(department);
+        assertThat(actual.getName(), equalTo("MachineLearning"));
+    }
+    @AfterClass
+    public static void closeDB(){
+        EntetyManagerSingleton.getEntityManager().close();
+        EntetyManagerSingleton.getEntityManagerFactory().close();
     }
 }
