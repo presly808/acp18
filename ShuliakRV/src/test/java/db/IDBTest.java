@@ -172,7 +172,7 @@ public class IDBTest {
         department.setId(1);
         Department rem = idb.removeDepart(department);
 
-        assertThat(rem.getName(), is("QA"));
+        assertThat(rem.getName(), is("IT"));
     }
 
 }

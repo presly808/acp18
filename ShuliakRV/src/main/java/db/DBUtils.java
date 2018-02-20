@@ -52,7 +52,12 @@ public class DBUtils implements IDB {
 
     @Override
     public <T> List<T> getAllValues(Class<T> type) {
-        return null;
+        try {
+            return querySQL(type, "SELECT * FROM "+type.getSimpleName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -144,7 +149,8 @@ public class DBUtils implements IDB {
 
     @Override
     public boolean removeAllValues(Class clazz) {
-        return false;
+
+        return executeSQL("DELETE FROM" + clazz.getSimpleName()+";") > 0 ? true : false;
     }
 
     @Override
@@ -184,7 +190,21 @@ public class DBUtils implements IDB {
     @Override
     public City removeCity(City city) {
 
-        return removeGen(City.class, city);
+        List<City> list;
+
+        try {
+            list = querySQL(City.class,
+                    "SELECT * FROM City WHERE id = " + city.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if ((list.size() > 0) && (removeGen(City.class, city) != null)) {
+            return list.get(0);
+        }
+
+        return null;
     }
 
     @Override
@@ -196,7 +216,21 @@ public class DBUtils implements IDB {
     @Override
     public Department removeDepart(Department department) {
 
-        return removeGen(Department.class, department);
+        List<Department> list;
+
+        try {
+            list = querySQL(Department.class,
+                    "SELECT * FROM Department WHERE id = " + department.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if ((list.size() > 0) && (removeGen(Department.class, department) != null)) {
+            return list.get(0);
+        }
+
+        return null;
     }
 
     @Override
