@@ -252,7 +252,32 @@ public class DBUtils implements IDB {
 
     @Override
     public Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() {
-        return null;
+
+        Map<User,List<User>> map = new HashMap<>();
+
+        List<User> list = new ArrayList<User>();
+
+        try {
+            list = querySQL(User.class, "SELECT u2.* " +
+                    "FROM USER u1, USER u2 WHERE u1.id = u2.manageId " +
+                    "AND u1.cityId = (SELECT id FROM CITY WHERE name = 'Kiev')");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        for (User user : list) {
+
+            List<User> l = map.get(user.manage);
+
+            if (l == null) {
+                l = new ArrayList<User>();
+            }
+            l.add(user);
+            map.put(user.getManage(), l);
+        }
+
+        return map;
     }
 
     @Override
