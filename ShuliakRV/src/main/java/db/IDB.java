@@ -30,7 +30,7 @@ public interface IDB {
 
     Map<Department, List<User>> getUsersGroupByDepartment();
 
-    Map<Department, Integer> getAvgSalaryGroupByDepartment();
+    Map<Department, Double> getAvgSalaryGroupByDepartment();
 
     Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev();
 

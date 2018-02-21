@@ -53,7 +53,7 @@ public class DBUtils implements IDB {
     @Override
     public <T> List<T> getAllValues(Class<T> type) {
         try {
-            return querySQL(type, "SELECT * FROM "+type.getSimpleName());
+            return querySQL(type, "SELECT * FROM " + type.getSimpleName());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -80,24 +80,22 @@ public class DBUtils implements IDB {
 
             fieldType = fieldTypeMap.get(fieldType);
 
-            if (fieldType==null) {
-                fieldName +="Id";
+            if (fieldType == null) {
+                fieldName += "Id";
 
                 joinStatement.append("JOIN ").append(key.getType().getSimpleName()).
-                        append(" ON ").append(type.getSimpleName()+"."+fieldName + " = "+
-                        key.getType().getSimpleName()+".id" );
-            }
-            else
-            {
-                whereStatement.append(fieldName+" = "+fieldvalue.toString()).append(" AND ");
+                        append(" ON ").append(type.getSimpleName() + "." + fieldName + " = " +
+                        key.getType().getSimpleName() + ".id");
+            } else {
+                whereStatement.append(fieldName + " = " + fieldvalue.toString()).append(" AND ");
             }
 
         }
 
         try {
-            list = querySQL(type,"SELECT * FROM "+type.getSimpleName()+" "+joinStatement
-                    +" WHERE "+whereStatement.toString()+" 1=1 "+" ORDER BY "+orderBy.getName()+
-            " LIMIT "+limit);
+            list = querySQL(type, "SELECT * FROM " + type.getSimpleName() + " " + joinStatement
+                    + " WHERE " + whereStatement.toString() + " 1=1 " + " ORDER BY " + orderBy.getName() +
+                    " LIMIT " + limit);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -191,17 +189,65 @@ public class DBUtils implements IDB {
     @Override
     public boolean removeAllValues(Class clazz) {
 
-        return executeSQL("DELETE FROM " + clazz.getSimpleName()+";") > 0 ? true : false;
+        return executeSQL("DELETE FROM " + clazz.getSimpleName() + ";") > 0 ? true : false;
     }
 
     @Override
     public Map<Department, List<User>> getUsersGroupByDepartment() {
-        return null;
+
+        Map<Department, List<User>> map = new HashMap<>();
+
+        List<User> list = new ArrayList<User>();
+
+        try {
+            list = querySQL(User.class, "SELECT * FROM USER");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        for (User user : list) {
+
+            List<User> l = map.get(user.department);
+
+            if (l == null) {
+                l = new ArrayList<User>();
+            }
+            l.add(user);
+            map.put(user.getDepartment(), l);
+        }
+
+        return map;
+
     }
 
     @Override
-    public Map<Department, Integer> getAvgSalaryGroupByDepartment() {
-        return null;
+    public Map<Department, Double> getAvgSalaryGroupByDepartment() {
+
+        Map<Department, Double> map;
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement statement = conn.createStatement();) {
+
+            map = new HashMap<>();
+
+            ResultSet rs = statement.executeQuery("SELECT departmentId,AVG(salary) " +
+                    "FROM USER GROUP BY departmentId");
+
+            StringBuilder str = new StringBuilder();
+
+            while (rs.next()) {
+
+                map.put(querySQL(Department.class, "SELECT * FROM DEPARTMENT " +
+                        "WHERE id = " + rs.getInt(1)).get(0), rs.getDouble(2));
+
+            }
+
+        } catch (Exception e) {
+            return null;
+        }
+
+        return map;
     }
 
     @Override
@@ -304,9 +350,7 @@ public class DBUtils implements IDB {
                     }
                     str.append(System.getProperty("line.separator"));
                 }
-            }
-            else
-            {
+            } else {
                 str.append(String.valueOf(statement.getUpdateCount()));
             }
 

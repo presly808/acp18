@@ -103,12 +103,12 @@ public class IDBTest {
     public void getUsersGroupByDepartment() throws Exception {
         Map<Department, List<User>> usersGroupByDepartment = idb.getUsersGroupByDepartment();
         assertThat(usersGroupByDepartment.keySet().size(), equalTo(2));
-        assertThat(usersGroupByDepartment.values().size(), equalTo(5));
+        assertThat(usersGroupByDepartment.values().size(), equalTo(2));
     }
 
     @Test
     public void getAvgSalaryGroupByDepartment() throws Exception {
-        Map<Department, Integer> usersGroupByDepartment = idb.getAvgSalaryGroupByDepartment();
+        Map<Department, Double> usersGroupByDepartment = idb.getAvgSalaryGroupByDepartment();
         assertThat(usersGroupByDepartment.keySet().size(), equalTo(2));
     }
 
