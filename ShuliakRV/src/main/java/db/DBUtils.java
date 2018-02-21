@@ -7,7 +7,6 @@ import db.model.User;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +60,8 @@ public class DBUtils implements IDB {
     }
 
     @Override
-    public <T> List<T> selectWithFilter(Class<T> type, Map<Field, Object> filters, Field orderBy, int limit) {
+    public <T> List<T> selectWithFilter(Class<T> type, Map<Field,
+            Object> filters, Field orderBy, int limit) {
 
         List<T> list;
 
@@ -83,18 +83,23 @@ public class DBUtils implements IDB {
             if (fieldType == null) {
                 fieldName += "Id";
 
-                joinStatement.append("JOIN ").append(key.getType().getSimpleName()).
-                        append(" ON ").append(type.getSimpleName() + "." + fieldName + " = " +
+                joinStatement.append("JOIN ").append(key.getType().
+                        getSimpleName()).
+                        append(" ON ").append(type.getSimpleName()
+                        + "." + fieldName + " = " +
                         key.getType().getSimpleName() + ".id");
             } else {
-                whereStatement.append(fieldName + " = " + fieldvalue.toString()).append(" AND ");
+                whereStatement.append(fieldName + " = " + fieldvalue.
+                        toString()).append(" AND ");
             }
 
         }
 
         try {
-            list = querySQL(type, "SELECT * FROM " + type.getSimpleName() + " " + joinStatement
-                    + " WHERE " + whereStatement.toString() + " 1=1 " + " ORDER BY " + orderBy.getName() +
+            list = querySQL(type, "SELECT * FROM " + type.getSimpleName()
+                    + " " + joinStatement
+                    + " WHERE " + whereStatement.toString() + " 1=1 " +
+                    " ORDER BY " + orderBy.getName() +
                     " LIMIT " + limit);
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,7 +115,8 @@ public class DBUtils implements IDB {
         StringBuilder sqlHeader = new StringBuilder();
         StringBuilder sqlValues = new StringBuilder();
 
-        sqlHeader.append("INSERT INTO ").append(tClass.getSimpleName()).append(" (");
+        sqlHeader.append("INSERT INTO ").append(tClass.getSimpleName()).
+                append(" (");
 
         Map<String, String> map = null;
         try {
@@ -128,7 +134,8 @@ public class DBUtils implements IDB {
                 append("VALUES (");
         sqlValues.deleteCharAt(sqlValues.length() - 1).append(");");
 
-        return executeSQL(sqlHeader.append(sqlValues).toString()) > 0 ? obj : null;
+        return executeSQL(sqlHeader.append(sqlValues).toString()) > 0 ? obj :
+                null;
     }
 
 
@@ -137,7 +144,8 @@ public class DBUtils implements IDB {
 
         StringBuilder sql = new StringBuilder();
 
-        sql.append("DELETE FROM ").append(tClass.getSimpleName()).append(" WHERE id = ");
+        sql.append("DELETE FROM ").append(tClass.getSimpleName()).
+                append(" WHERE id = ");
 
         Map<String, String> map = null;
         try {
@@ -157,7 +165,8 @@ public class DBUtils implements IDB {
 
         StringBuilder sqlCreateTable = new StringBuilder();
 
-        sqlCreateTable.append("CREATE TABLE ").append(clazz.getSimpleName()).append(" (");
+        sqlCreateTable.append("CREATE TABLE ").append(clazz.getSimpleName()).
+                append(" (");
 
         while (clazz != null) {
 
@@ -189,7 +198,8 @@ public class DBUtils implements IDB {
     @Override
     public boolean removeAllValues(Class clazz) {
 
-        return executeSQL("DELETE FROM " + clazz.getSimpleName() + ";") > 0 ? true : false;
+        return executeSQL("DELETE FROM " + clazz.getSimpleName() + ";") > 0 ?
+                true : false;
     }
 
     @Override
@@ -231,15 +241,18 @@ public class DBUtils implements IDB {
 
             map = new HashMap<>();
 
-            ResultSet rs = statement.executeQuery("SELECT departmentId,AVG(salary) " +
+            ResultSet rs = statement.executeQuery("SELECT departmentId," +
+                    "AVG(salary) " +
                     "FROM USER GROUP BY departmentId");
 
             StringBuilder str = new StringBuilder();
 
             while (rs.next()) {
 
-                map.put(querySQL(Department.class, "SELECT * FROM DEPARTMENT " +
-                        "WHERE id = " + rs.getInt(1)).get(0), rs.getDouble(2));
+                map.put(querySQL(Department.class,
+                        "SELECT * FROM DEPARTMENT " +
+                                "WHERE id = " + rs.getInt(1)).get(0),
+                        rs.getDouble(2));
 
             }
 
@@ -251,16 +264,18 @@ public class DBUtils implements IDB {
     }
 
     @Override
-    public Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() {
+    public Map<User, List<User>>
+    getUsersGroupByManagersAndOrderedThatLiveInKiev() {
 
-        Map<User,List<User>> map = new HashMap<>();
+        Map<User, List<User>> map = new HashMap<>();
 
         List<User> list = new ArrayList<User>();
 
         try {
             list = querySQL(User.class, "SELECT u2.* " +
                     "FROM USER u1, USER u2 WHERE u1.id = u2.manageId " +
-                    "AND u1.cityId = (SELECT id FROM CITY WHERE name = 'Kiev')");
+                    "AND u1.cityId = (SELECT id FROM CITY WHERE " +
+                    "name = 'Kiev')");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -332,13 +347,15 @@ public class DBUtils implements IDB {
 
         try {
             list = querySQL(Department.class,
-                    "SELECT * FROM Department WHERE id = " + department.getId());
+                    "SELECT * FROM Department WHERE id = " +
+                            department.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
-        if ((list.size() > 0) && (removeGen(Department.class, department) != null)) {
+        if ((list.size() > 0) && (removeGen(Department.class,
+                department) != null)) {
             return list.get(0);
         }
 
@@ -350,7 +367,8 @@ public class DBUtils implements IDB {
 
         StringBuilder sqlDropTable = new StringBuilder();
 
-        sqlDropTable.append("DROP TABLE ").append(clazz.getSimpleName()).append(";");
+        sqlDropTable.append("DROP TABLE ").append(clazz.getSimpleName()).
+                append(";");
 
         return executeSQL(sqlDropTable.toString()) == 0 ? true : false;
     }
@@ -401,7 +419,8 @@ public class DBUtils implements IDB {
 
     private <T> List<T> querySQL(Class<T> clazz, String sql) throws
             InvocationTargetException, SQLException, InstantiationException,
-            NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
+            NoSuchMethodException, IllegalAccessException,
+            NoSuchFieldException {
         System.out.println(sql);
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();
@@ -411,8 +430,9 @@ public class DBUtils implements IDB {
     }
 
     private <T> List<T> getListFromResultSet(Class<T> clazz, ResultSet rs)
-            throws SQLException, IllegalAccessException, InstantiationException,
-            NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
+            throws SQLException, IllegalAccessException,
+            InstantiationException, NoSuchMethodException,
+            InvocationTargetException, NoSuchFieldException {
 
         List<T> list = new ArrayList<>();
 
@@ -443,15 +463,18 @@ public class DBUtils implements IDB {
                             if (fieldValue != null) {
 
                                 fieldValue = querySQL(field.getType(),
-                                        "SELECT * FROM " + field.getType().getSimpleName() + " WHERE id = "
-                                                + rs.getInt(fieldName + "Id") + ";").get(0);
+                                        "SELECT * FROM " + field.getType().
+                                                getSimpleName() + " WHERE id = "
+                                                + rs.getInt(fieldName + "Id")
+                                                + ";").get(0);
                             }
                         } else {
 
                             fieldValue = rs.getObject(fieldName);
                         }
 
-                        setFieldValue(obj, fieldName, field.getType(), fieldValue);
+                        setFieldValue(obj, fieldName, field.getType(),
+                                fieldValue);
 
                     }
                 }
@@ -468,7 +491,8 @@ public class DBUtils implements IDB {
 
     }
 
-    private <T> Map<String, String> getFieldsFromObject(T obj) throws NoSuchMethodException,
+    private <T> Map<String, String> getFieldsFromObject(T obj)
+            throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException {
 
         Class clazz = obj.getClass();
@@ -536,7 +560,9 @@ public class DBUtils implements IDB {
         return meth.invoke(obj);
     }
 
-    private <T> void setFieldValue(T obj, String fieldName, Class fieldType, Object fieldValue) throws NoSuchMethodException,
+    private <T> void setFieldValue(T obj, String fieldName, Class fieldType,
+                                   Object fieldValue)
+            throws NoSuchMethodException,
             InvocationTargetException, IllegalAccessException {
 
         Method meth = obj.getClass().getMethod("set" +
