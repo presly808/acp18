@@ -409,7 +409,6 @@ public class DBUtils implements IDB {
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();) {
-            System.out.println(sql);
             return statement.executeUpdate(sql);
         } catch (SQLException e) {
             return -1;
@@ -421,7 +420,6 @@ public class DBUtils implements IDB {
             InvocationTargetException, SQLException, InstantiationException,
             NoSuchMethodException, IllegalAccessException,
             NoSuchFieldException {
-        System.out.println(sql);
         try (Connection conn = DriverManager.getConnection(url);
              Statement statement = conn.createStatement();
              ResultSet rs = statement.executeQuery(sql);) {
