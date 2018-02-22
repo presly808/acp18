@@ -139,8 +139,8 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
 
         entityManager.getTransaction().begin();
         try {
-            entityManager.remove(foundEntity);
-            entityManager.merge(entity);
+            foundEntity = entity;
+            entityManager.persist(foundEntity);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
@@ -157,9 +157,5 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
     public Class<T> getPersistentClass() {
         return persistentClass;
     }
-
-/*    public void setPersistentClass(T persistentClass) {
-        this.persistentClass = persistentClass;
-    }*/
 
 }

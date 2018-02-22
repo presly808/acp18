@@ -74,10 +74,10 @@ public class Run {
 
 //        Map<Department,List<User>> usersGroupByDepartment = mainService.getUsersGroupByDepartment();
 //        System.out.println(usersGroupByDepartment.get(department2));
-//        Map<Department,Integer> getAvgSalaryGroupByDepartment = mainService.getAvgSalaryGroupByDepartment();
-//        System.out.println(getAvgSalaryGroupByDepartment.get(department1));
+        Map<Department,Integer> getAvgSalaryGroupByDepartment = mainService.getAvgSalaryGroupByDepartment();
+        System.out.println(getAvgSalaryGroupByDepartment.get(department2));
 
-          Map<User,List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev = mainService.getUsersGroupByManagersAndOrderedThatLiveInKiev();
-          getUsersGroupByManagersAndOrderedThatLiveInKiev.get(user2).forEach(System.out::println);
+          //Map<User,List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev = mainService.getUsersGroupByManagersAndOrderedThatLiveInKiev();
+          //getUsersGroupByManagersAndOrderedThatLiveInKiev.get(user2).forEach(System.out::println);
     }
 }

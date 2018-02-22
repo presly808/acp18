@@ -139,16 +139,16 @@ public class MainServiceImpl extends DaoImpl implements MainService {
     @Override
     public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
         List<User> users = userdao.findAll();
-        List<User> userBySalary = new ArrayList<>();
+        List<User> userByDate = new ArrayList<>();
 
         for (User user : users) {
 
             if (user.getLocalDateTime().isAfter(start) && user.getLocalDateTime().isBefore(end)) {
-                userBySalary.add(user);
+                userByDate.add(user);
             }
 
         }
-        return userBySalary;
+        return userByDate;
     }
 
     @Override
