@@ -1,14 +1,25 @@
-package spring;
+package spring.model;
+import javax.persistence.*;
 
 /**
  * Created by serhii on 17.02.18.
  */
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int id;
+
+    @Column(length = 30, nullable = false)
     public String name;
 
     public User() {
+    }
+
+    public User(String name) {
+        this.name = name;
     }
 
     public int getId() {

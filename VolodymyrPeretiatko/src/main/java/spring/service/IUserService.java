@@ -1,4 +1,6 @@
-package spring;
+package spring.service;
+
+import spring.model.User;
 
 /**
  * Created by serhii on 17.02.18.
