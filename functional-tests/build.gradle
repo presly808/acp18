@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.Copy
+
 version 'unspecified'
 
 apply plugin: 'java'
@@ -10,4 +12,27 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/org.springframework/spring-core
+    compile group: 'org.springframework', name: 'spring-core', version: '5.0.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version: '5.0.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '5.0.3.RELEASE'
+
 }
+
+task copyTaskWithPatterns(type: Copy) {
+    from 'src/main/java'
+    from 'src/main/resources'
+    into 'build/classes/java/main'
+    include '**/*.txt'
+    include '**/*.js'
+    include '**/*.html'
+    include '**/*.properties'
+    include '**/*.yml'
+    include '**/*.json'
+    include '**/*.MD'
+    include '**/*.xml'
+    exclude '**/*.java'
+}
+
+compileJava.dependsOn copyTaskWithPatterns
+compileTestJava.dependsOn compileJava
