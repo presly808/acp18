@@ -13,12 +13,11 @@ public class TestMainAnnotations {
 
 private static ApplicationContext context;
     private static IUserService service;
-    private static IUserDao dao;
+
 
     public static void main(String[] args) {
         context = new AnnotationConfigApplicationContext("spring");
 
-        dao = context.getBean(UserDao.class);
         service = context.getBean(UserService.class);
 
         User user = new User();
