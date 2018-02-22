@@ -30,6 +30,11 @@
       "title": "hibernateTas",
       "baseClasses":["hibernate", "META-INF"],
       "testClasses":["hibernate"]
+    },
+    "spring" : {
+      "title": "spring",
+      "baseClasses":["spring"],
+      "testClasses":["spring"]
     }
   }
 }
