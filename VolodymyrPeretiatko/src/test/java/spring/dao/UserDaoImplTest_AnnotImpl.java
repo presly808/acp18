@@ -16,9 +16,13 @@ public class UserDaoImplTest_AnnotImpl {
 
     @BeforeClass
     public static void init(){
+        ApplicationContext ctx = null;
+        try {
+            ctx = new AnnotationConfigApplicationContext("spring");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
-        ApplicationContext ctx =
-                new AnnotationConfigApplicationContext("spring");
 
         userDao = ctx.getBean(UserDao.class);
 
