@@ -1,14 +1,11 @@
 package spring.main;
 
-import org.apache.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import spring.model.User;
 import spring.service.IUserService;
 
 
 public class TestMainXML {
-
-//    private static final Logger LOGGER = Logger.getLogger(TestMainXML.class);
 
     public static void main(String[] args) {
 
@@ -18,7 +15,12 @@ public class TestMainXML {
 
         User user = new User("Borya");
 
+        service.deleteById(125);
         service.save(user);
+
+        User findUser = service.findById(110);
+
+        System.out.println("found user is "+findUser.toString());
         context.close();
 
     }

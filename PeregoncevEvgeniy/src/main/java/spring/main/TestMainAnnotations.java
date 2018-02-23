@@ -11,24 +11,20 @@ import spring.service.UserService;
 
 public class TestMainAnnotations {
 
-private static ApplicationContext context;
-    private static IUserService service;
-
-
     public static void main(String[] args) {
-        context = new AnnotationConfigApplicationContext("spring");
+        ApplicationContext context = new AnnotationConfigApplicationContext("spring");
 
-        service = context.getBean(UserService.class);
+        IUserService service = context.getBean(UserService.class);
 
         User user = new User();
         user.setName("Aspirin");
         service.save(user);
+        service.deleteById(126);
+
+        User findUser = service.findById(110);
+        System.out.println(findUser.toString());
 
     }
-
-
-
-
 
 
 }

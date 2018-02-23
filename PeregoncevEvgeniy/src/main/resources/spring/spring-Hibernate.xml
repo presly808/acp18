@@ -13,7 +13,7 @@
     <tx:annotation-driven/>
     <aop:aspectj-autoproxy/>
 
-    <bean name="afterAspect" class="spring.aspect.MethodAspect"/>
+    <bean  class="spring.aspect.MethodAspect"/>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml"/>

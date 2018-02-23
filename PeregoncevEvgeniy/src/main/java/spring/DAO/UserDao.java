@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
-
 @Component
 public class UserDao implements IUserDao {
 
@@ -26,9 +25,8 @@ public class UserDao implements IUserDao {
     public UserDao() {
     }
 
-
     @Override
-    public void register(User user) {
+    public void addUser(User user) {
 
         EntityManager manager = factory.createEntityManager();
         EntityTransaction transaction = manager.getTransaction();
@@ -43,6 +41,42 @@ public class UserDao implements IUserDao {
         } finally {
             manager.close();
         }
+    }
+
+    @Override
+    public User findById(int id) {
+        EntityManager manager = factory.createEntityManager();
+
+        try {
+            return manager.find(User.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+        manager.close();
+        }
+        return null;
+    }
+
+    @Override
+    public void delete(int id) {
+        EntityManager manager = factory.createEntityManager();
+        EntityTransaction transaction = manager.getTransaction();
+        try {
+            transaction.begin();
+            User found = manager.find(User.class,id);
+            if (found!=null) {
+                manager.remove(found);
+                transaction.commit();
+            }else {
+                System.out.println("no user with this id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        } finally {
+            manager.close();
+        }
 
     }
 }
+

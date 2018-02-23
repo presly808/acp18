@@ -14,7 +14,6 @@ public class UserService implements IUserService {
     @Autowired
     private IUserDao dao;
 
-
     public UserService(UserDao dao) {
         this.dao = dao;
     }
@@ -31,19 +30,18 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User save(User user) {
-        dao.register(user);
-        return null;
+    public void save(User user) {
+        dao.addUser(user);
     }
 
     @Override
-    public User delete(int id) {
-        return null;
+    public void deleteById(int id) {
+        dao.delete(id);
     }
 
     @Override
     public User findById(int id) {
-        return null;
+        return dao.findById(id);
     }
 
 

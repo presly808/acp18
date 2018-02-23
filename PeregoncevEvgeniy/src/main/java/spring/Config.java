@@ -15,7 +15,6 @@ import java.util.Properties;
 @ComponentScan(basePackages = {"spring"})
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @PropertySource("classpath:/spring.properties")
-
 public class Config {
 
     @Autowired

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,21 +15,19 @@ import java.time.format.DateTimeFormatter;
 public class MethodAspect {
 
     @Around("within(spring.service.UserService)")
-    public void processedTime(ProceedingJoinPoint point) {
-
+    public Object processedTime(ProceedingJoinPoint point) {
+        Object value = null;
         long startTime = System.currentTimeMillis();
         try {
-            point.proceed();
+         value = point.proceed();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
         long stopTime = System.currentTimeMillis();
 
-        System.out.println("aspect done");
-
-
         String currentTime = (ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME).substring(0, 8));
-        String methodName = point.toString().substring(15, 53);
+        int a = point.toString().length();
+        String methodName = point.toString().substring(15,a);
         String executingTime = String.valueOf(stopTime - startTime);
 
         String resultString = "DATE:" + currentTime + " " + methodName + " " + executingTime + "m";
@@ -47,8 +44,7 @@ public class MethodAspect {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+    return value ;
     }
-
 
 }
