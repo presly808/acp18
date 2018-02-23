@@ -16,11 +16,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @Transactional
-    public User save(User user) {
+    public User save(User userForSave) {
 
-        entityManager.persist(user);
+        entityManager.persist(userForSave);
 
-        return user;
+        return userForSave;
     }
 
     @Override

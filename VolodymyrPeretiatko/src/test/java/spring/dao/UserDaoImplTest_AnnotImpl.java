@@ -5,9 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import spring.model.User;
-import spring.service.IUserService;
 
 import static org.junit.Assert.assertTrue;
 
