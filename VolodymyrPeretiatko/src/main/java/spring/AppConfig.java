@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {"spring"})
 @PropertySource("META-INF/db-annot-impl.properties")
 @EnableTransactionManagement
-//@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfig {
 
     @Autowired

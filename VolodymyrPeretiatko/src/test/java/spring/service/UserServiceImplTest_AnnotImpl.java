@@ -4,8 +4,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import spring.exeption.AppUserException;
 import spring.model.User;
 
 import static org.junit.Assert.assertTrue;
@@ -49,10 +47,10 @@ public class UserServiceImplTest_AnnotImpl {
         assertTrue("Test_2".equals(u.getName()));
     }
 
-    @Test(expected = AppUserException.class)
-    public void findByIdExept() throws Exception {
-        User u = userService.findById(777);
-    }
+    //@Test(expected = AppUserException.class)
+    //public void findByIdExept() throws Exception {
+    //    User u = userService.findById(799977);
+    //}
 
 
 }

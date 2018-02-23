@@ -46,7 +46,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User findById(int id) throws AppUserException {
 
-        User user = dao.delete(id);
+        User user = dao.findById(id);
 
         if(user == null){
             throw new AppUserException("student didn't remove");
