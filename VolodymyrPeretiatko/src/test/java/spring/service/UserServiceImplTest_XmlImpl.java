@@ -50,7 +50,7 @@ public class UserServiceImplTest_XmlImpl {
 
     @Test(expected = AppUserException.class)
     public void findByIdExept() throws Exception {
-        User u = userService.findById(777);
+        User searchUser = userService.findById(777);
     }
 
 
