@@ -10,18 +10,22 @@ repositories {
 
 dependencies {
 
-    //Spring
+    //SPRING
     compile group: 'org.springframework', name: 'spring-core', version: '5.0.4.RELEASE'
     compile group: 'org.springframework', name: 'spring-beans', version: '5.0.4.RELEASE'
     compile group: 'org.springframework', name: 'spring-context', version: '5.0.4.RELEASE'
-    compile group: 'springframework', name: 'spring-orm', version: '1.2.6'
     compile group: 'org.springframework', name: 'spring-orm', version: '5.0.4.RELEASE'
+    compile group: 'org.springframework.javaconfig', name: 'spring-javaconfig', version: '1.0.0.m3'
 
     //DB
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.12.Final'
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.2.13.Final'
     compile group: 'com.h2database', name: 'h2', version: '1.4.196'
     compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.2.0'
+
+    //ASPECT
+    compile group: 'org.aspectj', name: 'aspectjrt', version: '1.8.13'
+    compile group: 'org.aspectj', name: 'aspectjtools', version: '1.8.13'
 
     //LOG
     compile group: 'log4j', name: 'log4j', version: '1.2.17'

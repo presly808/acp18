@@ -1,41 +1,43 @@
 package spring.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import spring.dao.UserDao;
+import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import spring.model.User;
 
 import javax.persistence.*;
 
-@Repository
+@Component
+//@Repository
 public class UserDaoImpl implements UserDao {
 
-    private EntityManagerFactory factory;
-
-    public UserDaoImpl(EntityManagerFactory factory) {
-        this.factory = factory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
+    @Transactional
     public User save(User user) {
 
-        EntityManager entityManager = factory.createEntityManager();
+        entityManager.persist(user);
 
-        try {
-            entityManager.persist(user);
-        } catch (Exception e) {
-
-        }
         return user;
     }
 
     @Override
+    @Transactional
     public User delete(int id) {
-        return null;
+
+        User user = entityManager.find(User.class, id);
+
+        if (user != null) entityManager.remove(user);
+
+        return user;
     }
 
     @Override
+    @Transactional
     public User findById(int id) {
-        return null;
+        return entityManager.find(User.class, id);
     }
+
 }

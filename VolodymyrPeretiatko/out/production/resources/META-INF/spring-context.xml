@@ -10,28 +10,20 @@
   http://www.springframework.org/schema/context/spring-context-3.0.xsd
   http://www.springframework.org/schema/tx
   http://www.springframework.org/schema/tx/spring-tx.xsd">
-    <!--
-        <tx:annotation-driven />
 
-        <context:component-scan base-package="spring.dao" />
-        <context:component-scan base-package="spring.service" />
-    -->
-        <!-- bean definitions here -->
+    <tx:annotation-driven />
+    <context:component-scan base-package="spring.service" />
+    <context:component-scan base-package="spring.dao" />
 
-    <!--
-    <bean class="javax.persistence.EntityManagerFactory">
-        <constructor-arg name="email" value="ADMIN"/>
-        <constructor-arg name="pass" value="12345"/>
-    </bean>
-    -->
+    <context:property-placeholder location="META-INF/db-xml-impl.properties"/>
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
           destroy-method="close">
 
-        <property name="driverClassName" value="org.h2.Driver" />
-        <property name="url" value="jdbc:h2:mem:test" />
-        <property name="username" value="sa" />
-        <property name="password" value="" />
+        <property name="driverClassName" value="${db.driver}" />
+        <property name="url" value="${db.url}" />
+        <property name="username" value="${db.username}" />
+        <property name="password" value="${db.password}" />
     </bean>
 
     <bean id="entityManagerFactory"
@@ -41,14 +33,10 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="dao" class="spring.dao.UserDaoImpl" scope="singleton">
+    <bean id="userDaoImpl" class="spring.dao.UserDaoImpl" scope="singleton"></bean>
 
-        <constructor-arg name="factory" ref="entityManagerFactory"/>
-
-    </bean>
-
-    <bean id="userService" class="spring.service.UserServiceImpl" scope="singleton">
-        <constructor-arg name="dao" ref="dao"/>
+    <bean id="userServiceImpl" class="spring.service.UserServiceImpl" scope="singleton">
+        <constructor-arg name="dao" ref="userDaoImpl"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

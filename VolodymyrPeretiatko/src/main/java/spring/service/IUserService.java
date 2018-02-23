@@ -1,5 +1,6 @@
 package spring.service;
 
+import spring.exeption.AppUserException;
 import spring.model.User;
 
 /**
@@ -7,8 +8,8 @@ import spring.model.User;
  */
 public interface IUserService {
 
-    User save(User user);
-    User delete(int id);
-    User findById(int id);
+    User save(User user) throws AppUserException;
+    User delete(int id) throws AppUserException;
+    User findById(int id) throws AppUserException;
 
 }
