@@ -8,14 +8,12 @@ import spring.model.User;
 import static org.junit.Assert.*;
 
 public class UserServiceTest_Annotation {
-    private ApplicationContext context;
     private IUserService service;
     private User testUser;
 
     @Before
     public void setUp() throws Exception {
-        context = new AnnotationConfigApplicationContext("spring");
-
+        ApplicationContext context = new AnnotationConfigApplicationContext("spring");
         service = context.getBean(UserService.class);
         testUser = new User("Kira");
     }
