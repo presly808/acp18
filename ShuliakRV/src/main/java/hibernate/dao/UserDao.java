@@ -1,5 +1,6 @@
 package hibernate.dao;
 
+import hibernate.model.Department;
 import hibernate.model.User;
 
 import javax.persistence.EntityManager;
@@ -7,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class UserDao extends DaoImpl<User, Integer> {
 
@@ -76,6 +78,26 @@ public class UserDao extends DaoImpl<User, Integer> {
         }
     }
 
+    public List<User> getUsersGroupByDepartment() {
+
+        logger.info("Grouping Users by dapartment!");
+
+        String queryUser = "SELECT u.department,u.* FROM User u " +
+                "GROUP by u.department";
+
+        EntityManager manager = factory.createEntityManager();
+        Query resQuery = manager.createQuery(queryUser);
+
+        try {
+            return resQuery.getResultList();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        } finally {
+            manager.close();
+        }
+
+    }
 
 
 }
