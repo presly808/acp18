@@ -13,10 +13,13 @@ public class User extends Base {
     private int age;
     private double salary;
     @ManyToOne
+    @JoinColumn(name = "departmenId", referencedColumnName = "id")
     private Department department;
     @ManyToOne
+    @JoinColumn(name = "cityId", referencedColumnName = "id")
     private City city;
     @ManyToOne
+    @JoinColumn(name = "manageID", referencedColumnName = "id")
     private User manage;
     // start work date
     private LocalDateTime localDateTime;
