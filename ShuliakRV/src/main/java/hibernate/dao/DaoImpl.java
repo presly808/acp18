@@ -145,13 +145,4 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
 
     }
 
-    //-----> User DAO
-
-    public List<User> findByName(String name)
-    {
-
-        return null;
-    }
-
-
 }

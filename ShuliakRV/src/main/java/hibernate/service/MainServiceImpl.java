@@ -129,16 +129,16 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public List<User> findByName(String name) throws AppException {
-        return null;
+        return userDao.findByName(name);
     }
 
     @Override
     public List<User> findInRange(double minSal, double maxSal) throws AppException {
-        return null;
+        return userDao.findInRange(minSal,maxSal);
     }
 
     @Override
     public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
-        return null;
+        return userDao.findByDate(start,end);
     }
 }

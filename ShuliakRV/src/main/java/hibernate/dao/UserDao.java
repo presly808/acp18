@@ -5,6 +5,7 @@ import hibernate.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserDao extends DaoImpl<User, Integer> {
@@ -53,6 +54,28 @@ public class UserDao extends DaoImpl<User, Integer> {
             manager.close();
         }
     }
+
+    public List<User> findByDate(LocalDateTime start, LocalDateTime end) {
+
+        logger.info("Finding Users by date!");
+
+        String queryUser = "SELECT u FROM User u " +
+                "WHERE u.localDateTime between :start AND :end";
+
+        EntityManager manager = factory.createEntityManager();
+        Query resQuery = manager.createQuery(queryUser);
+        resQuery.setParameter("start", start);
+        resQuery.setParameter("end", end);
+        try {
+            return resQuery.getResultList();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        } finally {
+            manager.close();
+        }
+    }
+
 
 
 }

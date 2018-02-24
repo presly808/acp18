@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 public class User extends Base {
-
+    @Column
     private int age;
+    @Column
     private double salary;
     @ManyToOne
     @JoinColumn(name = "departmenId", referencedColumnName = "id")
@@ -22,6 +23,7 @@ public class User extends Base {
     @JoinColumn(name = "manageID", referencedColumnName = "id")
     private User manage;
     // start work date
+    @Column
     private LocalDateTime localDateTime;
 
     public User() {
