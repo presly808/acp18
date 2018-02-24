@@ -53,6 +53,7 @@ allprojects {
         from 'src/main/java'
         from 'src/main/resources'
         into 'build/classes/java/main'
+
         include '**/*.txt'
         include '**/*.js'
         include '**/*.html'
