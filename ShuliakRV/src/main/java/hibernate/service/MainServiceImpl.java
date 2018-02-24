@@ -27,9 +27,11 @@ public class MainServiceImpl implements MainService {
     private EntityManagerFactory factory;
 
     public MainServiceImpl() {
+
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
         userDao = new DaoImpl<User, Integer>(factory);
         departmentDao = new DaoImpl<Department, Integer>(factory);
+
     }
 
     @Override
@@ -74,12 +76,42 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public User update(User user) throws AppException {
-        return null;
+
+        if (user == null) {
+            logger.info("User can't updated!");
+            throw new AppException("User is NULL!");
+        }
+
+        User entity = userDao.update(user);
+
+        if (entity == null) {
+            logger.info("User wasn't updated!");
+            throw new AppException("User wasn't updated!");
+        }
+
+        logger.info("User was updated!");
+
+        return entity;
     }
 
     @Override
     public User remove(User user) throws AppException {
-        return null;
+
+        if (user == null) {
+            logger.info("User can't removed!");
+            throw new AppException("User is NULL!");
+        }
+
+        User entity = userDao.remove(user.getId());
+
+        if (entity == null) {
+            logger.info("User wasn't removed!");
+            throw new AppException("User wasn't removed!");
+        }
+
+        logger.info("User was removed!");
+
+        return entity;
     }
 
     @Override
