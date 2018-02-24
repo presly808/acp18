@@ -11,6 +11,7 @@ repositories {
 def aspectJVersion = '1.8.13'
 def springVersion = '5.0.3.RELEASE'
 
+
 dependencies{
     // https://mvnrepository.com/artifact/org.springframework/spring-beans
     compile group: 'org.springframework', name: 'spring-beans', version: springVersion
