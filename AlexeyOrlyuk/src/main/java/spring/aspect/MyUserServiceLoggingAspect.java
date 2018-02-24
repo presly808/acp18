@@ -22,28 +22,23 @@ public class MyUserServiceLoggingAspect {
     private static final String APPENDER_FILE_PATH = "user-service.log";
     private static final Logger LOGGER = configureLogger();
 
-    private long methodStartTime;
-    private String methodFullName;
-
-    @Before("publicMethodsPointCut()")
-    public void beforeLoggingPublicMethodsAdvice() {
-        methodStartTime = System.currentTimeMillis();
-    }
-
-    @Around("publicMethodsPointCut()")
+    @Around("publicServiceMethodsPointCut()")
     public Object aroundLoggingPublicMethodsAdvice(ProceedingJoinPoint point) throws Throwable {
-        methodFullName = point.getSignature().getDeclaringType() + "." + point.getSignature().getName();
-        return point.proceed();
-    }
+        String methodFullName = point.getSignature().getDeclaringType() + "." + point.getSignature().getName();
 
-    @After("publicMethodsPointCut()")
-    public void afterLoggingPublicMethodsAdvice() {
-        long workTime = System.currentTimeMillis() - methodStartTime;
-        LOGGER.info(methodFullName + "() " + workTime + "ms");
+        long methodStartTime = System.currentTimeMillis();
+        Object executionResult = point.proceed();
+        long methodWorkTime = System.currentTimeMillis() - methodStartTime;
+
+        LOGGER.info(methodFullName + "() " + methodWorkTime + "ms");
+        return executionResult;
     }
 
     @Pointcut(value = "execution(public * spring..*(..))")
-    public void publicMethodsPointCut() {}
+    public void publicServiceMethodsPointCut() {}
+
+//    @Pointcut(value = "execution(public * spring.dao..*(..))")
+//    public void publicDaoMethodsPointCut() {}
 
     private static Logger configureLogger() {
         Logger logger = Logger.getLogger(MyUserService.class);
