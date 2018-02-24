@@ -12,13 +12,13 @@ import java.util.List;
 
 public class DaoImpl<T, ID> implements Dao<T, ID> {
 
-    private EntityManagerFactory factory;
+    protected EntityManagerFactory factory;
 
     private T entity;
 
     private Class<T> entityClass = (Class<T>) entity.getClass();
 
-    private final Logger logger = Logger.getLogger(entityClass);
+    protected final Logger logger = Logger.getLogger(entityClass);
 
     public DaoImpl(EntityManagerFactory factory) {
         this.factory = factory;
