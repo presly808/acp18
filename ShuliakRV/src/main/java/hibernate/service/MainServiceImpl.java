@@ -1,15 +1,13 @@
 package hibernate.service;
 
-import hibernate.dao.Dao;
-import hibernate.dao.DaoImpl;
+
+import hibernate.dao.DepartmentDao;
+import hibernate.dao.UserDao;
 import hibernate.exception.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
 import org.apache.log4j.Logger;
-import spring.UserDao;
-
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,15 +20,15 @@ public class MainServiceImpl implements MainService {
 
     private final Logger logger = Logger.getLogger(MainServiceImpl.class);
 
-    private Dao<User, Integer> userDao;
-    private Dao<Department, Integer> departmentDao;
+    private UserDao userDao;
+    private DepartmentDao departmentDao;
     private EntityManagerFactory factory;
 
     public MainServiceImpl() {
 
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
-        userDao = new DaoImpl<User, Integer>(factory);
-        departmentDao = new DaoImpl<Department, Integer>(factory);
+        userDao = new UserDao(factory);
+        departmentDao = new DepartmentDao(factory);
 
     }
 

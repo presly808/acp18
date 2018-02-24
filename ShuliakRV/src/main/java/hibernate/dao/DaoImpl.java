@@ -1,6 +1,7 @@
 package hibernate.dao;
 
 import hibernate.exception.AppException;
+import hibernate.model.User;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -142,6 +143,14 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
         }
         return entity;
 
+    }
+
+    //-----> User DAO
+
+    public List<User> findByName(String name)
+    {
+
+        return null;
     }
 
 
