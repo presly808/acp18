@@ -22,7 +22,7 @@ public class MyUserServiceLoggingAspect {
     private static final String APPENDER_FILE_PATH = "user-service.log";
     private static final Logger LOGGER = configureLogger();
 
-    @Around("publicServiceMethodsPointCut()")
+    @Around(value = "execution(public * spring..*(..))")
     public Object aroundLoggingPublicMethodsAdvice(ProceedingJoinPoint point) throws Throwable {
         String methodFullName = point.getSignature().getDeclaringType() + "." + point.getSignature().getName();
 
@@ -33,12 +33,6 @@ public class MyUserServiceLoggingAspect {
         LOGGER.info(methodFullName + "() " + methodWorkTime + "ms");
         return executionResult;
     }
-
-    @Pointcut(value = "execution(public * spring..*(..))")
-    public void publicServiceMethodsPointCut() {}
-
-//    @Pointcut(value = "execution(public * spring.dao..*(..))")
-//    public void publicDaoMethodsPointCut() {}
 
     private static Logger configureLogger() {
         Logger logger = Logger.getLogger(MyUserService.class);

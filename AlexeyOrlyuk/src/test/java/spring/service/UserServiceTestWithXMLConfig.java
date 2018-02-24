@@ -21,8 +21,8 @@ import static org.junit.Assert.assertEquals;
 public class UserServiceTestWithXMLConfig {
 
     private static ApplicationContext context;
-    private IMyUserService myUserService;
-    private IMyUserDao myUserDao;
+    private static IMyUserService myUserService;
+    private static IMyUserDao myUserDao;
 
     private MyUser testMyUser;
 
