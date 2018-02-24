@@ -104,8 +104,6 @@ public class MainServiceTest {
 
     // ---------- TESTS ----------
 
-
-
     @Test
     public void register() throws Exception {
         User newUser = new User("Alex", 35, 500,
