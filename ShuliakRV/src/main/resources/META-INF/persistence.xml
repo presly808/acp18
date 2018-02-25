@@ -9,7 +9,7 @@
     <persistence-unit name="hibernate-unit" transaction-type="RESOURCE_LOCAL">
 
         <description>
-            Persistence unit for the Hibernate tutorial using MySQL DB.
+            Persistence unit for the Hibernate tutorial using H2 DB.
         </description>
 
         <provider>
@@ -18,7 +18,6 @@
 
 
         <!-- Classes, which will be mapped: -->
-        <class>hibernate.model.Base</class>
         <class>hibernate.model.Department</class>
         <class>hibernate.model.City</class>
         <class>hibernate.model.User</class>
@@ -26,7 +25,7 @@
         <!-- Properties of DB: -->
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:./ShuliakRV/src/main/resources/h2"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:./src/main/resources/h2"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value=""/>
 
