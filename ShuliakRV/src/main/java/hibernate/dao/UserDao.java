@@ -7,8 +7,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class UserDao extends DaoImpl<User, Integer> {
 
@@ -78,7 +80,7 @@ public class UserDao extends DaoImpl<User, Integer> {
         }
     }
 
-    public List getUsersGroupByDepartment() {
+    public List<Object[]> getUsersGroupByDepartment() {
 
         logger.info("Grouping Users by dapartment!");
 

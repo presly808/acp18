@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -113,19 +114,68 @@ public class MainServiceImpl implements MainService {
         return entity;
     }
 
-    @Override
-    public Map<Department, List<User>> getUsersGroupByDepartment() throws AppException {
-        return null;
+    private <K, V> Map<K, V> fromListToMap(List<Object[]> list) {
+
+        if (list == null) return null;
+
+        Map<K, V> map = new HashMap<>();
+
+        for (Object[] fields : list) {
+            map.put((K) fields[0], (V) fields[1]);
+        }
+
+        return map;
     }
 
     @Override
-    public Map<Department, Integer> getAvgSalaryGroupByDepartment() throws AppException {
-        return null;
+    public Map<Department, List<User>> getUsersGroupByDepartment() throws AppException {
+
+        Map<Department, List<User>> map;
+
+        map = fromListToMap(userDao.getUsersGroupByDepartment());
+
+        if (map == null) {
+            logger.info("Users grouped by department wasn't found!");
+            throw new AppException("Users grouped by department wasn't found!");
+        }
+
+        logger.info("Users grouped by department was found!");
+
+        return map;
+    }
+
+    @Override
+    public Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppException {
+
+        Map<Department, Double> map;
+
+        map = fromListToMap(userDao.getAvgSalaryGroupByDepartment());
+
+        if (map == null) {
+            logger.info("Avarage salary grouped by department wasn't found!");
+            throw new AppException("Avarage salary grouped by department wasn't found!");
+        }
+
+        logger.info("Avarage salary grouped by department was found!");
+
+        return map;
     }
 
     @Override
     public Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppException {
-        return null;
+
+        Map<User, List<User>> map;
+
+        map = fromListToMap(userDao.getUsersGroupByManagersAndOrderedThatLiveInCity("Kiev"));
+
+        if (map == null) {
+            logger.info("Users grouped by managers that live in Kiev wasn't found!");
+            throw new AppException("Users grouped by managers that live in Kiev wasn't found!");
+        }
+
+        logger.info("Users grouped by managers that live in Kiev was found!");
+
+        return map;
     }
 
     @Override
