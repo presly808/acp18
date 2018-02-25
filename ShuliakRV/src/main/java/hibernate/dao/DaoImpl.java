@@ -1,7 +1,6 @@
 package hibernate.dao;
 
 import hibernate.exception.AppException;
-import hibernate.model.User;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -14,14 +13,15 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
 
     protected EntityManagerFactory factory;
 
-    private T entity;
+    private Class<T> entityClass;
 
-    private Class<T> entityClass = (Class<T>) entity.getClass();
+    protected final Logger logger;
 
-    protected final Logger logger = Logger.getLogger(entityClass);
+    public DaoImpl(EntityManagerFactory factory, Class<T> entityClass) {
 
-    public DaoImpl(EntityManagerFactory factory) {
         this.factory = factory;
+        this.entityClass = entityClass;
+        logger = Logger.getLogger(entityClass);
     }
 
     @Override

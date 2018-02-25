@@ -1,21 +1,20 @@
 package hibernate.dao;
 
-import hibernate.model.Department;
 import hibernate.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 
 public class UserDao extends DaoImpl<User, Integer> {
 
-    public UserDao(EntityManagerFactory factory) {
-        super(factory);
+    public UserDao(EntityManagerFactory factory, Class<User> clazz) {
+
+        super(factory, clazz);
     }
 
     public List<User> findByName(String name) {
