@@ -3,6 +3,28 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence "
         version="2.0">
+
+
+
+    <persistence-unit name="servlets-h2-unit">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>servlets.model.User</class>
+
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:h2:./database/servlets"/>
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value=""/>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+    </persistence-unit>
+
+
+
     <persistence-unit name="spring-h2-unit" transaction-type="RESOURCE_LOCAL">
         <description>Spring H2 tutor DB.</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
@@ -20,6 +42,8 @@
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
+
+
 
     <!-- transaction-type="RESOURCE_LOCAL" means that we will rule the transactions be our own -->
     <!-- transaction-type="JTA" means that we will use Java Transaction API (JTA) to rule the transactions -->
@@ -61,6 +85,8 @@
         </properties>
 
     </persistence-unit>
+
+
 
     <persistence-unit name="hibernate-h2-unit">
 
