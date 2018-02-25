@@ -7,6 +7,7 @@ import hibernate.exception.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
 import org.apache.log4j.Logger;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
@@ -129,16 +130,63 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public List<User> findByName(String name) throws AppException {
-        return userDao.findByName(name);
+
+        if (name == null) {
+            logger.info("Users can't found!");
+            throw new AppException("Name is NULL!");
+        }
+
+        List<User> list = userDao.findByName(name);
+
+        if (list == null) {
+            logger.info("Users wasn't found!");
+            throw new AppException("Users wasn't found!");
+        }
+
+        logger.info("Users was found!");
+
+        return list;
     }
 
     @Override
     public List<User> findInRange(double minSal, double maxSal) throws AppException {
-        return userDao.findInRange(minSal,maxSal);
+
+        if ((minSal < 0 || maxSal < 0) || (maxSal < minSal)) {
+            logger.info("Users can't found!");
+            throw new AppException("Incorrect range!");
+        }
+
+        List<User> list = userDao.findInRange(minSal, maxSal);
+
+        if (list == null) {
+            logger.info("Users wasn't found!");
+            throw new AppException("Users wasn't found!");
+        }
+
+        logger.info("Users was found!");
+
+        return list;
+
     }
 
     @Override
     public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
-        return userDao.findByDate(start,end);
+
+        if (start.isAfter(end)) {
+            logger.info("Users can't found!");
+            throw new AppException("Incorrect dates!");
+        }
+
+        List<User> list = userDao.findByDate(start, end);
+
+        if (list == null) {
+            logger.info("Users wasn't found!");
+            throw new AppException("Users wasn't found!");
+        }
+
+        logger.info("Users was found!");
+
+        return list;
+
     }
 }
