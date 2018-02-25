@@ -20,7 +20,7 @@ public class User extends Base {
     @JoinColumn(name = "cityId", referencedColumnName = "id")
     private City city;
     @ManyToOne
-    @JoinColumn(name = "manageID", referencedColumnName = "id")
+    @JoinColumn(name = "manageId", referencedColumnName = "id")
     private User manage;
     // start work date
     @Column

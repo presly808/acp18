@@ -78,15 +78,60 @@ public class UserDao extends DaoImpl<User, Integer> {
         }
     }
 
-    public List<User> getUsersGroupByDepartment() {
+    public List getUsersGroupByDepartment() {
 
         logger.info("Grouping Users by dapartment!");
 
-        String queryUser = "SELECT u.department,u.* FROM User u " +
+        String queryUser = "SELECT u.department, u FROM User u " +
                 "GROUP by u.department";
 
         EntityManager manager = factory.createEntityManager();
         Query resQuery = manager.createQuery(queryUser);
+
+        try {
+            return resQuery.getResultList();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        } finally {
+            manager.close();
+        }
+
+    }
+
+    public List getAvgSalaryGroupByDepartment() {
+
+        logger.info("Getting Users avarage salary by dapartment!");
+
+        String queryUser = "SELECT u.department, AVG(u.salary) " +
+                "FROM User u " +
+                "GROUP BY u.department";
+
+        EntityManager manager = factory.createEntityManager();
+        Query resQuery = manager.createQuery(queryUser);
+
+        try {
+            return resQuery.getResultList();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        } finally {
+            manager.close();
+        }
+    }
+
+    public List getUsersGroupByManagersAndOrderedThatLiveInCity(String city) {
+
+        logger.info("Getting Users grouped by dapartment and ordered by city!");
+
+        String queryUser = "SELECT u2.department, u1 " +
+                "FROM User u1, User u2  WHERE u1.manage=u2.id" +
+                "GROUP BY u2.department" +
+                "HAVING u1.city.name = :city";
+
+        EntityManager manager = factory.createEntityManager();
+        Query resQuery = manager.createQuery(queryUser);
+        resQuery.setParameter("city", city);
 
         try {
             return resQuery.getResultList();
