@@ -8,19 +8,16 @@ public class MainXML {
 
     public static void main(String[] args) {
 
-        /*
-        ApplicationContext context = new ClassPathXmlApplicationContext("/spring/spring-context.xml");
+
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring/spring-context.xml");
 
         IUserService userService = (IUserService) context.getBean("userServiceImpl");
-        userService.save(new User(""));
+        userService.save(new User("testio123123"));
         System.out.println("\n\n\n\n");
-*/
-
 
         ApplicationContext context1 = new AnnotationConfigApplicationContext("spring");
         UserServiceImpl userService1 = (UserServiceImpl) context1.getBean("userServiceImpl");
         userService1.save(new User("testio222"));
-
 
     }
 }

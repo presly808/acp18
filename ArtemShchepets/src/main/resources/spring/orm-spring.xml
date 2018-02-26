@@ -22,7 +22,7 @@
        <property name="managerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <bean id="myAspect" class="spring.LoggingAspect">
+    <bean class="spring.LoggingAspect">
 
     </bean>
 

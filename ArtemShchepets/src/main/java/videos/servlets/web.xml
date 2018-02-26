@@ -5,7 +5,7 @@
          version="2.5">
 
 
-<!--
+
 <servlet>
     <servlet-name>MyTestServlet</servlet-name>
     <servlet-class>videos.servlets.MyTestServlet</servlet-class>
@@ -15,6 +15,6 @@
         <servlet-name>MyTestServlet</servlet-name>
         <url-pattern></url-pattern>
     </servlet-mapping>
--->
+
 
 </web-app>

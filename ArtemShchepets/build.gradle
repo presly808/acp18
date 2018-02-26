@@ -1,6 +1,7 @@
 version 'unspecified'
 
 apply plugin: 'java'
+apply plugin: 'war'
 
 sourceCompatibility = 1.8
 
@@ -45,6 +46,9 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-aop', version: '5.0.3.RELEASE'
 
 
-
+    war {
+        from 'src/main' // adds a file-set to the root of the archive
+        webInf { from 'src/main/webapp/WEB-INF' } // adds a file-set to the WEB-INF dir.
+    }
 
 }

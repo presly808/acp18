@@ -9,10 +9,9 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-
     <tx:annotation-driven/>
     <!--FOR ASPECT ANNOTATIONS-->
-    <aop:aspectj-autoproxy />
+   <!-- <aop:aspectj-autoproxy />-->
 
     <!-- get properties from app.properties-->
     <import resource="orm-spring.xml"/>

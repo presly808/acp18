@@ -1,6 +1,6 @@
-package hibernate.dao;
+package servlets.dao;
 
-import hibernate.model.User;
+import servlets.model.User;
 
 import java.util.List;
 
@@ -13,7 +13,8 @@ public interface Dao<T,ID> {
     List<T> findAll(int offset, int length);
     T find(ID id);
 
+    User findByName(String name);
+
     T remove(ID id);
-    T update(T entity);
     T create(T entity);
 }

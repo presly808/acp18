@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class UserServiceImpl implements IUserService {
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
 
     public UserServiceImpl() {
     }
@@ -27,7 +27,7 @@ public class UserServiceImpl implements IUserService {
         return userDao.find(id);
     }
 
-    public UserDaoImpl getUserDao() {
+    public UserDao getUserDao() {
         return userDao;
     }
 

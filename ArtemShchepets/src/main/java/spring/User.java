@@ -11,10 +11,10 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int id;
+    private int id;
 
     @Column(nullable = false)
-    public String name;
+    private String name;
 
     public User() {
     }
