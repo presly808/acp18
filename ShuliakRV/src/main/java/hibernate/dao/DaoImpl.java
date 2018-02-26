@@ -123,7 +123,7 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
 
         try {
             ID id = (ID) entityClass.getMethod("getId").invoke(entity);
-            T obj = manager.find(entityClass, id);
+           // T obj = manager.find(entityClass, id);
             trans.begin();
             if (id == null || id.equals(0)) {
                 manager.persist(entity);

@@ -1,6 +1,7 @@
 package hibernate.service;
 
 import hibernate.exception.AppException;
+import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 
@@ -17,9 +18,13 @@ public interface MainService {
 
     Department addDepartment(Department department) throws AppException;
 
+    City addCity(City city) throws AppException;
+
     User update(User user) throws AppException;
 
     User remove(User user) throws AppException;
+
+    List<User> findAll() throws AppException;
 
     Map<Department, List<User>> getUsersGroupByDepartment() throws AppException;
 

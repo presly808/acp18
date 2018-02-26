@@ -1,9 +1,11 @@
 package hibernate.service;
 
 
+import hibernate.dao.CityDao;
 import hibernate.dao.DepartmentDao;
 import hibernate.dao.UserDao;
 import hibernate.exception.AppException;
+import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 import org.apache.log4j.Logger;
@@ -24,6 +26,8 @@ public class MainServiceImpl implements MainService {
 
     private UserDao userDao;
     private DepartmentDao departmentDao;
+    private CityDao cityDao;
+
     private EntityManagerFactory factory;
 
     public MainServiceImpl() {
@@ -31,6 +35,7 @@ public class MainServiceImpl implements MainService {
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
         userDao = new UserDao(factory, User.class);
         departmentDao = new DepartmentDao(factory, Department.class);
+        cityDao = new CityDao(factory,City.class);
 
     }
 
@@ -55,6 +60,26 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public City addCity(City city) throws AppException {
+
+        if (city == null) {
+            logger.info("City can't registered!");
+            throw new AppException("City is NULL!");
+        }
+
+        City entity = cityDao.update(city);
+
+        if (entity == null) {
+            logger.info("City wasn't added!");
+            throw new AppException("City wasn't added!");
+        }
+
+        logger.info("City was added!");
+
+        return entity;
+    }
+
+    @Override
     public Department addDepartment(Department department) throws AppException {
 
         if (department == null) {
@@ -72,6 +97,21 @@ public class MainServiceImpl implements MainService {
         logger.info("Department was added!");
 
         return entity;
+    }
+
+    @Override
+    public List<User> findAll() throws AppException {
+
+        List<User> list = userDao.findAll();
+
+        if (list == null) {
+            logger.info("Users wasn't found!");
+            throw new AppException("Users wasn't found!");
+        }
+
+        logger.info("Users was found!");
+
+        return list;
     }
 
     @Override

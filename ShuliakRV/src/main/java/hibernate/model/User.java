@@ -81,8 +81,8 @@ public class User extends Base {
         this.city = city;
     }
 
-    public User(int id, String name, int age, double salary, Department department, City city, User manage) {
-        super(id, name);
+    public User(String name, int age, double salary, Department department, City city, User manage) {
+//        super(id, name);
         this.age = age;
         this.salary = salary;
         this.department = department;
