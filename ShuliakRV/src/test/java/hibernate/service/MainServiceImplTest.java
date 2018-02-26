@@ -26,7 +26,7 @@ public class MainServiceImplTest {
         department2.setId(2);
         department2.setName("QA");
 
-        User user3 = new User(3, "Yura", 35, 1500, department2, kiev, null);
+        User user3 = new User(0, "Yura", 35, 1500, department2, kiev, null);
         User user1 = new User(1, "Ivan", 30, 2500, department2, kiev, user3);
         User user2 = new User(2, "Oleg", 33, 3500, department2, odessa, user3);
         User user4 = new User(4, "Serhii", 22, 2500, department1, kiev, user3);
@@ -34,8 +34,14 @@ public class MainServiceImplTest {
 
         MainServiceImpl service = new MainServiceImpl();
         User user = service.register(user3);
+        user3.setAge(30);
+        User user11 = service.register(user3);
+
 
         assertEquals(user.getName(), "Yura");
+        assertEquals(user11.getAge(), 30);
+        System.out.println(user.getId());
+        System.out.println(user11.getId());
 
     }
 

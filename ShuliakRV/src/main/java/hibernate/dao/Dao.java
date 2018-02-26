@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface Dao<T,ID> {
 
-    List<T> findAll() throws AppException;
+    List<T> findAll();
     List<T> findAll(int offset, int length);
     T find(ID id);
     T remove(ID id);

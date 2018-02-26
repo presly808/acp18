@@ -1,6 +1,5 @@
 package hibernate.dao;
 
-import hibernate.exception.AppException;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -25,7 +24,7 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
     }
 
     @Override
-    public List<T> findAll() throws AppException {
+    public List<T> findAll() {
 
         EntityManager manager = factory.createEntityManager();
         TypedQuery<T> query = manager.createQuery("SELECT e FROM " +
@@ -123,10 +122,10 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
         String entityName = entityClass.getSimpleName();
 
         try {
-            Object id = entityClass.getMethod("getId").invoke(entity);
+            ID id = (ID) entityClass.getMethod("getId").invoke(entity);
             T obj = manager.find(entityClass, id);
             trans.begin();
-            if (obj == null) {
+            if (id == null || id.equals(0)) {
                 manager.persist(entity);
                 logger.info("Inserting new " + entityName);
             } else {
