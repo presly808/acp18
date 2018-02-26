@@ -1,13 +1,35 @@
 package hibernate.service;
 
 import hibernate.model.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+
 public class MainServiceImplTest {
+
+    private static MainService service;
+    private static EntityManagerFactory factory;
+
+    @BeforeClass
+    public static void createtables() {
+
+        factory = Persistence.createEntityManagerFactory("hibernate-unit");
+        service = new MainServiceImpl(factory);
+    }
+
+
+    @AfterClass
+    public static void dropTables() {
+        factory.close();
+    }
+
     @Test
     public void register() throws Exception {
 
@@ -30,8 +52,6 @@ public class MainServiceImplTest {
         User user4 = new User("Serhii", 22, 2500, department1, kiev, user3);
         User user5 = new User("Olex", 24, 4500, department1, odessa, user3);
 
-        MainService service = new MainServiceImpl();
-
         service.addCity(kiev);
         service.addCity(odessa);
         service.addDepartment(department1);
@@ -42,11 +62,19 @@ public class MainServiceImplTest {
         service.register(user4);
         service.register(user5);
 
-        assertEquals(5,service.findAll().size());
+        assertEquals(5, service.findAll().size());
     }
 
     @Test
     public void addDepartment() throws Exception {
+
+        Department department1 = new Department();
+        department1.setId(8);
+        department1.setName("TESTDEPART");
+
+        Department department = service.addDepartment(department1);
+        assertEquals(8, department.getId());
+
     }
 
     @Test

@@ -30,9 +30,10 @@ public class MainServiceImpl implements MainService {
 
     private EntityManagerFactory factory;
 
-    public MainServiceImpl() {
+    public MainServiceImpl(EntityManagerFactory factory) {
 
-        factory = Persistence.createEntityManagerFactory("hibernate-unit");
+        this.factory = factory;
+
         userDao = new UserDao(factory, User.class);
         departmentDao = new DepartmentDao(factory, Department.class);
         cityDao = new CityDao(factory,City.class);
