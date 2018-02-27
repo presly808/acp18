@@ -27,6 +27,10 @@ dependencies {
     compile group: 'org.aspectj', name: 'aspectjrt', version: '1.8.13'
     compile group: 'org.aspectj', name: 'aspectjtools', version: '1.8.13'
 
+    //SERVLET
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.0'
+
+
     //LOG
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
 

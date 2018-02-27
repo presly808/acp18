@@ -7,13 +7,15 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = {"spring"})
-@PropertySource("META-INF/db-annot-impl.properties")
+@PropertySource("/META-INF/db-annot-impl.properties")
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfig {
@@ -44,20 +46,40 @@ public class AppConfig {
         return dataSource;
     }
 
+    @Bean
+    public DataSource dataSource2() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName(environment.getProperty("db.driver"));
+        dataSource.setUrl(environment.getProperty("db.url"));
+        dataSource.setUsername(environment.getProperty("db.username"));
+        dataSource.setPassword(environment.getProperty("db.password"));
+
+        return dataSource;
+    }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-        bean.setDataSource(dataSource());
-        bean.setPersistenceUnitName("spring-unit-xml");
-        bean.setPackagesToScan("spring");
+        bean.setDataSource(dataSource2());
+        //bean.setPersistenceUnitName("spring-unit-xml");
+        bean.setPackagesToScan("spring/model");
 
         HibernateJpaVendorAdapter vendor = new HibernateJpaVendorAdapter();
-        vendor.setShowSql(true);
+        bean.setJpaProperties(additionalProperties());
         bean.setJpaVendorAdapter(vendor);
 
         return bean;
+    }
+
+    @Bean
+    public Properties additionalProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("db.hbm2ddl.auto"));
+        properties.setProperty("hibernate.show_sql", environment.getProperty("db.show_sql"));
+        properties.setProperty("hibernate.dialect", environment.getProperty("db.dialect"));
+        return properties;
     }
 
 }
