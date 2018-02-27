@@ -209,7 +209,7 @@ public class MainServiceImplTest {
         kiev.setName("Kiev");
 
         City odessa = new City();
-        odessa.setName("Oddessa");
+        odessa.setName("Odessa");
 
         Department department1 = new Department();
         department1.setName("IT");
@@ -233,7 +233,7 @@ public class MainServiceImplTest {
         service.register(user4);
         service.register(user5);
 
-        assertEquals(4,service.getUsersGroupByManagersAndOrderedThatLiveInKiev().get(user3).size());
+        assertEquals(3,service.getUsersGroupByManagersAndOrderedThatLiveInKiev().get(user3).size());
 
     }
 
