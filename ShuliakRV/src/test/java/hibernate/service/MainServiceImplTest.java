@@ -235,7 +235,6 @@ public class MainServiceImplTest {
 
         assertEquals(3, service.findByDate(start, end).size());
 
-
     }
 
 }
