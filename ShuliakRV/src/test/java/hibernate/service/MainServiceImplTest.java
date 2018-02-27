@@ -2,16 +2,11 @@ package hibernate.service;
 
 import hibernate.model.*;
 import org.apache.log4j.Logger;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -22,17 +17,14 @@ public class MainServiceImplTest {
     private static EntityManagerFactory factory;
     private final static Logger logger = Logger.getLogger(MainServiceImplTest.class);
 
-    @BeforeClass
-    public static void createtables() {
-
+    @Before
+    public void createtables() {
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
         service = new MainServiceImpl(factory);
-
     }
 
-
-    @AfterClass
-    public static void dropTables() {
+    @After
+    public void dropTables() {
         factory.close();
     }
 
@@ -233,7 +225,7 @@ public class MainServiceImplTest {
         service.register(user4);
         service.register(user5);
 
-        assertEquals(3,service.getUsersGroupByManagersAndOrderedThatLiveInKiev().get(user3).size());
+        assertEquals(4, service.getUsersGroupByManagersAndOrderedThatLiveInKiev().get(user3).size());
 
     }
 

@@ -37,7 +37,7 @@ public class MainServiceImpl implements MainService {
 
         userDao = new UserDao(factory, User.class);
         departmentDao = new DepartmentDao(factory, Department.class);
-        cityDao = new CityDao(factory,City.class);
+        cityDao = new CityDao(factory, City.class);
 
     }
 
@@ -199,9 +199,17 @@ public class MainServiceImpl implements MainService {
     @Override
     public Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppException {
 
-        Map<Department, Double> map;
 
-        map = fromListToMap(userDao.getAvgSalaryGroupByDepartment());
+        List<Object[]> list = userDao.getAvgSalaryGroupByDepartment();
+
+        if (list == null) return null;
+
+        Map<Department, Double> map = new HashMap<>();
+
+        for (Object[] fields : list) {
+
+            map.put((Department) fields[0], (Double) fields[1]);
+        }
 
         if (map == null) {
             logger.info("Avarage salary grouped by department wasn't found!");
