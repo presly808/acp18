@@ -29,10 +29,8 @@ public class UserDaoImplTest_XmlImpl {
 
     @Test
     public void save() throws Exception {
-
         userPetr = userDao.save(userPetr);
         assertTrue(userPetr.getId() != 0);
-
     }
 
     @Test

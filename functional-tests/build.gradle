@@ -23,14 +23,7 @@ task copyTaskWithPatterns(type: Copy) {
     from 'src/main/java'
     from 'src/main/resources'
     into 'build/classes/java/main'
-    include '**/*.txt'
-    include '**/*.js'
-    include '**/*.html'
-    include '**/*.properties'
-    include '**/*.yml'
-    include '**/*.json'
-    include '**/*.MD'
-    include '**/*.xml'
+    include '**/*'
     exclude '**/*.java'
 }
 
