@@ -1,6 +1,7 @@
 package hibernate.service;
 
 import hibernate.model.*;
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,12 +17,14 @@ public class MainServiceImplTest {
 
     private static MainService service;
     private static EntityManagerFactory factory;
+    private final static Logger logger = Logger.getLogger(MainServiceImplTest.class);
 
     @BeforeClass
     public static void createtables() {
 
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
         service = new MainServiceImpl(factory);
+
     }
 
 
@@ -48,9 +51,9 @@ public class MainServiceImplTest {
 
         User user3 = new User("Yura", 35, 1500, department2, kiev, null);
         User user1 = new User("Ivan", 30, 2500, department2, kiev, user3);
-        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3);
-        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3);
-        User user5 = new User("Olex", 24, 4500, department1, odessa, user3);
+        User user2 = new User( "Oleg", 33, 3500, department2, odessa, user3);
+        User user4 = new User( "Serhii", 22, 2500, department1, kiev, user3);
+        User user5 = new User( "Olex", 24, 4500, department1, odessa, user3);
 
         service.addCity(kiev);
         service.addCity(odessa);
@@ -69,16 +72,38 @@ public class MainServiceImplTest {
     public void addDepartment() throws Exception {
 
         Department department1 = new Department();
-        department1.setId(8);
         department1.setName("TESTDEPART");
 
+
         Department department = service.addDepartment(department1);
-        assertEquals(8, department.getId());
+        department.setId(8);
+
+        department = service.addDepartment(department);
+
+        assertEquals("TESTDEPART", department.getName());
 
     }
 
     @Test
     public void update() throws Exception {
+
+        City kiev = new City();
+        kiev.setName("Kiev");
+
+        Department department1 = new Department();
+        department1.setName("IT");
+
+        User user3 = new User("Yura", 35, 1500, department1, kiev, null);
+
+        service.addCity(kiev);
+        service.addDepartment(department1);
+
+        service.register(user3);
+        user3.setName("Vasya");
+        User user = service.update(user3);
+        assertEquals("Vasya", user.getName());
+        assertEquals(1, service.findAll().size());
+
     }
 
     @Test

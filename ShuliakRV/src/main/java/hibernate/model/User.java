@@ -41,12 +41,22 @@ public class User extends Base {
         this.age = age;
     }
 
-    public User(int id, String name, int age, double salary, Department department, City city) {
+    public User(String name, int age, double salary, Department department, City city, User manage) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.department = department;
+        this.city = city;
+        this.manage = manage;
+    }
+
+    public User(int id, String name, int age, double salary, Department department, City city, User manage) {
         super(id, name);
         this.age = age;
         this.salary = salary;
         this.department = department;
         this.city = city;
+        this.manage = manage;
     }
 
     public int getAge() {
@@ -81,15 +91,6 @@ public class User extends Base {
         this.city = city;
     }
 
-    public User(String name, int age, double salary, Department department, City city, User manage) {
-//        super(id, name);
-        this.age = age;
-        this.salary = salary;
-        this.department = department;
-        this.city = city;
-        this.manage = manage;
-    }
-
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
     }
@@ -104,5 +105,19 @@ public class User extends Base {
 
     public void setManage(User manage) {
         this.manage = manage;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "age=" + age +
+                ", salary=" + salary +
+                ", department=" + department +
+                ", city=" + city +
+                ", manage=" + manage +
+                ", localDateTime=" + localDateTime +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -123,13 +123,12 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
 
         try {
             ID id = (ID) entityClass.getMethod("getId").invoke(entity);
-           // T obj = manager.find(entityClass, id);
             trans.begin();
             if (id == null || id.equals(0)) {
                 manager.persist(entity);
                 logger.info("Inserting new " + entityName);
             } else {
-                manager.merge(entity);
+                entity = manager.merge(entity);
                 logger.info("Updating existing " + entityName);
             }
             trans.commit();
