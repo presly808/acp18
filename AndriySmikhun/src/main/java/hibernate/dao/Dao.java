@@ -12,4 +12,5 @@ public interface Dao<T,ID> {
     T find(ID id);
     T remove(ID id);
     T update(T entity);
+    T create (T entity);
 }

@@ -28,4 +28,9 @@ public class DaoUserImpl implements Dao {
     public Object update(Object entity) {
         return null;
     }
+
+    @Override
+    public Object create(Object entity) {
+        return null;
+    }
 }
