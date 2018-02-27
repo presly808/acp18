@@ -15,7 +15,8 @@ public class MainServiceImplTest {
 
     private static MainService service;
     private static EntityManagerFactory factory;
-    private final static Logger logger = Logger.getLogger(MainServiceImplTest.class);
+    private final static Logger logger = Logger.
+            getLogger(MainServiceImplTest.class);
 
     @Before
     public void createtables() {
@@ -44,11 +45,16 @@ public class MainServiceImplTest {
         Department department2 = new Department();
         department2.setName("QA");
 
-        User user3 = new User("Yura", 35, 1500, department2, kiev, null, LocalDateTime.now());
-        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3, LocalDateTime.now());
-        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3, LocalDateTime.now());
-        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3, LocalDateTime.now());
-        User user5 = new User("Olex", 24, 4500, department1, odessa, user3, LocalDateTime.now());
+        User user3 = new User("Yura", 35, 1500, department2, kiev, null,
+                LocalDateTime.now());
+        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3,
+                LocalDateTime.now());
+        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3,
+                LocalDateTime.now());
+        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3,
+                LocalDateTime.now());
+        User user5 = new User("Olex", 24, 4500, department1, odessa, user3,
+                LocalDateTime.now());
 
         service.addCity(kiev);
         service.addCity(odessa);
@@ -88,7 +94,8 @@ public class MainServiceImplTest {
         Department department1 = new Department();
         department1.setName("IT");
 
-        User user1 = new User("Yura", 35, 1500, department1, kiev, null, LocalDateTime.now());
+        User user1 = new User("Yura", 35, 1500, department1, kiev, null,
+                LocalDateTime.now());
 
         service.addCity(kiev);
         service.addDepartment(department1);
@@ -110,7 +117,8 @@ public class MainServiceImplTest {
         Department department1 = new Department();
         department1.setName("IT");
 
-        User user1 = new User("Yura", 35, 1500, department1, kiev, null, LocalDateTime.now());
+        User user1 = new User("Yura", 35, 1500, department1, kiev, null,
+                LocalDateTime.now());
 
         service.addCity(kiev);
         service.addDepartment(department1);
@@ -137,11 +145,16 @@ public class MainServiceImplTest {
         Department department2 = new Department();
         department2.setName("QA");
 
-        User user3 = new User("Yura", 35, 1500, department2, kiev, null, LocalDateTime.now());
-        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3, LocalDateTime.now());
-        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3, LocalDateTime.now());
-        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3, LocalDateTime.now());
-        User user5 = new User("Olex", 24, 4500, department1, odessa, user3, LocalDateTime.now());
+        User user3 = new User("Yura", 35, 1500, department2, kiev, null,
+                LocalDateTime.now());
+        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3,
+                LocalDateTime.now());
+        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3,
+                LocalDateTime.now());
+        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3,
+                LocalDateTime.now());
+        User user5 = new User("Olex", 24, 4500, department1, odessa, user3,
+                LocalDateTime.now());
 
         service.addCity(kiev);
         service.addCity(odessa);
@@ -153,8 +166,10 @@ public class MainServiceImplTest {
         service.register(user4);
         service.register(user5);
 
-        assertEquals(2, service.getUsersGroupByDepartment().get(department1).size());
-        assertEquals(3, service.getUsersGroupByDepartment().get(department2).size());
+        assertEquals(2, service.getUsersGroupByDepartment().
+                get(department1).size());
+        assertEquals(3, service.getUsersGroupByDepartment().
+                get(department2).size());
 
     }
 
@@ -173,11 +188,16 @@ public class MainServiceImplTest {
         Department department2 = new Department();
         department2.setName("QA");
 
-        User user3 = new User("Yura", 35, 1500, department2, kiev, null, LocalDateTime.now());
-        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3, LocalDateTime.now());
-        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3, LocalDateTime.now());
-        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3, LocalDateTime.now());
-        User user5 = new User("Olex", 24, 4500, department1, odessa, user3, LocalDateTime.now());
+        User user3 = new User("Yura", 35, 1500, department2, kiev, null,
+                LocalDateTime.now());
+        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3,
+                LocalDateTime.now());
+        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3,
+                LocalDateTime.now());
+        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3,
+                LocalDateTime.now());
+        User user5 = new User("Olex", 24, 4500, department1, odessa, user3,
+                LocalDateTime.now());
 
         service.addCity(kiev);
         service.addCity(odessa);
@@ -189,13 +209,16 @@ public class MainServiceImplTest {
         service.register(user4);
         service.register(user5);
 
-        assertEquals(3500, service.getAvgSalaryGroupByDepartment().get(department1), 0.001);
-        assertEquals(2500, service.getAvgSalaryGroupByDepartment().get(department2), 0.001);
+        assertEquals(3500, service.getAvgSalaryGroupByDepartment().
+                get(department1), 0.001);
+        assertEquals(2500, service.getAvgSalaryGroupByDepartment().
+                get(department2), 0.001);
 
     }
 
     @Test
-    public void getUsersGroupByManagersAndOrderedThatLiveInKiev() throws Exception {
+    public void getUsersGroupByManagersAndOrderedThatLiveInKiev()
+            throws Exception {
 
         City kiev = new City();
         kiev.setName("Kiev");
@@ -209,11 +232,16 @@ public class MainServiceImplTest {
         Department department2 = new Department();
         department2.setName("QA");
 
-        User user3 = new User("Yura", 35, 1500, department2, kiev, null, LocalDateTime.now());
-        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3, LocalDateTime.now());
-        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3, LocalDateTime.now());
-        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3, LocalDateTime.now());
-        User user5 = new User("Olex", 24, 4500, department1, odessa, user3, LocalDateTime.now());
+        User user3 = new User("Yura", 35, 1500, department2, kiev, null,
+                LocalDateTime.now());
+        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3,
+                LocalDateTime.now());
+        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3,
+                LocalDateTime.now());
+        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3,
+                LocalDateTime.now());
+        User user5 = new User("Olex", 24, 4500, department1, odessa, user3,
+                LocalDateTime.now());
 
         service.addCity(kiev);
         service.addCity(odessa);
@@ -225,7 +253,9 @@ public class MainServiceImplTest {
         service.register(user4);
         service.register(user5);
 
-        assertEquals(4, service.getUsersGroupByManagersAndOrderedThatLiveInKiev().get(user3).size());
+        assertEquals(4, service.
+                getUsersGroupByManagersAndOrderedThatLiveInKiev().
+                get(user3).size());
 
     }
 
@@ -241,7 +271,8 @@ public class MainServiceImplTest {
         service.addCity(kiev);
         service.addDepartment(department1);
 
-        User user1 = new User("Yura", 35, 1500, department1, kiev, null, LocalDateTime.now());
+        User user1 = new User("Yura", 35, 1500, department1, kiev, null,
+                LocalDateTime.now());
         assertEquals(0, service.findByName("Yura").size());
         service.register(user1);
         assertEquals(1, service.findByName("Yura").size());
@@ -263,11 +294,16 @@ public class MainServiceImplTest {
         Department department2 = new Department();
         department2.setName("QA");
 
-        User user3 = new User("Yura", 35, 1500, department2, kiev, null, LocalDateTime.now());
-        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3, LocalDateTime.now());
-        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3, LocalDateTime.now());
-        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3, LocalDateTime.now());
-        User user5 = new User("Olex", 24, 4500, department1, odessa, user3, LocalDateTime.now());
+        User user3 = new User("Yura", 35, 1500, department2, kiev, null,
+                LocalDateTime.now());
+        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3,
+                LocalDateTime.now());
+        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3,
+                LocalDateTime.now());
+        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3,
+                LocalDateTime.now());
+        User user5 = new User("Olex", 24, 4500, department1, odessa, user3,
+                LocalDateTime.now());
 
         service.addCity(kiev);
         service.addCity(odessa);

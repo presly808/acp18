@@ -82,7 +82,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Department addDepartment(Department department) throws AppException {
+    public Department addDepartment(Department department)
+            throws AppException {
 
         if (department == null) {
             logger.info("Department can't registered!");
@@ -180,7 +181,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Map<Department, List<User>> getUsersGroupByDepartment() throws AppException {
+    public Map<Department, List<User>> getUsersGroupByDepartment()
+            throws AppException {
 
         Map<Department, List<User>> map;
 
@@ -188,7 +190,8 @@ public class MainServiceImpl implements MainService {
 
         if (map == null) {
             logger.info("Users grouped by department wasn't found!");
-            throw new AppException("Users grouped by department wasn't found!");
+            throw new AppException
+                    ("Users grouped by department wasn't found!");
         }
 
         logger.info("Users grouped by department was found!");
@@ -197,7 +200,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Map<Department, Double> getAvgSalaryGroupByDepartment() throws AppException {
+    public Map<Department, Double> getAvgSalaryGroupByDepartment()
+            throws AppException {
 
 
         List<Object[]> list = userDao.getAvgSalaryGroupByDepartment();
@@ -213,7 +217,8 @@ public class MainServiceImpl implements MainService {
 
         if (map == null) {
             logger.info("Avarage salary grouped by department wasn't found!");
-            throw new AppException("Avarage salary grouped by department wasn't found!");
+            throw new AppException("Avarage salary grouped by " +
+                    "department wasn't found!");
         }
 
         logger.info("Avarage salary grouped by department was found!");
@@ -222,15 +227,20 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppException {
+    public Map<User, List<User>>
+    getUsersGroupByManagersAndOrderedThatLiveInKiev()
+            throws AppException {
 
         Map<User, List<User>> map;
 
-        map = fromListToMap(userDao.getUsersGroupByManagersAndOrderedThatLiveInCity("Kiev"));
+        map = fromListToMap(userDao.
+                getUsersGroupByManagersAndOrderedThatLiveInCity("Kiev"));
 
         if (map == null) {
-            logger.info("Users grouped by managers that live in Kiev wasn't found!");
-            throw new AppException("Users grouped by managers that live in Kiev wasn't found!");
+            logger.info("Users grouped by managers that live in " +
+                    "Kiev wasn't found!");
+            throw new AppException("Users grouped by managers that live in " +
+                    "Kiev wasn't found!");
         }
 
         logger.info("Users grouped by managers that live in Kiev was found!");
@@ -259,7 +269,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<User> findInRange(double minSal, double maxSal) throws AppException {
+    public List<User> findInRange(double minSal, double maxSal)
+            throws AppException {
 
         if ((minSal < 0 || maxSal < 0) || (maxSal < minSal)) {
             logger.info("Users can't found!");
@@ -280,7 +291,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
+    public List<User> findByDate(LocalDateTime start, LocalDateTime end)
+            throws AppException {
 
         if (start.isAfter(end)) {
             logger.info("Users can't found!");

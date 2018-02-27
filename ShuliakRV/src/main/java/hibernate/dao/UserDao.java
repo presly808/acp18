@@ -8,8 +8,6 @@ import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-
 public class UserDao extends DaoImpl<User, Integer> {
 
     public UserDao(EntityManagerFactory factory, Class<User> clazz) {

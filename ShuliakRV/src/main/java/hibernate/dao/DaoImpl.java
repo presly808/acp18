@@ -75,7 +75,8 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
 
         try {
             obj = manager.find(entityClass, id);
-            logger.info("Finding " + entityClass.getSimpleName() + " with ID = " + id);
+            logger.info("Finding " + entityClass.getSimpleName() +
+                    " with ID = " + id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return null;
@@ -99,7 +100,8 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
             if (obj != null) {
                 trans.begin();
                 manager.remove(obj);
-                logger.info("Deleting " + entityClass.getSimpleName() + " with ID = " + id);
+                logger.info("Deleting " + entityClass.getSimpleName() +
+                        " with ID = " + id);
                 trans.commit();
             }
         } catch (Exception e) {
