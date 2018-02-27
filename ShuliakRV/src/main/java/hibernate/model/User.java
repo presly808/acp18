@@ -41,13 +41,15 @@ public class User extends Base {
         this.age = age;
     }
 
-    public User(String name, int age, double salary, Department department, City city, User manage) {
+    public User(String name, int age, double salary, Department department, City city,
+                User manage, LocalDateTime localDateTime) {
         this.name = name;
         this.age = age;
         this.salary = salary;
         this.department = department;
         this.city = city;
         this.manage = manage;
+        this.localDateTime = localDateTime;
     }
 
     public User(int id, String name, int age, double salary, Department department, City city, User manage) {
