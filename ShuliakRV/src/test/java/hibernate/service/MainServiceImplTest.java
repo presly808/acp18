@@ -141,6 +141,21 @@ public class MainServiceImplTest {
 
     @Test
     public void findByName() throws Exception {
+
+        City kiev = new City();
+        kiev.setName("Kiev");
+
+        Department department1 = new Department();
+        department1.setName("IT");
+
+        service.addCity(kiev);
+        service.addDepartment(department1);
+
+        User user1 = new User("Yura", 35, 1500, department1, kiev, null);
+        assertEquals(0, service.findByName("Yura").size());
+        service.register(user1);
+        assertEquals(1, service.findByName("Yura").size());
+
     }
 
     @Test
