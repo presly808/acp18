@@ -93,14 +93,14 @@ public class MainServiceImplTest {
         Department department1 = new Department();
         department1.setName("IT");
 
-        User user3 = new User("Yura", 35, 1500, department1, kiev, null);
+        User user1 = new User("Yura", 35, 1500, department1, kiev, null);
 
         service.addCity(kiev);
         service.addDepartment(department1);
 
-        service.register(user3);
-        user3.setName("Vasya");
-        User user = service.update(user3);
+        service.register(user1);
+        user1.setName("Vasya");
+        User user = service.update(user1);
         assertEquals("Vasya", user.getName());
         assertEquals(1, service.findAll().size());
 
@@ -108,6 +108,23 @@ public class MainServiceImplTest {
 
     @Test
     public void remove() throws Exception {
+
+        City kiev = new City();
+        kiev.setName("Kiev");
+
+        Department department1 = new Department();
+        department1.setName("IT");
+
+        User user1 = new User("Yura", 35, 1500, department1, kiev, null);
+
+        service.addCity(kiev);
+        service.addDepartment(department1);
+
+        service.register(user1);
+        assertEquals(1, service.findAll().size());
+        User user = service.remove(user1);
+        assertEquals(0, service.findAll().size());
+
     }
 
     @Test
