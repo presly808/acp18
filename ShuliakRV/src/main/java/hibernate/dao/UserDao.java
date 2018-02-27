@@ -123,11 +123,11 @@ public class UserDao extends DaoImpl<User, Integer> {
 
     public List getUsersGroupByManagersAndOrderedThatLiveInCity(String city) {
 
-        logger.info("Getting Users grouped by dapartment and ordered by city!");
+        logger.info("Getting Users grouped by mangers and ordered by city!");
 
-        String queryUser = "SELECT u2.department, u1 " +
-                "FROM User u1, User u2  WHERE u1.manage=u2.id" +
-                "GROUP BY u2.department" +
+        String queryUser = "SELECT u1, u2 " +
+                "FROM User u1, User u2  WHERE u1.id=u2.manage " +
+                "GROUP BY u1,u2 " +
                 "HAVING u1.city.name = :city";
 
         EntityManager manager = factory.createEntityManager();

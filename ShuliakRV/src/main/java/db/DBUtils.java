@@ -269,7 +269,7 @@ public class DBUtils implements IDB {
 
         Map<User, List<User>> map = new HashMap<>();
 
-        List<User> list = new ArrayList<User>();
+        List<User> list = new ArrayList<>();
 
         try {
             list = querySQL(User.class, "SELECT u2.* " +
