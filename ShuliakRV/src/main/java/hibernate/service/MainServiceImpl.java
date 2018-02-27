@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,14 +156,24 @@ public class MainServiceImpl implements MainService {
         return entity;
     }
 
-    private <K, V> Map<K, V> fromListToMap(List<Object[]> list) {
+    private <K, V> Map<K, List<V>> fromListToMap(List<Object[]> list) {
 
         if (list == null) return null;
 
-        Map<K, V> map = new HashMap<>();
+        Map<K, List<V>> map = new HashMap<>();
 
         for (Object[] fields : list) {
-            map.put((K) fields[0], (V) fields[1]);
+
+            List<V> listValue = map.get((K) fields[0]);
+
+            if (listValue == null) {
+                listValue = new ArrayList<V>();
+            }
+
+            listValue.add((V) fields[1]);
+
+            map.put((K) fields[0], listValue);
+
         }
 
         return map;

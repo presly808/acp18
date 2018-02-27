@@ -161,16 +161,8 @@ public class MainServiceImplTest {
         service.register(user4);
         service.register(user5);
 
-        List<User> list = new ArrayList<User>();// = (List<User>) user1;
-
-        System.out.println(list.getClass().getGenericInterfaces());
-        //System.out.println(list.get(0).getName());
-
-        //List<User> list = service.getUsersGroupByDepartment().get(department1);
-
-        //System.out.println("MY !!!!!" + list.size());
-
-       // assertEquals(2, service.getUsersGroupByDepartment().get(department1).size());
+        assertEquals(2, service.getUsersGroupByDepartment().get(department1).size());
+        assertEquals(3, service.getUsersGroupByDepartment().get(department2).size());
 
     }
 
@@ -212,6 +204,9 @@ public class MainServiceImplTest {
 
     @Test
     public void getUsersGroupByManagersAndOrderedThatLiveInKiev() throws Exception {
+
+
+
     }
 
     @Test
