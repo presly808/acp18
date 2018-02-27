@@ -6,9 +6,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -130,10 +132,82 @@ public class MainServiceImplTest {
 
     @Test
     public void getUsersGroupByDepartment() throws Exception {
+
+        City kiev = new City();
+        kiev.setName("Kiev");
+
+        City odessa = new City();
+        odessa.setName("Oddessa");
+
+        Department department1 = new Department();
+        department1.setName("IT");
+
+        Department department2 = new Department();
+        department2.setName("QA");
+
+        User user3 = new User("Yura", 35, 1500, department2, kiev, null, LocalDateTime.now());
+        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3, LocalDateTime.now());
+        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3, LocalDateTime.now());
+        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3, LocalDateTime.now());
+        User user5 = new User("Olex", 24, 4500, department1, odessa, user3, LocalDateTime.now());
+
+        service.addCity(kiev);
+        service.addCity(odessa);
+        service.addDepartment(department1);
+        service.addDepartment(department2);
+        service.register(user3);
+        service.register(user1);
+        service.register(user2);
+        service.register(user4);
+        service.register(user5);
+
+        List<User> list = new ArrayList<User>();// = (List<User>) user1;
+
+        System.out.println(list.getClass().getGenericInterfaces());
+        //System.out.println(list.get(0).getName());
+
+        //List<User> list = service.getUsersGroupByDepartment().get(department1);
+
+        //System.out.println("MY !!!!!" + list.size());
+
+       // assertEquals(2, service.getUsersGroupByDepartment().get(department1).size());
+
     }
 
     @Test
     public void getAvgSalaryGroupByDepartment() throws Exception {
+
+        City kiev = new City();
+        kiev.setName("Kiev");
+
+        City odessa = new City();
+        odessa.setName("Oddessa");
+
+        Department department1 = new Department();
+        department1.setName("IT");
+
+        Department department2 = new Department();
+        department2.setName("QA");
+
+        User user3 = new User("Yura", 35, 1500, department2, kiev, null, LocalDateTime.now());
+        User user1 = new User("Ivan", 30, 2500, department2, kiev, user3, LocalDateTime.now());
+        User user2 = new User("Oleg", 33, 3500, department2, odessa, user3, LocalDateTime.now());
+        User user4 = new User("Serhii", 22, 2500, department1, kiev, user3, LocalDateTime.now());
+        User user5 = new User("Olex", 24, 4500, department1, odessa, user3, LocalDateTime.now());
+
+        service.addCity(kiev);
+        service.addCity(odessa);
+        service.addDepartment(department1);
+        service.addDepartment(department2);
+        service.register(user3);
+        service.register(user1);
+        service.register(user2);
+        service.register(user4);
+        service.register(user5);
+
+        assertEquals(3500, service.getAvgSalaryGroupByDepartment().get(department1), 0.001);
+        assertEquals(2500, service.getAvgSalaryGroupByDepartment().get(department2), 0.001);
+
     }
 
     @Test

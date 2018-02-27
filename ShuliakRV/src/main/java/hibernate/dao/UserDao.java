@@ -84,7 +84,7 @@ public class UserDao extends DaoImpl<User, Integer> {
         logger.info("Grouping Users by dapartment!");
 
         String queryUser = "SELECT u.department, u FROM User u " +
-                "GROUP by u.department";
+                "GROUP by u.department, u";
 
         EntityManager manager = factory.createEntityManager();
         Query resQuery = manager.createQuery(queryUser);
