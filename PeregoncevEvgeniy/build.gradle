@@ -1,6 +1,7 @@
 version 'unspecified'
 
 apply plugin: 'java'
+apply plugin: 'war'
 
 sourceCompatibility = 1.8
 
@@ -8,9 +9,15 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
 
-//    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.1'
+
+    //javaX
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.0'
+
+
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.1'
 
     //junit
 
