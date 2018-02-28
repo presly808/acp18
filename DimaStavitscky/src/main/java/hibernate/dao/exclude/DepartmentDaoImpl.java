@@ -1,114 +1,103 @@
 package hibernate.dao.exclude;
 
 import hibernate.dao.Dao;
+import hibernate.dao.DepartmentDao;
+import hibernate.exception.exclude.AppException;
 import hibernate.model.Department;
+import hibernate.model.User;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class DepartmentDaoImpl implements Dao<Department, Integer> {
+@Component
+public class DepartmentDaoImpl implements DepartmentDao {
+
     private static final Logger LOGGER = Logger.getLogger(Dao.class);
-    private EntityManagerFactory factory;
+
+    @PersistenceContext
     private EntityManager manager;
 
-    public DepartmentDaoImpl(EntityManagerFactory factory) {
-        this.factory = factory;
-    }
-
+    @Transactional
     @Override
     public Department create(Department entity) {
-        manager = factory.createEntityManager();
-
-        try {
-            manager.getTransaction().begin();
+        int id = entity.getId();
+        if(id == 0 || manager.find(entity.getClass(), id) == null) {
             manager.persist(entity);
-            manager.getTransaction().commit();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("can not create entity");
-
-        } finally {
-            manager.close();
+        } else {
+            LOGGER.error("This department already exists in the database, id:" + id);
         }
-
         return entity;
     }
 
+    @Transactional
     @Override
     public List<Department> findAll() {
-        manager = factory.createEntityManager();
-        ;
-        TypedQuery<Department> query;
+        TypedQuery<Department> query = manager.createQuery
+                ("SELECT u FROM Department u", Department.class);
 
-        try {
-            query = manager.createQuery("SELECT u FROM Department u", Department.class);
-            return query.getResultList();
-
-        } finally {
-            manager.close();
-        }
+        return query.getResultList();
     }
 
+    @Transactional
     @Override
     public List<Department> findAll(int offset, int length) {
-        manager = factory.createEntityManager();
-        ;
-        TypedQuery<Department> query;
+        TypedQuery<Department> query = manager.createQuery("SELECT d FROM Department d", Department.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(length);
 
-        try {
-            query = manager.createQuery("SELECT d FROM Department d", Department.class);
-            query.setFirstResult(offset);
-            query.setMaxResults(length);
-            return query.getResultList();
-
-        } finally {
-            manager.close();
-        }
+        return query.getResultList();
     }
 
+    @Transactional
     @Override
     public Department find(Integer id) {
-        manager = factory.createEntityManager();
-        try {
-            Department res = manager.find(Department.class, id);
-            if (res == null) LOGGER.error("This department is not in the database, id: " + id);
-            return res;
-
-        } finally {
-            manager.close();
-        }
-    }
-
-    @Override
-    public Department remove(Integer id) {
-        manager = factory.createEntityManager();
-        try {
-            Department removedUser = manager.find(Department.class, id);
-            manager.remove(id);
-            return removedUser;
-
-        } finally {
-            manager.close();
-        }
-    }
-
-    @Override
-    public Department update(Department entity) {
-        manager = factory.createEntityManager();
-        Department res;
-        try {
-            manager.getTransaction().begin();
-            res = manager.merge(entity);
-            manager.getTransaction().commit();
-
-        } finally {
-            manager.close();
-        }
+        Department res = manager.find(Department.class, id);
+        if (res == null) LOGGER.error("This department is not in the database, id: " + id);
 
         return res;
+    }
+
+    @Transactional
+    @Override
+    public Department remove(Integer id) {
+        Department removedUser = manager.find(Department.class, id);
+        manager.remove(id);
+
+        return removedUser;
+    }
+
+    @Transactional
+    @Override
+    public Department update(Department entity) {
+        return manager.merge(entity);
+    }
+
+    @Transactional
+    @Override
+    public Map<Department, List<User>> getUsersGroupByDepartment() throws AppException {
+        Map<Department, List<User>> resMap = new HashMap<>();
+        List<Department> departments = findAll();
+
+        for (Department department : departments) {
+            TypedQuery<User> query =
+                    manager.createQuery("SELECT u FROM User u " +
+                            "WHERE u.department = :department", User.class);
+
+            query.setParameter("department", department);
+
+            resMap.put(department, query.getResultList());
+        }
+
+        resMap.entrySet().forEach(System.out::println);
+
+        return resMap;
     }
 }

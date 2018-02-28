@@ -1,5 +1,7 @@
 package hibernate.service;
 
+import hibernate.dao.DepartmentDao;
+import hibernate.dao.UserDao;
 import hibernate.dao.exclude.CityDaoImpl;
 import hibernate.dao.Dao;
 import hibernate.dao.exclude.DepartmentDaoImpl;
@@ -9,6 +11,8 @@ import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDateTime;
@@ -21,17 +25,41 @@ import java.util.stream.Collectors;
 /**
  * Created by serhii on 10.02.18.
  */
+
+@Component
 public class MainServiceImpl implements MainService {
 
     private static final Logger LOGGER = Logger.getLogger(MainServiceImpl.class);
-    private Dao<User, Integer> daoUser;
+    @Autowired
+    private UserDao daoUser;
+    @Autowired
     private Dao<City, Integer> daoCity;
-    private Dao<Department, Integer> daoDepartment;
+    @Autowired
+    private DepartmentDao daoDepartment;
 
-    public MainServiceImpl(EntityManagerFactory factory) {
+    int a;
+    String line;
+    protected final User initializeBlock() {
+        a = 5;
+        line = "Dima";
+        return new User();
+    }
+
+
+    /*public MainServiceImpl(EntityManagerFactory factory) {
         daoUser = new UserDaoImpl(factory);
         daoCity = new CityDaoImpl(factory);
         daoDepartment = new DepartmentDaoImpl(factory);
+    }*/
+
+    @Override
+    public List<User> getAllUsers() throws AppException {
+        return daoUser.findAll();
+    }
+
+    @Override
+    public User login(String login, String pass) throws IllegalArgumentException {
+        return daoUser.getUserByLoginAndPass(login, pass);
     }
 
     @Override
@@ -54,6 +82,16 @@ public class MainServiceImpl implements MainService {
             daoDepartment.create(department);
         }
         return department;
+    }
+
+    @Override
+    public City addCity(City city) throws AppException {
+        if (city == null) {
+            throw new AppException("city is null");
+
+        } else {
+            return daoCity.create(city);
+        }
     }
 
     @Override
@@ -80,8 +118,14 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public User findById(int id) throws AppException {
+        return daoUser.find(id);
+    }
+
+    @Override
     public Map<Department, List<User>> getUsersGroupByDepartment() throws AppException {
-        List<User> users = daoUser.findAll();
+        return daoDepartment.getUsersGroupByDepartment();
+        /*List<User> users = daoUser.findAll();
         List<Department> departments = daoDepartment.findAll();
 
         if (users.isEmpty()) {
@@ -98,7 +142,7 @@ public class MainServiceImpl implements MainService {
         departments.forEach(d -> resMap.put(d, new ArrayList<>()));
         users.forEach(u -> resMap.get(u.getDepartment()).add(u));
 
-        return resMap;
+        return resMap;*/
     }
 
     @Override
@@ -120,7 +164,8 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Map<User, List<User>> getUsersGroupByManagersAndOrderedThatLiveInKiev() throws AppException {
-        List<User> users = daoUser.findAll();
+        return daoUser.ge
+        /*Map<User, List<User>> users = daoUser.getUsersGroupByManager();
 
         if (users.isEmpty()) {
             LOGGER.error("no users in the database");
@@ -140,7 +185,7 @@ public class MainServiceImpl implements MainService {
                 .filter(u -> u.getCity().getName().equals(city))
                 .forEach(u -> resMap.get(u.getManage()).add(u));
 
-        return resMap;
+        return resMap;*/
     }
 
     @Override

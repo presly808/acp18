@@ -43,6 +43,6 @@
     </persistence-unit>
 
 
-    <!-- In one persistence.xml could be set A LOT OF different persistence-units ! -->
+    <!-- In one persistencerenamed.xml could be set A LOT OF different persistence-units ! -->
 
 </persistence>

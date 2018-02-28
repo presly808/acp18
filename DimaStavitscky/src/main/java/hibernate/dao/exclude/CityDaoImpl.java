@@ -1,114 +1,97 @@
 package hibernate.dao.exclude;
 
+import hibernate.dao.CityDao;
 import hibernate.dao.Dao;
+import hibernate.exception.exclude.AppException;
 import hibernate.model.City;
+import hibernate.model.User;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CityDaoImpl implements Dao<City, Integer> {
+@Component
+public class CityDaoImpl implements CityDao {
     private static final Logger LOGGER = Logger.getLogger(Dao.class);
-    private EntityManagerFactory factory;
+
+    @PersistenceContext
     private EntityManager manager;
 
-    public CityDaoImpl(EntityManagerFactory factory) {
-        this.factory = factory;
+    @Transactional
+    @Override
+    public List<City> findAll() {
+        TypedQuery<City> query = manager.createQuery("SELECT c FROM City c", City.class);
+        return query.getResultList();
     }
 
+    @Transactional
     @Override
     public City create(City entity) {
-        manager = factory.createEntityManager();
-
-        try {
-            manager.getTransaction().begin();
+        int id = entity.getId();
+        if(id == 0 || manager.find(entity.getClass(), id) == null) {
             manager.persist(entity);
-            manager.getTransaction().commit();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("can not create entity");
-
-        } finally {
-            manager.close();
+        } else {
+            LOGGER.error("This city already exists in the database, id:" + id);
         }
-
         return entity;
     }
 
-    @Override
-    public List<City> findAll() {
-        manager = factory.createEntityManager();
-        ;
-        TypedQuery<City> query;
-
-        try {
-            query = manager.createQuery("SELECT u FROM City u", City.class);
-            return query.getResultList();
-
-        } finally {
-            manager.close();
-        }
-    }
-
+    @Transactional
     @Override
     public List<City> findAll(int offset, int length) {
-        manager = factory.createEntityManager();
-        ;
-        TypedQuery<City> query;
+        TypedQuery<City> query = manager.createQuery("SELECT c FROM City c", City.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(length);
 
-        try {
-            query = manager.createQuery("SELECT c FROM City c", City.class);
-            query.setFirstResult(offset);
-            query.setMaxResults(length);
-            return query.getResultList();
-
-        } finally {
-            manager.close();
-        }
+        return query.getResultList();
     }
 
+    @Transactional
     @Override
     public City find(Integer id) {
-        manager = factory.createEntityManager();
-        try {
-            City res = manager.find(City.class, id);
-            if (res == null) LOGGER.error("This city is not in the database, id: " + id);
-            return res;
-
-        } finally {
-            manager.close();
-        }
+        City res = manager.find(City.class, id);
+        if (res == null) LOGGER.error("This city is not in the database, id: " + id);
+        return res;
     }
 
+    @Transactional
     @Override
     public City remove(Integer id) {
-        manager = factory.createEntityManager();
-        try {
-            City removedUser = manager.find(City.class, id);
-            manager.remove(id);
-            return removedUser;
+        City removedUser = manager.find(City.class, id);
+        manager.remove(id);
+        return removedUser;
+    }
 
-        } finally {
-            manager.close();
-        }
+    @Transactional
+    @Override
+    public City update(City entity) {
+        return manager.merge(entity);
     }
 
     @Override
-    public City update(City entity) {
-        manager = factory.createEntityManager();
-        City res;
-        try {
-            manager.getTransaction().begin();
-            res = manager.merge(entity);
-            manager.getTransaction().commit();
+    public Map<City, List<User>> getUsersGroupByCity() throws AppException {
+        Map<City, List<User>> resMap = new HashMap<>();
+        List<City> departments = findAll();
 
-        } finally {
-            manager.close();
+        for (City city : departments) {
+            TypedQuery<User> query =
+                    manager.createQuery("SELECT u FROM User u " +
+                            "WHERE u.city = :city", User.class);
+
+            query.setParameter("city", city);
+
+            resMap.put(city, query.getResultList());
         }
 
-        return res;
+        resMap.entrySet().forEach(System.out::println);
+
+        return resMap;
     }
 }

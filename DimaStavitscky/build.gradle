@@ -2,11 +2,15 @@ version 'unspecified'
 
 apply plugin: 'java'
 
+apply plugin: 'war'
+
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
+
+def spring_version = "5.0.3.RELEASE"
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -14,4 +18,19 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.12.Final'
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
     compile group: 'com.h2database', name: 'h2', version: '1.4.196'
+
+    // spring
+    compile group: 'org.springframework', name: 'spring-core', version: spring_version
+    compile group: 'org.springframework', name: 'spring-context', version: spring_version
+    compile group: 'org.springframework', name: 'spring-beans', version: spring_version
+    compile group: 'org.springframework', name: 'spring-aop', version: spring_version
+    compile group: 'org.springframework', name: 'spring-orm', version: spring_version
+
+    // aspectj
+    compile group: 'aspectj', name: 'aspectjrt', version: '1.5.4'
+    compile group: 'org.aspectj', name: 'aspectjtools', version: '1.8.13'
+
+    // servlet
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.0'
+    compile group: 'jstl', name: 'jstl', version: '1.2'
 }

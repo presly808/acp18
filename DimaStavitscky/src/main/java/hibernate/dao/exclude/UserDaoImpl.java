@@ -1,123 +1,118 @@
 package hibernate.dao.exclude;
 
-
 import hibernate.dao.Dao;
+import hibernate.dao.UserDao;
+import hibernate.exception.exclude.AppException;
 import hibernate.model.User;
+import javassist.NotFoundException;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class UserDaoImpl implements Dao<User, Integer> {
+@Component
+public class UserDaoImpl implements UserDao {
 
     private static final Logger LOGGER = Logger.getLogger(Dao.class);
-    private EntityManagerFactory factory;
-    private EntityManager manager;
 
-    public UserDaoImpl(EntityManagerFactory factory) {
-        this.factory = factory;
-    }
+    @PersistenceContext
+    private EntityManager manager;
 
     @Override
     public User create(User entity) {
-        manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-
-        try {
-            transaction.begin();
+        int id = entity.getId();
+        if(id == 0 || manager.find(entity.getClass(), id) == null) {
             manager.persist(entity);
-            transaction.commit();
 
-        } catch (Exception e) {
-            transaction.rollback();
-            e.printStackTrace();
-            LOGGER.error("can not create entity");
-
-        } finally {
-            manager.close();
+        } else {
+            LOGGER.error("This user already exists in the database, id:" + id);
         }
-
         return entity;
     }
 
     @Override
     public List<User> findAll() {
-        manager = factory.createEntityManager();
-
-        TypedQuery<User> query;
-
-        try {
-            query = manager.createQuery("SELECT u FROM User u", User.class);
-            return query.getResultList();
-
-        } finally {
-            manager.close();
-        }
+        TypedQuery<User> query = manager.createQuery("SELECT u FROM User u", User.class);
+        return query.getResultList();
     }
 
     @Override
     public List<User> findAll(int offset, int length) {
-        manager = factory.createEntityManager();
-        ;
-        TypedQuery<User> query;
+        TypedQuery<User> query = manager.createQuery("SELECT u FROM User u", User.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(length);
 
-        try {
-            query = manager.createQuery("SELECT u FROM User u", User.class);
-            query.setFirstResult(offset);
-            query.setMaxResults(length);
-            return query.getResultList();
-
-        } finally {
-            manager.close();
-        }
+        return query.getResultList();
     }
 
     @Override
     public User find(Integer id) {
-        manager = factory.createEntityManager();
-        try {
-            User res = manager.find(User.class, id);
-            if (res == null) LOGGER.error("This user is not in the database, id: " + id);
-            return res;
+        User res = manager.find(User.class, id);
+        if (res == null) LOGGER.error("This user is not in the database, id: " + id);
 
-        } finally {
-            manager.close();
-        }
+        return res;
     }
 
     @Override
     public User remove(Integer id) {
-        manager = factory.createEntityManager();
-        try {
-            User removedUser = manager.find(User.class, id);
-            manager.remove(id);
-            return removedUser;
+        User removedUser = manager.find(User.class, id);
+        manager.remove(id);
 
-        } finally {
-            manager.close();
-        }
+        return removedUser;
     }
 
     @Override
     public User update(User entity) {
-        manager = factory.createEntityManager();
-        User res;
-        try {
-            manager.getTransaction().begin();
-            res = manager.merge(entity);
-            manager.getTransaction().commit();
+        return manager.merge(entity);
+    }
 
-        } catch (Exception e) {
-            LOGGER.error("user not in database");
-            return null;
+    @Override
+    public Map<User, List<User>> getUsersGroupByManager() throws AppException {
+        Map<User, List<User>> resMap = new HashMap<>();
+        List<User> users = findAll();
 
-        } finally {
-            manager.close();
+        for (User user : users) {
+            TypedQuery<User> query =
+                    manager.createQuery("SELECT u FROM User u " +
+                            "WHERE u.manage = :manage", User.class);
+            query.setParameter("manage", user);
+
+            resMap.put(user, query.getResultList());
         }
+        return resMap;
+    }
 
-        return res;
+    @Override
+    public User getUserByLoginAndPass(String login, String pass) throws IllegalArgumentException {
+            TypedQuery<User> query = manager.createQuery("SELECT u FROM User u " +
+                    "WHERE u.login = :login AND u.pass = :pass", User.class);
+
+            return query.getSingleResult();
+
+
+    }
+
+    @Override
+    public Map<User, List<User>> getUsersGroupByManagerAndOrderByCity(String city) throws AppException {
+        Map<User, List<User>> resMap = new HashMap<>();
+        List<User> users = findAll();
+
+        for (User user : users) {
+            TypedQuery<User> query =
+                    manager.createQuery("SELECT u FROM User u " +
+                            "WHERE u.manage = :manage AND u.city.name = :city", User.class);
+            query.setParameter("manage", user);
+            query.setParameter("city", city);
+
+            List<User> res = query.getResultList();
+            if(res != null) resMap.put(user, res);
+        }
+        return resMap;
     }
 }

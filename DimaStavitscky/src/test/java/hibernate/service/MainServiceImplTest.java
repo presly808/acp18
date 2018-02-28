@@ -1,7 +1,5 @@
 package hibernate.service;
 
-import hibernate.dao.Dao;
-import hibernate.dao.exclude.UserDaoImpl;
 import hibernate.exception.exclude.AppException;
 import hibernate.model.City;
 import hibernate.model.Department;
@@ -9,11 +7,9 @@ import hibernate.model.User;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +34,10 @@ public class MainServiceImplTest {
     private static User user4;
     private static User user5;;
 
-    private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("hibernate-unit");
+    private static ApplicationContext context = new AnnotationConfigApplicationContext("hibernate");
 
-    private static MainService service = new MainServiceImpl(factory);
-    private static Dao<User, Integer> daoUser = new UserDaoImpl(factory);
+
+    private static MainService service = context.getBean(MainServiceImpl.class);
 
     @BeforeClass
     public static void beforeClass() throws AppException {
@@ -68,24 +64,12 @@ public class MainServiceImplTest {
         user4 = new User("Serhii", 22, 2500, department2, odessa, user1, date2015);
         user5 = new User("Olex", 24, 4500, department1, kiev, user2, date2005);
 
-        /*EntityManager manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-        try {
-            transaction.begin();
-            manager.persist(user1);
-            manager.persist(user2);
-            manager.persist(user3);
-            manager.persist(user4);
-            manager.persist(user5);
-            transaction.commit();
+        service.addCity(kiev);
+        service.addCity(odessa);
 
-        } catch (Exception e) {
-            transaction.rollback();
-            e.printStackTrace();
+        service.addDepartment(department1);
+        service.addDepartment(department2);
 
-        } finally {
-            manager.close();
-        }*/
         service.register(user1);
         service.register(user2);
         service.register(user3);
@@ -94,13 +78,21 @@ public class MainServiceImplTest {
     }
 
     @Test
+    public void getByDepFromDB() throws Exception {
+        Thread.sleep(1500);
+        Map<Department, List<User>> res = service.getUsersGroupByDepartment();
+        for (Map.Entry<Department, List<User>> departmentListEntry : res.entrySet()) {
+            System.out.println(departmentListEntry + ": ");
+            departmentListEntry.getValue().forEach(System.out::println);
+        }
+    }
+    @Test
     public void update() throws Exception {
         Thread.sleep(2000);
         user3.setAge(100);
         service.update(user3);
-        User res = daoUser.find(user3.getId());
+        User res = service.findById(user3.getId());
         Assert.assertEquals(res.getAge(), user3.getAge());
-
     }
 
     @Test

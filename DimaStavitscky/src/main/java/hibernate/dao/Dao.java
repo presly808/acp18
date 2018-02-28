@@ -18,4 +18,6 @@ public interface Dao<T, ID> {
     T remove(ID id);
 
     T update(T entity);
+
+
 }
