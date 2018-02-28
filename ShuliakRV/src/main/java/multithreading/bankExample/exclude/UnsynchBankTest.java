@@ -1,4 +1,7 @@
-package multithreading.bankExample;
+package multithreading.bankExample.exclude;
+
+import multithreading.bankExample.Bank;
+import multithreading.bankExample.TransferRunnable;
 
 /**
  * Created by Anna on 12.09.2016.
