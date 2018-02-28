@@ -9,8 +9,10 @@ import spring.service.IUserService;
  */
 public class RunAnnotationContext {
     public static void main(String[] args) {
-        ApplicationContext xmlApplicationContext = new AnnotationConfigApplicationContext("spring");
-        IUserService iUserService = xmlApplicationContext.getBean(IUserService.class);
+        ApplicationContext annotationApplicationContext =
+                new AnnotationConfigApplicationContext("spring");
+        IUserService iUserService =
+                annotationApplicationContext.getBean(IUserService.class);
 
     }
 }

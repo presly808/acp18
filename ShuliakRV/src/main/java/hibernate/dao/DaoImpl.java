@@ -69,34 +69,30 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
     @Override
     public T find(ID id) {
 
-        T obj;
-
         EntityManager manager = factory.createEntityManager();
 
         try {
-            obj = manager.find(entityClass, id);
+            T obj = manager.find(entityClass, id);
             logger.info("Finding " + entityClass.getSimpleName() +
                     " with ID = " + id);
+            return obj;
         } catch (Exception e) {
             logger.error(e.getMessage());
             return null;
         } finally {
             manager.close();
         }
-        return obj;
 
     }
 
     @Override
     public T remove(ID id) {
 
-        T obj;
-
         EntityManager manager = factory.createEntityManager();
         EntityTransaction trans = manager.getTransaction();
 
         try {
-            obj = manager.find(entityClass, id);
+            T obj = manager.find(entityClass, id);
             if (obj != null) {
                 trans.begin();
                 manager.remove(obj);
@@ -104,6 +100,7 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
                         " with ID = " + id);
                 trans.commit();
             }
+            return obj;
         } catch (Exception e) {
             logger.error(e.getMessage());
             trans.rollback();
@@ -111,7 +108,6 @@ public class DaoImpl<T, ID> implements Dao<T, ID> {
         } finally {
             manager.close();
         }
-        return obj;
 
     }
 
