@@ -1,5 +1,6 @@
 package hibernate.service;
 
+import hibernate.exception.AppException;
 import hibernate.model.*;
 import org.apache.log4j.Logger;
 import org.junit.*;
@@ -171,6 +172,11 @@ public class MainServiceImplTest {
         assertEquals(3, service.getUsersGroupByDepartment().
                 get(department2).size());
 
+    }
+
+    @Test(expected = AppException.class)
+    public void registerUserException() throws Exception {
+        service.register(null);
     }
 
     @Test

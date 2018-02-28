@@ -14,6 +14,8 @@ public class UserTest {
     @Before
     public void createUser() {
         user = new User();
+        User user1 = new User(1,"Petya",20);
+        User user2 = new User (20,2000,null,null);
     }
 
     @Test
