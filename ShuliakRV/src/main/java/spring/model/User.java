@@ -1,11 +1,19 @@
 package spring.model;
 
+import javax.persistence.*;
+
 /**
  * Created by serhii on 17.02.18.
  */
+
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int id;
+    @Column
     public String name;
 
     public User() {
@@ -25,5 +33,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
