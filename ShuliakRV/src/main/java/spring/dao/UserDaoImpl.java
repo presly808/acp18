@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> findAll() {
 
         EntityManager manager = factory.createEntityManager();
-        TypedQuery<User> query = manager.createQuery("SELECT e FROM User e", User.class);
+        TypedQuery<User> query = manager.createQuery("SELECT e FROM spring.model.User e", User.class);
 
         try {
             List<User> list = query.getResultList();

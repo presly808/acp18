@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "users")
+@Table(name = "users_spring")
 public class User {
 
     @Id
@@ -17,6 +17,10 @@ public class User {
     public String name;
 
     public User() {
+    }
+
+    public User(String name) {
+        this.name = name;
     }
 
     public int getId() {
