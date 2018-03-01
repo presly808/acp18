@@ -2,24 +2,25 @@ package spring.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import spring.model.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 @Component
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
-    private EntityManagerFactory factory;
+    //@Autowired
+    //private EntityManagerFactory factory;
+    @PersistenceContext
+    private EntityManager manager;
 
+    @Transactional
     @Override
     public List<User> findAll() {
 
-        EntityManager manager = factory.createEntityManager();
+        //EntityManager manager = factory.createEntityManager();
         TypedQuery<User> query = manager.createQuery("SELECT e FROM spring.model.User e", User.class);
 
         try {
@@ -27,77 +28,76 @@ public class UserDaoImpl implements UserDao {
             return list;
         } catch (Exception e) {
             return null;
-        } finally {
-            manager.close();
-        }
+        } //finally {
+            //manager.close();
+        //}
     }
 
+    @Transactional
     @Override
     public User find(int id) {
 
-        EntityManager manager = factory.createEntityManager();
+        //EntityManager manager = factory.createEntityManager();
 
         try {
             return manager.find(User.class, id);
         } catch (Exception e) {
             return null;
-        } finally {
-            manager.close();
-        }
+        } //finally {
+            //manager.close();
+        //}
 
     }
 
+    @Transactional
     @Override
     public User remove(int id) {
 
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction trans = manager.getTransaction();
+        //EntityManager manager = factory.createEntityManager();
+        //EntityTransaction trans = manager.getTransaction();
 
         try {
             User user = manager.find(User.class, id);
             if (user != null) {
-                trans.begin();
+                //trans.begin();
                 manager.remove(user);
-                trans.commit();
+                //trans.commit();
             }
             return user;
         } catch (Exception e) {
-            trans.rollback();
+            //trans.rollback();
             return null;
-        } finally {
-            manager.close();
-        }
+        } //finally {
+          //  manager.close();
+        //}
     }
 
+    @Transactional
     @Override
     public User update(User entity) {
 
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction trans = manager.getTransaction();
+        //EntityManager manager = factory.createEntityManager();
+        //EntityTransaction trans = manager.getTransaction();
 
         try {
-            trans.begin();
+            //trans.begin();
             if (entity.getId() == 0) {
                 manager.persist(entity);
             } else {
                 entity = manager.merge(entity);
             }
-            trans.commit();
+           // trans.commit();
             return entity;
         } catch (Exception e) {
-            trans.rollback();
+            //trans.rollback();
             return null;
-        } finally {
-            manager.close();
-        }
+        } //finally {
+        //    manager.close();
+        //}
     }
 
-    public EntityManagerFactory getFactory() {
-        return factory;
-    }
+    //public EntityManagerFactory getFactory() {return factory;}
 
-    public void setFactory(EntityManagerFactory factory) {
-        this.factory = factory;
-    }
+    //public void setFactory(EntityManagerFactory factory) {this.factory = factory;}
 
 }
