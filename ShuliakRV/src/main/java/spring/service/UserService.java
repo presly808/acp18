@@ -73,4 +73,13 @@ public class UserService implements IUserService {
 
         return list;
     }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
 }
