@@ -13,11 +13,11 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Classes, which will be mapped: -->
-        <class>hibernate.model.Department</class>
-        <class>hibernate.model.City</class>
-        <class>hibernate.model.User</class>
+               <class>hibernate.model.Department</class>
+               <class>hibernate.model.City</class>
+               <class>hibernate.model.User</class>
 
-        <!-- Properties of DB: -->
+               <!-- Properties of DB: -->
 
         <properties>
 
