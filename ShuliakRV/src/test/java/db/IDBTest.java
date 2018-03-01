@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  */
 public class IDBTest {
     // todo add your implementation
-    private static IDB idb = new DBUtils("jdbc:sqlite:database.db");
+    private static IDB idb = new DBUtils("jdbc:sqlite:./src/main/resources/database.db");
 
     @BeforeClass
     public static void createtables() {
