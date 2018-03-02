@@ -9,6 +9,9 @@
 
     <tx:annotation-driven />
     <context:component-scan base-package="spring.dao" />
+    <aop:aspectj-autoproxy/>
+
+    <bean id="userServiceLog" class="spring.aspect.UserServiceLog"/>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml"/>
