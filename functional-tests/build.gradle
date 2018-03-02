@@ -20,9 +20,9 @@ dependencies {
 }
 
 task copyTaskWithPatterns(type: Copy) {
-    from 'src/main/java'
-    from 'src/main/resources'
-    into 'build/classes/java/main'
+    from 'src/exclude/java'
+    from 'src/exclude/resources'
+    into 'build/classes/java/exclude'
     include '**/*.txt'
     include '**/*.js'
     include '**/*.html'

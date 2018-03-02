@@ -45,14 +45,14 @@ allprojects {
 
     sourceSets {
         main {
-            output.resourcesDir = "build/classes/main"
+            output.resourcesDir = "build/classes/exclude"
         }
     }
 
     task copyTaskWithPatterns(type: Copy) {
-        from 'src/main/java'
-        from 'src/main/resources'
-        into 'build/classes/java/main'
+        from 'src/exclude/java'
+        from 'src/exclude/resources'
+        into 'build/classes/java/exclude'
         include '**/*.txt'
         include '**/*.js'
         include '**/*.html'
@@ -91,8 +91,8 @@ task copyTask {
                             baseClass.substring(0, baseClass.lastIndexOf("/")) : baseClass
 
                     copy {
-                        from "$module_with_tests/src/main/java/$baseClass"
-                        into "$myModule/src/main/java/$intoPath"
+                        from "$module_with_tests/src/exclude/java/$baseClass"
+                        into "$myModule/src/exclude/java/$intoPath"
                     }
 
                 }
