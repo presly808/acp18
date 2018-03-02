@@ -5,21 +5,50 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Aspect
 @Component
 public class UserServiceLog {
 
     @Around(value = "execution(public * spring.service..*(..))")
-    public Object userServiceAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object userServiceAdvice(ProceedingJoinPoint joinPoint)
+            throws Throwable {
 
-        String methodFullName = joinPoint.getSignature().getDeclaringType() + "."
-                + joinPoint.getSignature().getName();
+        String methodName = joinPoint.getSignature().getDeclaringTypeName()
+                + "." + joinPoint.getSignature().getName();
 
-        long methodStartTime = System.currentTimeMillis();
+        LocalDateTime start = LocalDateTime.now();
         Object executionResult = joinPoint.proceed();
-        long methodWorkTime = System.currentTimeMillis() - methodStartTime;
+        LocalDateTime end = LocalDateTime.now();
 
-        System.out.println((methodFullName + "() " + methodWorkTime + "ms"));
+        Duration duration = Duration.between(start, end);
+        long minutes = duration.toMillis();
+
+        DateTimeFormatter formatter = DateTimeFormatter.
+                ofPattern("dd.MM.yyyy hh:mm:ss.SSS");
+
+        String log = LocalDateTime.now().format(formatter)+
+                " "+methodName + "() " + minutes + " millis";
+
+        File newFile = new File("./ShuliakRV/src/main/resources",
+                "user-service.log");
+
+         if (!newFile.exists()) {
+             newFile.createNewFile();
+         }
+
+        PrintWriter writer = new PrintWriter(new BufferedWriter(
+                new FileWriter(newFile,true)));
+        writer.println(log);
+        writer.close();
+
         return executionResult;
     }
 
