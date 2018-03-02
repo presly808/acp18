@@ -1,12 +1,12 @@
-package servlets.service;
+package servlet.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import servlets.dao.Dao;
-import servlets.exception.ServletAppException;
-import servlets.model.ServUser;
-import servlets.validator.Validator;
+import servlet.dao.Dao;
+import servlet.exception.ServletAppException;
+import servlet.model.ServUser;
+import servlet.validator.Validator;
 
 import java.util.List;
 

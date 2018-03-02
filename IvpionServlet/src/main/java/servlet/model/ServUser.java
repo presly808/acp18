@@ -1,7 +1,4 @@
-package servlets.model;
-
-
-
+package servlet.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,7 +1,7 @@
-package servlets.validator;
+package servlet.validator;
 
 import org.springframework.stereotype.Component;
-import servlets.model.ServUser;
+import servlet.model.ServUser;
 
 import java.util.regex.Pattern;
 

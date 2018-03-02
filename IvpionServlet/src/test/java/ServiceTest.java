@@ -5,10 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import servlets.exception.ServletAppException;
-import servlets.model.ServUser;
-import servlets.service.UserService;
-import servlets.service.UserServiceImpl;
+import servlet.exception.ServletAppException;
+import servlet.model.ServUser;
+import servlet.service.UserService;
+import servlet.service.UserServiceImpl;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -23,7 +23,7 @@ public class ServiceTest {
 
     @Before
     public void upClass() throws ServletAppException {
-        context = new AnnotationConfigApplicationContext("servlets");
+        context = new AnnotationConfigApplicationContext("servlet");
         service = context.getBean(UserServiceImpl.class);
         ServUser user1 = new ServUser();
         user1.setEmail("ivan@g.com");

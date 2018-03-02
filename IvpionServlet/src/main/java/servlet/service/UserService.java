@@ -1,7 +1,7 @@
-package servlets.service;
+package servlet.service;
 
-import servlets.exception.ServletAppException;
-import servlets.model.ServUser;
+import servlet.exception.ServletAppException;
+import servlet.model.ServUser;
 
 import java.util.List;
 

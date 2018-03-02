@@ -1,4 +1,4 @@
-package servlets.config;
+package servlet.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -14,7 +14,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("/my-hibernate.properties")
-@ComponentScan(basePackages = "servlets")
+@ComponentScan(basePackages = "servlet")
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass = true) //todo read why without this annotation can`t get UserServiceImpl.class from context
 public class AppConfig {
@@ -33,8 +33,8 @@ public class AppConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setDataSource(dataSource());
-        bean.setPackagesToScan("servlets.model");
-        bean.setPersistenceUnitName("servlets-unit");
+        bean.setPackagesToScan("servlet.model");
+        bean.setPersistenceUnitName("servlet-unit");
         bean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         bean.setJpaProperties(jpaProperties());
         return bean;

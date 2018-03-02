@@ -1,4 +1,4 @@
-package servlets.dao;
+package servlet.dao;
 
 
 import java.util.List;

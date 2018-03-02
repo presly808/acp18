@@ -1,7 +1,7 @@
-package servlets.dao;
+package servlet.dao;
 
 import org.springframework.stereotype.Component;
-import servlets.model.ServUser;
+import servlet.model.ServUser;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

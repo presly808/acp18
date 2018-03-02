@@ -1,7 +1,7 @@
 package servlets;
 
 import org.junit.Test;
-import servlets.validator.Validator;
+import servlet.validator.Validator;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,4 +23,5 @@ public class ValidationTest {
         assertFalse(validator.checkPass("123"));
         assertFalse(validator.checkPass("123sregrseres"));
     }
+
 }
