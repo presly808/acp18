@@ -47,23 +47,10 @@ public class AppConfig {
     }
 
     @Bean
-    public DataSource dataSource2() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(environment.getProperty("db.driver"));
-        dataSource.setUrl(environment.getProperty("db.url"));
-        dataSource.setUsername(environment.getProperty("db.username"));
-        dataSource.setPassword(environment.getProperty("db.password"));
-
-        return dataSource;
-    }
-
-    @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-        bean.setDataSource(dataSource2());
-        //bean.setPersistenceUnitName("spring-unit-xml");
+        bean.setDataSource(dataSource());
         bean.setPackagesToScan("spring/model");
 
         HibernateJpaVendorAdapter vendor = new HibernateJpaVendorAdapter();

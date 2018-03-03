@@ -26,10 +26,10 @@
         <property name="password" value="${db.password}" />
     </bean>
 
-    <bean id="entityManagerFactory"
+    <bean id="entityManagerFactoryXml"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 
-        <property name="persistenceUnitName" value="spring-unit-xml" />
+        <property name="persistenceUnitName" value="hibernate-unit" />
         <property name="dataSource" ref="dataSource" />
     </bean>
 
@@ -40,7 +40,7 @@
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="entityManagerFactory" ref="entityManagerFactoryXml" />
     </bean>
 
 </beans>
