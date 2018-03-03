@@ -107,7 +107,7 @@ public class MainServiceImpl implements MainService {
 
         List<User> list = userDao.findAll();
 
-        if (list == null || list.size() == 0) {
+        if (list == null) {
             logger.info("Users wasn't found!");
             throw new AppException("Users wasn't found!");
         }
@@ -159,7 +159,7 @@ public class MainServiceImpl implements MainService {
 
     private <K, V> Map<K, List<V>> fromListToMap(List<Object[]> list) {
 
-        if (list == null || list.size() == 0) return null;
+        if (list == null) return null;
 
         Map<K, List<V>> map = new HashMap<>();
 
@@ -206,7 +206,7 @@ public class MainServiceImpl implements MainService {
 
         List<Object[]> list = userDao.getAvgSalaryGroupByDepartment();
 
-        if (list == null || list.size() == 0) {
+        if (list == null) {
             logger.info("Avarage salary grouped by department wasn't found!");
             throw new AppException("Avarage salary grouped by " +
                     "department wasn't found!");
@@ -256,7 +256,7 @@ public class MainServiceImpl implements MainService {
 
         List<User> list = userDao.findByName(name);
 
-        if (list == null || list.size() == 0) {
+        if (list == null) {
             logger.info("Users wasn't found!");
             throw new AppException("Users wasn't found!");
         }
@@ -277,7 +277,7 @@ public class MainServiceImpl implements MainService {
 
         List<User> list = userDao.findInRange(minSal, maxSal);
 
-        if (list == null || list.size() == 0) {
+        if (list == null) {
             logger.info("Users wasn't found!");
             throw new AppException("Users wasn't found!");
         }
@@ -299,7 +299,7 @@ public class MainServiceImpl implements MainService {
 
         List<User> list = userDao.findByDate(start, end);
 
-        if (list == null || list.size() == 0) {
+        if (list == null) {
             logger.info("Users wasn't found!");
             throw new AppException("Users wasn't found!");
         }

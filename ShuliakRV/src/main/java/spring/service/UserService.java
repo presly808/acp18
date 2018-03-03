@@ -67,7 +67,7 @@ public class UserService implements IUserService {
 
         List<User> list = userDao.findAll();
 
-        if (list.size() == 0) {
+        if (list == null) {
             throw new AppException("Users wasn't found!");
         }
 

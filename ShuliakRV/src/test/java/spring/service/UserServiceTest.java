@@ -74,7 +74,8 @@ public class UserServiceTest {
 
     @Test(expected = AppException.class)
     public void findAllWithException() throws Exception {
-        userServiceXml.findAll();
+        userServiceXml.save(null);
+        userServiceAnnotation.save(null);
     }
 
 }
