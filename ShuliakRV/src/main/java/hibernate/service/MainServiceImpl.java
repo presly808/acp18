@@ -107,7 +107,7 @@ public class MainServiceImpl implements MainService {
 
         List<User> list = userDao.findAll();
 
-        if (list == null) {
+        if (list == null || list.size() == 0) {
             logger.info("Users wasn't found!");
             throw new AppException("Users wasn't found!");
         }
@@ -159,7 +159,7 @@ public class MainServiceImpl implements MainService {
 
     private <K, V> Map<K, List<V>> fromListToMap(List<Object[]> list) {
 
-        if (list == null) return null;
+        if (list == null || list.size() == 0) return null;
 
         Map<K, List<V>> map = new HashMap<>();
 
@@ -206,19 +206,17 @@ public class MainServiceImpl implements MainService {
 
         List<Object[]> list = userDao.getAvgSalaryGroupByDepartment();
 
-        if (list == null) return null;
+        if (list == null || list.size() == 0) {
+            logger.info("Avarage salary grouped by department wasn't found!");
+            throw new AppException("Avarage salary grouped by " +
+                    "department wasn't found!");
+        }
 
         Map<Department, Double> map = new HashMap<>();
 
         for (Object[] fields : list) {
 
             map.put((Department) fields[0], (Double) fields[1]);
-        }
-
-        if (map == null) {
-            logger.info("Avarage salary grouped by department wasn't found!");
-            throw new AppException("Avarage salary grouped by " +
-                    "department wasn't found!");
         }
 
         logger.info("Avarage salary grouped by department was found!");
@@ -258,7 +256,7 @@ public class MainServiceImpl implements MainService {
 
         List<User> list = userDao.findByName(name);
 
-        if (list == null) {
+        if (list == null || list.size() == 0) {
             logger.info("Users wasn't found!");
             throw new AppException("Users wasn't found!");
         }
@@ -279,7 +277,7 @@ public class MainServiceImpl implements MainService {
 
         List<User> list = userDao.findInRange(minSal, maxSal);
 
-        if (list == null) {
+        if (list == null || list.size() == 0) {
             logger.info("Users wasn't found!");
             throw new AppException("Users wasn't found!");
         }
@@ -301,7 +299,7 @@ public class MainServiceImpl implements MainService {
 
         List<User> list = userDao.findByDate(start, end);
 
-        if (list == null) {
+        if (list == null || list.size() == 0) {
             logger.info("Users wasn't found!");
             throw new AppException("Users wasn't found!");
         }
