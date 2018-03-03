@@ -20,15 +20,15 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User save(User userForSave) throws AppUserException {
+    public User save(User user) throws AppUserException {
 
-        userForSave = dao.save(userForSave);
+        User savedUser = dao.save(user);
 
-        if(userForSave == null){
+        if(savedUser == null){
             throw new AppUserException("student didn't save");
         }
 
-        return userForSave;
+        return savedUser;
     }
 
     @Override
