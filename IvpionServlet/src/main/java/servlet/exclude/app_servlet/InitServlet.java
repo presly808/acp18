@@ -1,4 +1,4 @@
-package servlet.app_servlet;
+package servlet.exclude.app_servlet;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;

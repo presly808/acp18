@@ -1,4 +1,4 @@
-package servlet.app_servlet;
+package servlet.exclude.app_servlet;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -12,15 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/register"})
+public class RegisterServlet extends HttpServlet {
 
     private ApplicationContext context;
     private UserService service;
-    private static final Logger LOGGER = Logger.getLogger(LoginServlet.class);
+    private static final Logger LOGGER = Logger.getLogger(RegisterServlet.class);
 
     @Override
     public void init() throws ServletException {
@@ -29,23 +28,29 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //some action
+        //redirect to register.jsp
+        req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
+
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ServUser user = new ServUser();
+        user.setName(req.getParameter("name"));
         user.setEmail(req.getParameter("email"));
         user.setPass(req.getParameter("password"));
         try {
-            ServUser servUser = service.login(user.getEmail(), user.getPass());
-            HttpSession session = req.getSession(true);
-            session.setAttribute("inSystem", true);
-            session.setAttribute("currentUserName", servUser.getName());
-            resp.sendRedirect("index.jsp");
+            ServUser servUser = service.addUser(user);
+            req.setAttribute("user", servUser);
+            req.getRequestDispatcher("/WEB-INF/pages/user-info.jsp").forward(req, resp);
         } catch (ServletAppException e) {
             LOGGER.error(e);
             req.setAttribute("errorTitle", ServletAppException.class.getCanonicalName());
             req.setAttribute("errorMassege", e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/pages/error.jsp").forward(req, resp);
         }
     }
 }
-
 

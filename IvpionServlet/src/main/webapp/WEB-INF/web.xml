@@ -8,7 +8,7 @@
 
     <!--<servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>servlet.app_servlet.RegisterServlet</servlet-class>
+        <servlet-class>servlet.exclude.app_servlet.RegisterServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -21,7 +21,7 @@
     
     <filter>
         <filter-name>LoggingFilter</filter-name>
-        <filter-class>servlet.filter.RequestLoggerFilter</filter-class>
+        <filter-class>servlet.exclude.filter.RequestLoggerFilter</filter-class>
     </filter>
     
     <filter-mapping>

@@ -1,4 +1,4 @@
-package servlet.app_servlet;
+package servlet.exclude.app_servlet;
 
 import servlet.model.ServUser;
 
