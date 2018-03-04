@@ -12,7 +12,7 @@
         <class>servlets.model.User</class>
 
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:h2:./database/servlets"/>
+            <property name="hibernate.connection.url" value="jdbc:h2:/home/alex323glo/Java/Idea/ArtCode_workspace/Proff_course/acp18/AlexeyOrlyuk/database/servlets"/>
             <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
             <property name="hibernate.connection.username" value="root"/>
             <property name="hibernate.connection.password" value=""/>

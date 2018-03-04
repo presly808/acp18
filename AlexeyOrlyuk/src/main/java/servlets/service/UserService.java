@@ -9,13 +9,20 @@ import servlets.exception.AppException;
 import servlets.exception.AuthorizationException;
 import servlets.exception.RegistrationException;
 import servlets.model.User;
+import servlets.util.Validator;
 
 import java.util.List;
 
 import static servlets.util.Validator.*;
 
 /**
- * Created by alex323glo on 24.02.18.
+ * Implementation of User Service main interface.
+ * Contains realisation of defined (in interface) User's general business logic.
+ *
+ * @author alex323glo
+ * @version 1.0
+ *
+ * @see IUserService
  */
 @Component
 public class UserService implements IUserService {
@@ -27,6 +34,16 @@ public class UserService implements IUserService {
     @Autowired
     private UserDAO userDAO;
 
+    /**
+     * Registers new User to system.
+     * Both, email and password, must pass validation (servlets.util.Validator class)!
+     *
+     * @param email    new (unique) User's email.
+     * @param password new User's password.
+     * @return registered User instance, if operation was successful.
+     * @throws AppException if operation wasn't successful.
+     * @see Validator
+     */
     @Transactional
     @Override
     public User register(String email, String password) throws AppException {
@@ -56,6 +73,16 @@ public class UserService implements IUserService {
         return newUser;
     }
 
+    /**
+     * Authorizes registered User to system.
+     * Both, email and password, must pass validation (servlets.util.Validator class)!
+     *
+     * @param email    registered (existent) User's email.
+     * @param password correct User's password.
+     * @return authorized (registered) User instance, if operation was successful.
+     * @throws AppException if operation wasn't successful.
+     * @see Validator
+     */
     @Transactional
     @Override
     public User login(String email, String password) throws AppException {
@@ -85,6 +112,12 @@ public class UserService implements IUserService {
         return existentUser;
     }
 
+    /**
+     * Shows all registered Users.
+     *
+     * @return List of all registered Users, if operation was successful.
+     * @throws AppException if operation wasn't successful.
+     */
     @Transactional
     @Override
     public List<User> listAllRegisteredUsers() throws AppException {
