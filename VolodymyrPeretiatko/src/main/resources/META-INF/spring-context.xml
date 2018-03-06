@@ -29,7 +29,7 @@
     <bean id="entityManagerFactoryXml"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 
-        <property name="persistenceUnitName" value="hibernate-unit" />
+        <property name="persistenceUnitName" value="spring-unit" />
         <property name="dataSource" ref="dataSource" />
     </bean>
 
