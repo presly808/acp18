@@ -6,12 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@include file="WEB-INF/pages/include.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>Main</title>
 </head>
 <body>
-<div class="header">
+<div>
     <ul>
         <li><a href="register"> register</a></li>
         <li><a href="all-users">all users</a></li>
@@ -19,7 +21,7 @@
 
 </div>
 <c:if test="${!inSystem}">
-<div class="loginForm">
+<div>
     <form action="login" method="post">
         <ul>
             <li> Input email:
@@ -37,7 +39,7 @@
 </c:if>
 <c:if test="${inSystem}">
     <ul>
-        <li>Hello ${currentUserName}</li>
+        <li>Hello<c:out value="${currentUserName}"/></li>
     </ul>
 </c:if>
 </body>

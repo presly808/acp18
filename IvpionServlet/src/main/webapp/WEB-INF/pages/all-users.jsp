@@ -14,12 +14,12 @@
 </head>
 <h1>Users list</h1>
 <body>
-<div class="container">
+<div>
     <c:forEach items="${users}" var="users">
     <ul>
         <li>
-            <h3>${users.name}</h3>
-            ${users.email}
+            <h3><c:out value="${users.name}"/></h3>
+            <c:out value="${users.value}"/>
         </li>
     </ul>
     </c:forEach>

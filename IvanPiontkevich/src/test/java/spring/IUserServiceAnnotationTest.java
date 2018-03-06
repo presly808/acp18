@@ -6,7 +6,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import spring.model.User;
 import spring.sevice.IUserService;
 import spring.sevice.IUserServiceImpl;
-
 import javax.persistence.EntityManagerFactory;
 
 import java.util.List;

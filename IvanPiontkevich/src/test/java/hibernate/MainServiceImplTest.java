@@ -1,4 +1,4 @@
-package hibernate.service;
+package hibernate;
 
 import hibernate.dao.DepartmentDao;
 import hibernate.dao.DepartmentDaoImpl;
@@ -8,6 +8,8 @@ import hibernate.exception.AppException;
 import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
+import hibernate.service.MainService;
+import hibernate.service.MainServiceImpl;
 import hibernate.wrap.TransactionWrapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;

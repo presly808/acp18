@@ -12,7 +12,7 @@
     <title>Error</title>
 </head>
 <body>
-<h1>${errorTitle}</h1>
-<p>${errorMassege}</p>
+<h1><c:out value="${errorTitle}"/></h1>
+<p><c:out value="{errorMassege}"/></p>
 </body>
 </html>

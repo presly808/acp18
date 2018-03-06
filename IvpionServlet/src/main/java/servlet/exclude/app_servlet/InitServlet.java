@@ -9,14 +9,11 @@ import javax.servlet.http.HttpServlet;
 
 public abstract class InitServlet extends HttpServlet {
 
-    private ApplicationContext context;
     private UserService service;
-
-
 
     @Override
     public void init() throws ServletException {
-        context = (ApplicationContext) getServletContext().getAttribute("spring-context");
+        ApplicationContext context = (ApplicationContext) getServletContext().getAttribute("spring-context");
         service = context.getBean(UserServiceImpl.class);
     }
 

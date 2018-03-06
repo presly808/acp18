@@ -37,6 +37,7 @@ public class AppConfig {
         bean.setDataSource(dataSource());
         bean.setPackagesToScan("spring.model");
         bean.setPersistenceUnitName("spring-h2-unit");
+        bean.setPersistenceXmlLocation("META-INF/persistence.xml");
         bean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         bean.setJpaProperties(jpaProperties());
         return bean;

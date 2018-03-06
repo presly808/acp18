@@ -14,18 +14,18 @@
 <body>
  <%--<%ServUser transfered = (ServUser) request.getAttribute("user");%>--%>
  <c:set var="transfered" value="${user}"/>
-    <div class="container">
+    <div>
         <ul>
-            <li><div class="column">
-                name : ${transfered.name}
+            <li><div>
+                name : <c:out value="${transfered.name}"/>
             </div></li>
 
-            <li><div class="column">
-                email : ${transfered.email}
+            <li><div>
+                email : <c:out value="${transfered.email}"/>
             </div></li>
 
-            <li><div class="column">
-                id : ${transfered.id}
+            <li><div>
+                id : <c:out value="${transfered.id}"/>
             </div></li>
         </ul>
     </div>

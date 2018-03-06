@@ -12,7 +12,7 @@
     <title>Register</title>
 </head>
 <body>
-    <div class="container">
+    <div>
         <h1>Input register info</h1>
 
         <form method="post" action="register">
