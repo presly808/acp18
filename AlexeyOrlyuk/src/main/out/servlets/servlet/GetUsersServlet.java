@@ -1,6 +1,5 @@
 package servlets.servlet;
 
-import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.log4j.Logger;
 import servlets.exception.AppException;
 import servlets.model.User;
@@ -10,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.util.List;
 

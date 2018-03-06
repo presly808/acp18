@@ -17,7 +17,7 @@ import java.io.IOException;
  *
  * @see CustomHttpServlet
  */
-@WebServlet(urlPatterns = {"/index"})
+@WebServlet(urlPatterns = {"/", "/index"})
 public class IndexServlet extends CustomHttpServlet {
 
     private static final Logger LOG = Logger.getLogger(IndexServlet.class);
