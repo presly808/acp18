@@ -1,6 +1,5 @@
 package servlet.exclude.app_servlet;
 
-import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import servlet.service.UserService;
 import servlet.service.UserServiceImpl;
@@ -10,9 +9,10 @@ import javax.servlet.http.HttpServlet;
 
 public abstract class InitServlet extends HttpServlet {
 
-    protected ApplicationContext context;
-    protected UserService service;
-    protected static final Logger LOGGER = Logger.getLogger(InitServlet.class);
+    private ApplicationContext context;
+    private UserService service;
+
+
 
     @Override
     public void init() throws ServletException {
@@ -20,5 +20,11 @@ public abstract class InitServlet extends HttpServlet {
         service = context.getBean(UserServiceImpl.class);
     }
 
+   /* public ApplicationContext getContext() {
+        return context;
+    }*/
 
+    public UserService getService() {
+        return service;
+    }
 }

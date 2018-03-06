@@ -20,10 +20,10 @@ public class RequestLoggerFilter implements Filter{
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!(request instanceof HttpServletRequest) || !(response instanceof HttpServletResponse)){
-
+                LOGGER.error("Is not http resp/req");
         } else {
             HttpServletRequest req = (HttpServletRequest) request;
-            HttpServletResponse resp = (HttpServletResponse) response;
+           // HttpServletResponse resp = (HttpServletResponse) response;
 
             LOGGER.info(String.format("User %s, request %s",
                     req.getSession().getAttribute("currentUserName"),
@@ -33,6 +33,6 @@ public class RequestLoggerFilter implements Filter{
 
     @Override
     public void destroy() {
-
+        LOGGER.info("Destroy filter");
     }
 }

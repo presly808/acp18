@@ -13,9 +13,10 @@ public class ServUser {
     private int id;
     @Column
     private String name;
-    @Column(unique = true, nullable = false)
 
+    @Column(unique = true, nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String pass;
 
@@ -23,6 +24,11 @@ public class ServUser {
     public ServUser() {
     }
 
+    public ServUser(String name, String email, String pass) {
+        this.name = name;
+        this.email = email;
+        this.pass = pass;
+    }
 
     public String getEmail() {
         return email;

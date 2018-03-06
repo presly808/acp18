@@ -1,4 +1,4 @@
-package servlets;
+package servlet;
 
 import org.junit.Test;
 import servlet.validator.Validator;
