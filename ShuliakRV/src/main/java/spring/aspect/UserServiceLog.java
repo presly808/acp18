@@ -37,7 +37,7 @@ public class UserServiceLog {
         String log = LocalDateTime.now().format(formatter)+
                 " "+methodName + "() " + minutes + " millis";
 
-        File newFile = new File("./ShuliakRV/src/main/resources",
+        File newFile = new File("./src/main/resources",
                 "user-service.log");
 
          if (!newFile.exists()) {
