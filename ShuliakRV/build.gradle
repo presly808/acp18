@@ -3,6 +3,8 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'war'
 
+war.archiveName "AppServlets.war"
+
 sourceCompatibility = 1.8
 
 repositories {
