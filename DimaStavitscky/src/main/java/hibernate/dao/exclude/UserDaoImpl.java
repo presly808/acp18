@@ -4,14 +4,16 @@ import hibernate.dao.Dao;
 import hibernate.dao.UserDao;
 import hibernate.exception.exclude.AppException;
 import hibernate.model.User;
-import javassist.NotFoundException;
+import hibernate.utils.CrudOperations;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,74 +30,60 @@ public class UserDaoImpl implements UserDao {
     public User create(User entity) {
         int id = entity.getId();
         if(id == 0 || manager.find(entity.getClass(), id) == null) {
-            manager.persist(entity);
+            CrudOperations.create(entity, manager);
 
         } else {
-            LOGGER.error("This user already exists in the database, id:" + id);
+            LOGGER.error("It is impossible to create a user, " +
+                    "the user with this id already exists in the database, id: " + id);
         }
         return entity;
     }
 
     @Override
     public List<User> findAll() {
-        TypedQuery<User> query = manager.createQuery("SELECT u FROM User u", User.class);
-        return query.getResultList();
+        /*return crudOperationsDao.findAll();*/
+        return CrudOperations.findAll(User.class, manager);
     }
 
     @Override
     public List<User> findAll(int offset, int length) {
-        TypedQuery<User> query = manager.createQuery("SELECT u FROM User u", User.class);
-        query.setFirstResult(offset);
-        query.setMaxResults(length);
-
-        return query.getResultList();
+        return CrudOperations.findAll(offset, length, User.class, manager);
     }
 
     @Override
-    public User find(Integer id) {
-        User res = manager.find(User.class, id);
-        if (res == null) LOGGER.error("This user is not in the database, id: " + id);
-
-        return res;
+    public User find(Integer integer) {
+        return CrudOperations.find(integer, User.class, manager);
     }
 
     @Override
-    public User remove(Integer id) {
-        User removedUser = manager.find(User.class, id);
-        manager.remove(id);
-
-        return removedUser;
+    public User remove(Integer integer) {
+        return CrudOperations.remove(integer, User.class, manager);
     }
 
     @Override
     public User update(User entity) {
-        return manager.merge(entity);
+        return CrudOperations.update(entity, entity.getId(), manager);
     }
 
     @Override
-    public Map<User, List<User>> getUsersGroupByManager() throws AppException {
-        Map<User, List<User>> resMap = new HashMap<>();
-        List<User> users = findAll();
-
-        for (User user : users) {
-            TypedQuery<User> query =
-                    manager.createQuery("SELECT u FROM User u " +
-                            "WHERE u.manage = :manage", User.class);
-            query.setParameter("manage", user);
-
-            resMap.put(user, query.getResultList());
-        }
-        return resMap;
+    public Integer deleteTable() {
+        return manager.createQuery("DELETE FROM User").executeUpdate();
     }
 
     @Override
     public User getUserByLoginAndPass(String login, String pass) throws IllegalArgumentException {
+        try {
             TypedQuery<User> query = manager.createQuery("SELECT u FROM User u " +
-                    "WHERE u.login = :login AND u.pass = :pass", User.class);
+                    "WHERE u.login = :login AND u.password = :pass", User.class);
+            query.setParameter("login", login);
+            query.setParameter("pass", pass);
 
             return query.getSingleResult();
 
-
+        } catch (NoResultException e) {
+            LOGGER.error("Incorrect login or password");
+            throw e;
+        }
     }
 
     @Override
@@ -112,6 +100,57 @@ public class UserDaoImpl implements UserDao {
 
             List<User> res = query.getResultList();
             if(res != null) resMap.put(user, res);
+        }
+
+        return resMap;
+    }
+
+    @Override
+    public List<User> findByName(String name) {
+        try {
+            TypedQuery<User> query = manager.createQuery
+                    ("SELECT u FROM User u WHERE u.name = :name", User.class);
+            query.setParameter("name", name);
+            return query.getResultList();
+
+        } catch (NoResultException e) {
+            LOGGER.error("No users found with this name: " + name);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException {
+        try {
+            TypedQuery<User> query = manager.createQuery
+                    ("SELECT u FROM User u WHERE u.localDateTime BETWEEN :start AND :end", User.class);
+
+            query.setParameter("start", start);
+            query.setParameter("end", end);
+
+            return query.getResultList();
+
+        } catch (NoResultException e) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LOGGER.error(String.format("No users found that registered between %s and %s",
+                    start.format(formatter),
+                    end.format(formatter)));
+            throw e;
+        }
+    }
+
+    @Override
+    public Map<User, List<User>> getUsersGroupByManager() throws AppException {
+        Map<User, List<User>> resMap = new HashMap<>();
+        List<User> users = findAll();
+
+        for (User user : users) {
+            TypedQuery<User> query =
+                    manager.createQuery("SELECT u FROM User u " +
+                            "WHERE u.manage = :manage", User.class);
+            query.setParameter("manage", user);
+
+            resMap.put(user, query.getResultList());
         }
         return resMap;
     }

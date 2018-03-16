@@ -19,5 +19,5 @@ public interface Dao<T, ID> {
 
     T update(T entity);
 
-
+    ID deleteTable();
 }

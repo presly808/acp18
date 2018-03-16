@@ -44,4 +44,9 @@ public class UserDaoImpl implements UserDao {
 
         return null;
     }
+
+    @Override
+    public Object deleteTable() {
+        return null;
+    }
 }

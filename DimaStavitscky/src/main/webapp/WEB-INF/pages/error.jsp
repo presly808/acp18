@@ -1,16 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: lside
-  Date: 24.02.18
-  Time: 14:23
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="include.jsp" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-
+    <div>
+    <c:out value="${result}">Error </c:out>
+    </div>
 </body>
 </html>

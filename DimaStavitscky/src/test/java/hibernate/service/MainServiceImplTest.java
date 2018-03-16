@@ -4,9 +4,7 @@ import hibernate.exception.exclude.AppException;
 import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -37,7 +35,7 @@ public class MainServiceImplTest {
     private static ApplicationContext context = new AnnotationConfigApplicationContext("hibernate");
 
 
-    private static MainService service = context.getBean(MainServiceImpl.class);
+    private static MainService service;
 
     @BeforeClass
     public static void beforeClass() throws AppException {
@@ -47,6 +45,7 @@ public class MainServiceImplTest {
             e.printStackTrace();
         }
 
+        service = context.getBean(MainService.class);
         kiev = new City("Kiev");
         odessa = new City("Oddessa");
 
@@ -58,11 +57,11 @@ public class MainServiceImplTest {
         date2010 = LocalDateTime.of(2010, 1, 1, 1, 1);
         date2015 = LocalDateTime.of(2015, 1, 1, 1, 1);
 
-        user1 = new User("Ivan", 30, 2500, department1, kiev, null, date2000);
-        user2 = new User("Oleg", 33, 3500, department2, odessa, user1, date2005);
-        user3 = new User("Yura", 35, 1500, department1, kiev, user2, date2010);
-        user4 = new User("Serhii", 22, 2500, department2, odessa, user1, date2015);
-        user5 = new User("Olex", 24, 4500, department1, kiev, user2, date2005);
+        user1 = new User("Ivan", 30, 2500, "I", "1", department1, kiev, null, date2000);
+        user2 = new User("Oleg", 33, 3500, "O", "2", department2, odessa, user1, date2005);
+        user3 = new User("Yura", 35, 1500, "Y", "3", department1, kiev, user2, date2010);
+        user4 = new User("Serhii", 22, 2500, "S", "4", department2, odessa, user1, date2015);
+        user5 = new User("Olex", 24, 4500, "Ol", "5", department1, kiev, user2, date2005);
 
         service.addCity(kiev);
         service.addCity(odessa);
@@ -75,6 +74,11 @@ public class MainServiceImplTest {
         service.register(user3);
         service.register(user4);
         service.register(user5);
+    }
+
+    @AfterClass
+    public static void dropTables() {
+        service.dropAllTables();
     }
 
     @Test
@@ -92,7 +96,15 @@ public class MainServiceImplTest {
         user3.setAge(100);
         service.update(user3);
         User res = service.findById(user3.getId());
+
         Assert.assertEquals(res.getAge(), user3.getAge());
+    }
+
+    @Test
+    public void login() throws Exception {
+        Thread.sleep(2000);
+        User loggedUser = service.login("S", "4");
+        Assert.assertEquals(loggedUser, user4);
     }
 
     @Test
@@ -150,4 +162,6 @@ public class MainServiceImplTest {
                 && actual.contains(user5)
                 && !actual.contains(user4));
     }
+
+
 }

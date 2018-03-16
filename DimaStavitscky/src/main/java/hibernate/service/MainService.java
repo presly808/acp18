@@ -4,6 +4,7 @@ import hibernate.exception.exclude.AppException;
 import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 /**
  * Created by serhii on 10.02.18.
  */
+
 public interface MainService {
 
     List<User> getAllUsers() throws AppException;
@@ -42,5 +44,9 @@ public interface MainService {
 
     List<User> findByDate(LocalDateTime start, LocalDateTime end) throws AppException;
 
+    Integer dropAllTables();
 
+    Department findDepartmentByName(String name) throws AppException;
+
+    City findCityByName(String name) throws AppException;
 }

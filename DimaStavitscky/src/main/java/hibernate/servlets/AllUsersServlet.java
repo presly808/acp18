@@ -23,7 +23,7 @@ public class AllUsersServlet extends HttpServlet {
     public void init() throws ServletException {
         ApplicationContext context =
                 (ApplicationContext) getServletContext().getAttribute("spring-context");
-        service = (MainService) context.getBean(UserServiceImpl.class);
+        service = context.getBean(MainService.class);
     }
 
     @Override

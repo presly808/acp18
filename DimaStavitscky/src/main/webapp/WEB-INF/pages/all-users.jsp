@@ -4,9 +4,10 @@
     <title>All users</title>
 </head>
 <body>
+    <h1>All users:</h1><br>
 <ul>
 <c:forEach var="user" items="${users}">
-    <li>${user}</li>
+    <li>Name: ${user.name} Age: ${user.age}</li>
 </c:forEach>
 </ul>
 </body>

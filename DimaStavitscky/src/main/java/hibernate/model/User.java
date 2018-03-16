@@ -48,28 +48,19 @@ public class User extends Base {
         this.localDateTime = localDateTime;
     }
 
-    public User(int id, String name, int age, double salary, Department department, City city, User manage, LocalDateTime localDateTime) {
-        super(id, name);
+    public User(String name, int age, double salary,
+                String login, String password,
+                Department department, City city,
+                User manage, LocalDateTime localDateTime) {
+        super(name);
         this.age = age;
         this.salary = salary;
+        this.login = login;
+        this.password = password;
         this.department = department;
         this.city = city;
         this.manage = manage;
         this.localDateTime = localDateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "age=" + age +
-                ", salary=" + salary +
-                ", department=" + department +
-                ", city=" + city +
-                ", manage=" + manage +
-                ", localDateTime=" + localDateTime +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 
     @Override
@@ -95,6 +86,22 @@ public class User extends Base {
         result = 31 * result + (manage != null ? manage.hashCode() : 0);
         result = 31 * result + (localDateTime != null ? localDateTime.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "age=" + age +
+                ", salary=" + salary +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", department=" + department +
+                ", city=" + city +
+                ", manage=" + manage +
+                ", localDateTime=" + localDateTime +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public int getAge() {

@@ -9,5 +9,7 @@ import java.util.Map;
 
 public interface DepartmentDao extends Dao<Department, Integer>{
 
+    Department findByName(String name);
+
     Map<Department, List<User>> getUsersGroupByDepartment() throws AppException;
 }

@@ -5,6 +5,7 @@ import hibernate.dao.Dao;
 import hibernate.exception.exclude.AppException;
 import hibernate.model.City;
 import hibernate.model.User;
+import hibernate.utils.CrudOperations;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,56 +24,52 @@ public class CityDaoImpl implements CityDao {
     @PersistenceContext
     private EntityManager manager;
 
-    @Transactional
-    @Override
-    public List<City> findAll() {
-        TypedQuery<City> query = manager.createQuery("SELECT c FROM City c", City.class);
-        return query.getResultList();
-    }
-
-    @Transactional
     @Override
     public City create(City entity) {
         int id = entity.getId();
         if(id == 0 || manager.find(entity.getClass(), id) == null) {
-            manager.persist(entity);
+            CrudOperations.create(entity, manager);
 
         } else {
-            LOGGER.error("This city already exists in the database, id:" + id);
+            LOGGER.error("It is impossible to create a city, " +
+                    "the city with this id already exists in the database, id: " + id);
         }
         return entity;
     }
 
-    @Transactional
+    @Override
+    public List<City> findAll() {
+        return CrudOperations.findAll(City.class, manager);
+    }
+
     @Override
     public List<City> findAll(int offset, int length) {
-        TypedQuery<City> query = manager.createQuery("SELECT c FROM City c", City.class);
-        query.setFirstResult(offset);
-        query.setMaxResults(length);
-
-        return query.getResultList();
+        return CrudOperations.findAll(offset, length, City.class, manager);
     }
 
-    @Transactional
     @Override
-    public City find(Integer id) {
-        City res = manager.find(City.class, id);
-        if (res == null) LOGGER.error("This city is not in the database, id: " + id);
-        return res;
+    public City find(Integer integer) {
+        return CrudOperations.find(integer, City.class, manager);
     }
 
-    @Transactional
     @Override
-    public City remove(Integer id) {
-        City removedUser = manager.find(City.class, id);
-        manager.remove(id);
-        return removedUser;
+    public City findByName(String name) {
+        return CrudOperations.findByName(name, City.class, manager);
     }
 
-    @Transactional
+    @Override
+    public City remove(Integer integer) {
+        return CrudOperations.remove(integer, City.class, manager);
+    }
+
     @Override
     public City update(City entity) {
-        return manager.merge(entity);
+        return CrudOperations.update(entity, entity.getId(), manager);
+    }
+
+    @Override
+    public Integer deleteTable() {
+        return manager.createQuery("DELETE FROM City").executeUpdate();
     }
 
     @Override
@@ -89,9 +86,14 @@ public class CityDaoImpl implements CityDao {
 
             resMap.put(city, query.getResultList());
         }
-
-        resMap.entrySet().forEach(System.out::println);
-
         return resMap;
+    }
+
+    public EntityManager getManager() {
+        return manager;
+    }
+
+    public void setManager(EntityManager manager) {
+        this.manager = manager;
     }
 }

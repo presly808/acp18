@@ -9,5 +9,7 @@ import java.util.Map;
 
 public interface CityDao extends Dao<City, Integer> {
 
+    City findByName(String name);
+
     Map<City, List<User>> getUsersGroupByCity() throws AppException;
 }

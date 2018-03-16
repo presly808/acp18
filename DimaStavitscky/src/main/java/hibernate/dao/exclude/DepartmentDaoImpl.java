@@ -5,9 +5,9 @@ import hibernate.dao.DepartmentDao;
 import hibernate.exception.exclude.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
+import hibernate.utils.CrudOperations;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,63 +24,54 @@ public class DepartmentDaoImpl implements DepartmentDao {
     @PersistenceContext
     private EntityManager manager;
 
-    @Transactional
     @Override
     public Department create(Department entity) {
         int id = entity.getId();
         if(id == 0 || manager.find(entity.getClass(), id) == null) {
-            manager.persist(entity);
+            CrudOperations.create(entity, manager);
 
         } else {
-            LOGGER.error("This department already exists in the database, id:" + id);
+            LOGGER.error("It is impossible to create a department, " +
+                    "the department with this id already exists in the database, id: " + id);
         }
         return entity;
     }
 
-    @Transactional
     @Override
     public List<Department> findAll() {
-        TypedQuery<Department> query = manager.createQuery
-                ("SELECT u FROM Department u", Department.class);
-
-        return query.getResultList();
+        return CrudOperations.findAll(Department.class, manager);
     }
 
-    @Transactional
     @Override
     public List<Department> findAll(int offset, int length) {
-        TypedQuery<Department> query = manager.createQuery("SELECT d FROM Department d", Department.class);
-        query.setFirstResult(offset);
-        query.setMaxResults(length);
-
-        return query.getResultList();
+        return CrudOperations.findAll(offset, length, Department.class, manager);
     }
 
-    @Transactional
     @Override
-    public Department find(Integer id) {
-        Department res = manager.find(Department.class, id);
-        if (res == null) LOGGER.error("This department is not in the database, id: " + id);
-
-        return res;
+    public Department find(Integer integer) {
+        return CrudOperations.find(integer, Department.class, manager);
     }
 
-    @Transactional
     @Override
-    public Department remove(Integer id) {
-        Department removedUser = manager.find(Department.class, id);
-        manager.remove(id);
-
-        return removedUser;
+    public Department remove(Integer integer) {
+        return CrudOperations.remove(integer, Department.class, manager);
     }
 
-    @Transactional
     @Override
     public Department update(Department entity) {
-        return manager.merge(entity);
+        return CrudOperations.update(entity, entity.getId(), manager);
     }
 
-    @Transactional
+    @Override
+    public Integer deleteTable() {
+        return manager.createQuery("DELETE FROM Department").executeUpdate();
+    }
+
+    @Override
+    public Department findByName(String name) {
+        return CrudOperations.findByName(name, Department.class, manager);
+    }
+
     @Override
     public Map<Department, List<User>> getUsersGroupByDepartment() throws AppException {
         Map<Department, List<User>> resMap = new HashMap<>();
@@ -95,9 +86,6 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
             resMap.put(department, query.getResultList());
         }
-
-        resMap.entrySet().forEach(System.out::println);
-
         return resMap;
     }
 }
