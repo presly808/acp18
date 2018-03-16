@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Object create(Object entity) {
-        return null;
+        return factory.createEntityManager().merge(entity);
     }
 
     @Override

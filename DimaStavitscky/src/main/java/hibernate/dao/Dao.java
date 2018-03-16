@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by serhii on 10.02.18.
  */
-public interface Dao<T, ID> {
+public interface Dao<T, I> {
 
     T create(T entity);
 
@@ -13,11 +13,11 @@ public interface Dao<T, ID> {
 
     List<T> findAll(int offset, int length);
 
-    T find(ID id);
+    T find(I id);
 
-    T remove(ID id);
+    T remove(I id);
 
     T update(T entity);
 
-    ID deleteTable();
+    I deleteTable();
 }
