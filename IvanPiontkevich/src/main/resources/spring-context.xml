@@ -11,7 +11,7 @@
     <tx:annotation-driven/>
     <context:annotation-config/>
     <context:component-scan base-package="spring"/>
-    <!--<bean id="userDao" class="spring.dao.UserDaoImpl">
+    <!--<bean id="userDao" class="UserDaoImpl">
         <property name="factory" ref="entityManagerFactory"/>
     </bean>
 

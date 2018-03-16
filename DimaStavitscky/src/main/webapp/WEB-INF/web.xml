@@ -6,7 +6,7 @@
 
     <listener>
         <listener-class>
-            hibernate.listener.InitDbAndSpringContextListener
+            hibernate.listener.exclude.InitDbAndSpringContextListener
         </listener-class>
     </listener>
 

@@ -5,10 +5,9 @@ import hibernate.dao.Dao;
 import hibernate.exception.exclude.AppException;
 import hibernate.model.City;
 import hibernate.model.User;
-import hibernate.utils.CrudOperations;
+import hibernate.utils.exclude.CrudOperationsUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,7 +27,7 @@ public class CityDaoImpl implements CityDao {
     public City create(City entity) {
         int id = entity.getId();
         if(id == 0 || manager.find(entity.getClass(), id) == null) {
-            CrudOperations.create(entity, manager);
+            CrudOperationsUtils.create(entity, manager);
 
         } else {
             LOGGER.error("It is impossible to create a city, " +
@@ -39,32 +38,32 @@ public class CityDaoImpl implements CityDao {
 
     @Override
     public List<City> findAll() {
-        return CrudOperations.findAll(City.class, manager);
+        return CrudOperationsUtils.findAll(City.class, manager);
     }
 
     @Override
     public List<City> findAll(int offset, int length) {
-        return CrudOperations.findAll(offset, length, City.class, manager);
+        return CrudOperationsUtils.findAll(offset, length, City.class, manager);
     }
 
     @Override
     public City find(Integer integer) {
-        return CrudOperations.find(integer, City.class, manager);
+        return CrudOperationsUtils.find(integer, City.class, manager);
     }
 
     @Override
     public City findByName(String name) {
-        return CrudOperations.findByName(name, City.class, manager);
+        return CrudOperationsUtils.findByName(name, City.class, manager);
     }
 
     @Override
     public City remove(Integer integer) {
-        return CrudOperations.remove(integer, City.class, manager);
+        return CrudOperationsUtils.remove(integer, City.class, manager);
     }
 
     @Override
     public City update(City entity) {
-        return CrudOperations.update(entity, entity.getId(), manager);
+        return CrudOperationsUtils.update(entity, entity.getId(), manager);
     }
 
     @Override

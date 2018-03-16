@@ -5,7 +5,7 @@ import hibernate.dao.DepartmentDao;
 import hibernate.exception.exclude.AppException;
 import hibernate.model.Department;
 import hibernate.model.User;
-import hibernate.utils.CrudOperations;
+import hibernate.utils.exclude.CrudOperationsUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
     public Department create(Department entity) {
         int id = entity.getId();
         if(id == 0 || manager.find(entity.getClass(), id) == null) {
-            CrudOperations.create(entity, manager);
+            CrudOperationsUtils.create(entity, manager);
 
         } else {
             LOGGER.error("It is impossible to create a department, " +
@@ -39,27 +39,27 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public List<Department> findAll() {
-        return CrudOperations.findAll(Department.class, manager);
+        return CrudOperationsUtils.findAll(Department.class, manager);
     }
 
     @Override
     public List<Department> findAll(int offset, int length) {
-        return CrudOperations.findAll(offset, length, Department.class, manager);
+        return CrudOperationsUtils.findAll(offset, length, Department.class, manager);
     }
 
     @Override
     public Department find(Integer integer) {
-        return CrudOperations.find(integer, Department.class, manager);
+        return CrudOperationsUtils.find(integer, Department.class, manager);
     }
 
     @Override
     public Department remove(Integer integer) {
-        return CrudOperations.remove(integer, Department.class, manager);
+        return CrudOperationsUtils.remove(integer, Department.class, manager);
     }
 
     @Override
     public Department update(Department entity) {
-        return CrudOperations.update(entity, entity.getId(), manager);
+        return CrudOperationsUtils.update(entity, entity.getId(), manager);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public Department findByName(String name) {
-        return CrudOperations.findByName(name, Department.class, manager);
+        return CrudOperationsUtils.findByName(name, Department.class, manager);
     }
 
     @Override

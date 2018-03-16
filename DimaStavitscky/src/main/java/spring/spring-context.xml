@@ -33,11 +33,11 @@
         </property>
     </bean>
 
-    <bean id="userDao" class="spring.dao.UserDaoImpl">
+    <bean id="userDao" class="spring.exclude.dao.UserDaoImpl">
         <constructor-arg ref="entityManagerFactory"/>
     </bean>
 
-    <bean id="userService" class="spring.service.UserServiceImpl">
+    <bean id="userService" class="spring.exclude.service.UserServiceImpl">
         <property name="dao" ref="userDao"/>
     </bean>
 

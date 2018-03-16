@@ -4,7 +4,7 @@ import hibernate.dao.Dao;
 import hibernate.dao.UserDao;
 import hibernate.exception.exclude.AppException;
 import hibernate.model.User;
-import hibernate.utils.CrudOperations;
+import hibernate.utils.exclude.CrudOperationsUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
     public User create(User entity) {
         int id = entity.getId();
         if(id == 0 || manager.find(entity.getClass(), id) == null) {
-            CrudOperations.create(entity, manager);
+            CrudOperationsUtils.create(entity, manager);
 
         } else {
             LOGGER.error("It is impossible to create a user, " +
@@ -42,27 +42,27 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAll() {
         /*return crudOperationsDao.findAll();*/
-        return CrudOperations.findAll(User.class, manager);
+        return CrudOperationsUtils.findAll(User.class, manager);
     }
 
     @Override
     public List<User> findAll(int offset, int length) {
-        return CrudOperations.findAll(offset, length, User.class, manager);
+        return CrudOperationsUtils.findAll(offset, length, User.class, manager);
     }
 
     @Override
     public User find(Integer integer) {
-        return CrudOperations.find(integer, User.class, manager);
+        return CrudOperationsUtils.find(integer, User.class, manager);
     }
 
     @Override
     public User remove(Integer integer) {
-        return CrudOperations.remove(integer, User.class, manager);
+        return CrudOperationsUtils.remove(integer, User.class, manager);
     }
 
     @Override
     public User update(User entity) {
-        return CrudOperations.update(entity, entity.getId(), manager);
+        return CrudOperationsUtils.update(entity, entity.getId(), manager);
     }
 
     @Override
