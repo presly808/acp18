@@ -4,7 +4,6 @@ import hibernate.exception.exclude.AppException;
 import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;

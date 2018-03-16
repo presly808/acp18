@@ -13,10 +13,7 @@ public class CheckMethodsWorkingTimeAspect {
 
     private static final Logger LOGGER = Logger.getLogger(CheckMethodsWorkingTimeAspect.class);
 
-    @Pointcut(value = "execution(public * hibernate..*(..))")
-    public void publicMethodsPointCut(){}
-
-    @Around(value = "publicMethodsPointCut()")
+    @Around(value = "execution(public * hibernate..*(..))")
     public Object arroundMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().getName();
         Object value;

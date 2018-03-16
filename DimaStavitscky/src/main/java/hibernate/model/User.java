@@ -76,16 +76,7 @@ public class User extends Base {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        long temp;
-        result = 31 * result + age;
-        temp = Double.doubleToLongBits(salary);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (department != null ? department.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (manage != null ? manage.hashCode() : 0);
-        result = 31 * result + (localDateTime != null ? localDateTime.hashCode() : 0);
-        return result;
+       return id;
     }
 
     @Override

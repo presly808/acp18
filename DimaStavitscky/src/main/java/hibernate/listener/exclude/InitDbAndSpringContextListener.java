@@ -23,7 +23,7 @@ public class InitDbAndSpringContextListener implements ServletContextListener {
         sce.getServletContext().setAttribute("spring-context", context);
 
         try {
-            DbUtils.AddTestInfoToDB(service);
+            DbUtils.addTestInfoToDB(service);
         } catch (AppException e) {
             LOGGER.error("Test db didn't create");
             e.printStackTrace();

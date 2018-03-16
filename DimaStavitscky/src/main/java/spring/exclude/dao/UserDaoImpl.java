@@ -8,7 +8,7 @@ import java.util.List;
 @Component
 public class UserDaoImpl implements UserDao {
 
-    EntityManagerFactory factory;
+    private EntityManagerFactory factory;
 
     public UserDaoImpl(EntityManagerFactory factory) {
         this.factory = factory;

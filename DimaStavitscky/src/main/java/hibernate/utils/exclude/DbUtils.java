@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 public class DbUtils {
 
-    public static void AddTestInfoToDB(MainService service) throws AppException {
+    public static void addTestInfoToDB(MainService service) throws AppException {
         System.out.println("Test DB start creating");
         if (service.getAllUsers().size() > 0) {
             System.out.println("Test DB already created");

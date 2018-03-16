@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class Aspects {
-    @Pointcut(value = "execution(public * spring..*(..))")
-    public void publicMethodsPointCut(){}
 
-    @Around(value = "publicMethodsPointCut()")
+    @Around(value = "execution(public * spring..*(..))")
     public Object arroundMethod(ProceedingJoinPoint joinPoint){
         String methodName = joinPoint.getSignature().getName();
         Object value = null;
