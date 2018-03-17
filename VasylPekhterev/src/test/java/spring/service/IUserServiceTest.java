@@ -1,26 +1,29 @@
 package spring.service;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import spring.config.AppConfig;
 import spring.model.User;
-
-import javax.persistence.EntityManagerFactory;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {AppConfig.class})
 public class IUserServiceTest {
 
+    @Autowired
     private IUserService iUserService;
+    @Autowired
     private ApplicationContext applicationContext;
 
     @Before
     public void setUp() {
-        applicationContext = new AnnotationConfigApplicationContext("spring");
-        iUserService = applicationContext.getBean(IUserService.class);
         User user1 = new User("Test 1");
         User user2 = new User("Test 2");
         User user3 = new User("Test 3");
@@ -29,18 +32,11 @@ public class IUserServiceTest {
         iUserService.save(user3);
     }
 
-    @After
-    public void tearDown() {
-        EntityManagerFactory factory = (EntityManagerFactory) applicationContext.getBean("entityManagerFactoryBean");
-        factory.close();
-    }
-
     @Test
     public void save() {
         User user4 = new User("Test 4");
         User savedUser = iUserService.save(user4);
         assertThat(savedUser.getName(), equalTo("Test 4"));
-        assertThat(savedUser.getId(), equalTo(4));
     }
 
     @Test

@@ -18,7 +18,7 @@ public class LogginAspect {
     }
 
     @Around(value = "serviceMethods()")
-    public Object aroundAdvice(ProceedingJoinPoint proceedingJoinPoint) {
+    public Object aroundAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         String typeName = proceedingJoinPoint.getSignature().getDeclaringTypeName();
         String methodName = proceedingJoinPoint.getSignature().getName();
         System.out.printf("before method: %s\n", methodName);
@@ -32,6 +32,7 @@ public class LogginAspect {
                     typeName, methodName, endTime-startTime));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
+            throw throwable;
         }
 
         System.out.printf("after method: %s\n", methodName);
