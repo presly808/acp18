@@ -50,6 +50,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Transactional
+    @Override
     public User findByNameAndPassword(String name, String password) {
 
         //EntityManager manager = factory.createEntityManager();
@@ -58,6 +59,7 @@ public class UserDaoImpl implements UserDao {
                 "AND e.password = :password", User.class);
         query.setParameter("name", name);
         query.setParameter("password", password);
+
         //try {
         return query.getSingleResult();
         //} catch (Exception e) {

@@ -15,9 +15,9 @@
 <div id="container">
     <h1>Menu</h1>
     <br/>
-    <a href="/adduser">Add User</a>
+    <a href="adduser">Add User</a>
     <br/>
-    <a href="/allusers">Shiw All Users</a>
+    <a href="allusers">Show All Users</a>
 </div>
 
 </body>

@@ -12,7 +12,7 @@
 </head>
 <body>
 
-   <%request.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(request,response);%>
+   <%response.sendRedirect("login");%>
 
 </body>
 </html>
