@@ -11,8 +11,14 @@ import java.util.List;
 public interface IUserService {
 
     User save(User user) throws AppException;
+
     User delete(int id) throws AppException;
+
     User findById(int id) throws AppException;
+
+    User findByNameAndPassword(String name, String password)
+            throws AppException;
+
     List<User> findAll() throws AppException;
 
 }

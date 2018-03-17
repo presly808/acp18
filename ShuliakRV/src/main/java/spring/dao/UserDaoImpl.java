@@ -50,6 +50,25 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Transactional
+    public User findByNameAndPassword(String name, String password) {
+
+        //EntityManager manager = factory.createEntityManager();
+        TypedQuery<User> query = manager.createQuery("SELECT e FROM spring.model.User e " +
+                "WHERE e.name = :name " +
+                "AND e.password = :password", User.class);
+        query.setParameter("name", name);
+        query.setParameter("password", password);
+        //try {
+        return query.getSingleResult();
+        //} catch (Exception e) {
+        //    return null;
+        //} //finally {
+        //manager.close();
+        //}
+
+    }
+
+    @Transactional
     @Override
     public User remove(int id) {
 

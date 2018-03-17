@@ -11,6 +11,7 @@ public interface UserDao {
 
     List<User> findAll();
     User find(int id);
+    User findByNameAndPassword(String name, String password);
     User remove(int id);
     User update(User entity);
 

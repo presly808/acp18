@@ -63,6 +63,24 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User findByNameAndPassword(String name, String password)
+            throws AppException {
+
+        if (name == null || password == null) {
+            throw new AppException("User isn't exist!");
+        }
+
+        try {
+            User entity = userDao.findByNameAndPassword(name, password);
+            return entity;
+        }
+        catch (Exception e) {
+            throw new AppException("User wasn't found!");
+        }
+
+    }
+
+    @Override
     public List<User> findAll() throws AppException {
 
         List<User> list = userDao.findAll();
