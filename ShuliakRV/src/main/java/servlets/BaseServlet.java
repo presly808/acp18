@@ -17,11 +17,6 @@ public class BaseServlet extends HttpServlet {
     public void init() throws ServletException {
         appContext = (ApplicationContext) getServletContext().getAttribute("spring-context");
         service = appContext.getBean(IUserService.class);
-        try {
-            service.save(new User("admin","admin"));
-        } catch (AppException e) {
-            e.printStackTrace();
-        }
     }
 
 }
