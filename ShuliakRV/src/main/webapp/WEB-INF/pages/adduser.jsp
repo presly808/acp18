@@ -12,6 +12,12 @@
 </head>
 <body>
 
+<%
+    if (session.getAttribute("session_id") == null) {
+        response.sendRedirect("login");
+    }
+%>
+
 <h1>Add User</h1>
 <br/>
 

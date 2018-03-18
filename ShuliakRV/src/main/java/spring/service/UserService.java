@@ -70,13 +70,13 @@ public class UserService implements IUserService {
             throw new AppException("User isn't exist!");
         }
 
-        try {
-            User entity = userDao.findByNameAndPassword(name, password);
-            return entity;
-        }
-        catch (Exception e) {
+        User entity = userDao.findByNameAndPassword(name, password);
+
+        if (entity == null) {
             throw new AppException("User wasn't found!");
         }
+
+        return entity;
 
     }
 
@@ -85,7 +85,7 @@ public class UserService implements IUserService {
 
         List<User> list = userDao.findAll();
 
-        if (list == null) {
+        if (list == null || list.size() == 0) {
             throw new AppException("Users wasn't found!");
         }
 

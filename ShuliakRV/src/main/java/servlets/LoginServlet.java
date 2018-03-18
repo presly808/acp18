@@ -22,10 +22,10 @@ public class LoginServlet extends BaseServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        HttpSession session = req.getSession();
-
         try {
             User user = service.findByNameAndPassword(login, password);
+            HttpSession session = req.getSession();
+            session.setAttribute("session_id",session.getId());
             resp.sendRedirect("menu");
 
         } catch (AppException e) {

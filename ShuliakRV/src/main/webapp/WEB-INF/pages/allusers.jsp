@@ -8,9 +8,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Show All Users</title>
 </head>
 <body>
+
+<%
+    if (session.getAttribute("session_id") == null) {
+        response.sendRedirect("login");
+    }
+%>
+
+
 
 </body>
 </html>

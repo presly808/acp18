@@ -12,7 +12,13 @@
 </head>
 <body>
 
-<div id="container">
+<%
+    if (session.getAttribute("session_id") == null) {
+        response.sendRedirect("login");
+    }
+%>
+
+<div class="header">
     <h1>Menu</h1>
     <br/>
     <a href="adduser">Add User</a>
