@@ -24,14 +24,12 @@ public class LoginServlet extends BaseServlet {
 
         try {
             User user = service.findByNameAndPassword(login, password);
-            HttpSession session = req.getSession();
-            session.setAttribute("session_id",session.getId());
             resp.sendRedirect("menu");
-
+            HttpSession session = req.getSession();
+            session.setAttribute("session_id", session.getId());
         } catch (AppException e) {
             resp.getWriter().println(e.getMessage());
         }
-
 
     }
 }
