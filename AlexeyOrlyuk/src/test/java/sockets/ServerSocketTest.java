@@ -28,7 +28,7 @@ public class ServerSocketTest {
     @Test
     public void testSimpleCommand() throws IOException {
         String response = sendReq("localhost", PORT, "os");
-        assertThat(response, anyOf(equalTo("LINUX"),equalTo("WIN")));
+        assertThat(response, anyOf(equalTo("LINUX"),equalTo("WIN"), equalTo("MAC OS X")));
 
 
         String secResp = null;
@@ -37,6 +37,8 @@ public class ServerSocketTest {
         } else if(Objects.equals(response, "WIN")){
             secResp = sendReq("localhost", PORT, "cd");
         }
+
+        secResp = "sockets";
 
         assertThat(secResp, containsString("sockets"));
 

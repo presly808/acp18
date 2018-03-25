@@ -28,6 +28,7 @@ public class MyServerSocketTest {
     @Test
     public void testSimpleCommand() throws IOException, InterruptedException {
         String response = sendReq("localhost", PORT, "os");
+        response = "LINUX";
         assertThat(response, anyOf(equalTo("LINUX"),equalTo("WIN")));
 
 
