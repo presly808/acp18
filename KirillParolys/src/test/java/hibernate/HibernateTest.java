@@ -3,6 +3,7 @@ package hibernate;
 import hibernate.Manager.EntityManagerSingleton;
 import hibernate.dao.DaoImpl;
 import hibernate.exception.AppException;
+import hibernate.model.Base;
 import hibernate.model.City;
 import hibernate.model.Department;
 import hibernate.model.User;
@@ -179,6 +180,56 @@ public class HibernateTest {
                 .mapToInt(User::getAge)
                 .average()
                 .getAsDouble(), equalTo(35.833333333333336));
+    }
+
+    @Test
+    public void testException() {
+        assertThat(new AppException("message") instanceof Exception, equalTo(true));
+    }
+
+    @Test
+    public void testBase() {
+        Base base = new Base(1, "Kirill");
+
+        Base base1 = new Base();
+        base1.setId(1);
+        base1.setName("Kirill");
+
+        assertThat(base.toString(), equalTo(base1.toString()));
+    }
+
+    @Test
+    public void testUser() {
+        User user = new User(1, "Kirill", 10, 1000.00,
+                new Department(1, "Department"),
+                new City(1, "Kiev"),
+                new User(1, "Manager", 12));
+
+        User user1 = new User();
+
+        user1.setId(1);
+        user1.setName("Kirill");
+        user1.setAge(10);
+
+        user1.setSalary(1000.00);
+
+        user1.setDepartment(new Department(1, "Department"));
+        user1.setCity(new City(1, "Kiev"));
+
+        user1.setManage(new User(1, "Manager", 12));
+
+        assertThat(user.toString(), equalTo(user1.toString()));
+
+        assertThat(user.getName(), equalTo(user1.getName()));
+        assertThat(user.getAge(), equalTo(user1.getAge()));
+        assertThat(user.getId(), equalTo(user1.getId()));
+
+        assertThat(user.getDepartment().toString(), equalTo(user1.getDepartment().toString()));
+        assertThat(user.getCity().toString(), equalTo(user1.getCity().toString()));
+
+        assertThat(user.getSalary(), equalTo(user1.getSalary()));
+
+        assertThat(user.getManage().toString(), equalTo(user1.getManage().toString()));
     }
 
     @AfterClass
