@@ -10,10 +10,10 @@
         </provider>
 
 
-        <class>hibernate.webapp.model.Base</class>
-        <class>hibernate.webapp.model.Department</class>
-        <class>hibernate.webapp.model.City</class>
-        <class>hibernate.webapp.model.User</class>
+        <class>hibernate.model.Base</class>
+        <class>hibernate.model.Department</class>
+        <class>hibernate.model.City</class>
+        <class>hibernate.model.User</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
@@ -24,7 +24,7 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.show_sql" value="true"/>
 
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
 
     </persistence-unit>
@@ -36,10 +36,10 @@
         </provider>
 
 
-        <class>hibernate.webapp.model.Base</class>
-        <class>hibernate.webapp.model.Department</class>
-        <class>hibernate.webapp.model.City</class>
-        <class>hibernate.webapp.model.User</class>
+        <class>hibernate.model.Base</class>
+        <class>hibernate.model.Department</class>
+        <class>hibernate.model.City</class>
+        <class>hibernate.model.User</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
